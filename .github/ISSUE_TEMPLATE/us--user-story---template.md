@@ -3,8 +3,8 @@ name: 'US: User Story - Template'
 about: Standard skabelon til oprettelse af User Stories. Bruges til at definere krav,
   opgavenedbrydning og MoSCoW-prioritering i vores sprints.
 title: 'US: '
-labels: Could Have, Must Have, Should Have, User Stories
-assignees: Maja-co, sbmog, Reolhylden, Govdat24
+labels: User Stories
+assignees: Govdat24, Maja-co, Reolhylden, sbmog
 
 ---
 
