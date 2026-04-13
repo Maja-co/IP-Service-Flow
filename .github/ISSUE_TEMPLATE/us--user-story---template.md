@@ -4,7 +4,7 @@ about: Standard skabelon til oprettelse af User Stories. Bruges til at definere 
   opgavenedbrydning og MoSCoW-prioritering i vores sprints.
 title: 'US: '
 labels: Could Have, Must Have, Should Have, User Stories
-assignees: ''
+assignees: Maja-co, sbmog, Reolhylden, Govdat24
 
 ---
 
