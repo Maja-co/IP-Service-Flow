@@ -12,8 +12,8 @@ assignees: Govdat24, Maja-co, Reolhylden, sbmog
 Som [rolle] vil jeg [mål], så [gevinst].
 
 **Tasks (Nedbrydning)**
-- [ ] 
-- [ ] 
+- [ ] US: X.X : Kode (...)
+- [ ] US: X.X : Kode (...)
 
 **Noter / Teknisk Info**
 (Skriv eventuelle tanker om databasen, API eller lignende her)
