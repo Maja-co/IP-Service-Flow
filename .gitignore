@@ -1,5 +1,42 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# ====================================================================
+# Bygge- og publiceringsfiler (C# / .NET)
+# ====================================================================
+[Bb]in/
+[Oo]bj/
+*.dll
+*.exe
+*.pdb
+*.userprefs
+*.sln.docstates
 
-/IpMaskinservice/.vs
+# ====================================================================
+# Visual Studio (Til Windows)
+# ====================================================================
+.vs/
+*.user
+*.suo
+*.dbmdl
+*.pfx
+*.publishsettings
+
+# ====================================================================
+# JetBrains Rider / ReSharper (Til Mac / Maja)
+# ====================================================================
+.idea/
+*.sln.iml
+_ReSharper*/
+*.DotSettings.user
+*.[Rr]e[Ss]harper
+/shelf/
+/workspace.xml
+/httpRequests/
+/queries/
+/dataSources/
+/dataSources.local.xml
+
+# ====================================================================
+# OS-specifikke filer (Mac / Windows)
+# ====================================================================
+.DS_Store
+.AppleDouble
+Thumbs.db
