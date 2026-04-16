@@ -7,5 +7,7 @@ public interface IServiceOpgave {
     public ServiceInterval ServiceInterval { get; set; }
     public Medarbejder Medarbejder { get; set; }
     public ServiceTeknikker serviceTeknikker { get; set; }
-    
+    public void afslutOpgave(DateOnly udførtDato, string note);
+    public void createMaterialeListe();
+    public void createPåmindelse(DateOnly påmindelsesDato);
 }
