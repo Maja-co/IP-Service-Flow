@@ -1,7 +1,27 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Kunde Liste</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<h1>Kunder</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>KundeNavn</th>
+            <th>Handlinger</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* Her er de midlertidige data (Mock data) *@
+        <tr>
+            <td>1</td>
+            <td>Lego A/S</td>
+            <td><a href="/service-entry/1" class="btn btn-primary">OpretService</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Arla Foods</td>
+            <td><a href="/service-entry/2" class="btn btn-primary">OpretService</a></td>
+        </tr>
+    </tbody>
+</table>

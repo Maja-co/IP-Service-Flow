@@ -1,0 +1,41 @@
+﻿@page "/service-entry/{KundeId:int}"
+<PageTitle>Opret Serviceopgave</PageTitle>
+
+<h3>Serviceopgave for Kunde ID: @KundeId</h3>
+
+<div class="card p-3" style="max-width: 500px;">
+    <div class="mb-3">
+        <label>Sidst Udført Note (Servicenotat:</label>
+        <textarea class="form-control" @bind="serviceNote" placeholder="Indtast detaljer om den udførte service..."></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Deadline:</label>
+        <input type="date" class="form-control" @bind="deadline" />
+    </div>
+
+    <button class="btn btn-success" @onclick="SaveService">Gem</button>
+</div>
+
+@if (isSaved)
+{
+    <div class="alert alert-success mt-3">Serviceopgaven er blevet gemt i systemet!</div>
+}
+
+@code {
+    [Parameter] public int KundeId { get; set; }
+
+    private string serviceNote = "";
+    private DateTime deadline = DateTime.Now;
+    private bool isSaved = false;
+
+    private void SaveService()
+    {
+        // Her skal du senere kalde BLL (Business Logic Layer)
+        // Lige nu simuleres en gem-funktion:
+        Console.WriteLine($"Gemmer service for kunde {KundeId}");
+        Console.WriteLine($"Note: {serviceNote}");
+
+        isSaved = true;
+    }
+}
