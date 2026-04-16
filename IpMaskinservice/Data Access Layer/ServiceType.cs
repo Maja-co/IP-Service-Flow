@@ -1,5 +1,5 @@
 namespace Business_Logic_Layer;
 
 public enum ServiceType {
-    
+    // TODO
 }
