@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "iXeX9qdwBSI=",
   "success": true,
   "projectFilePath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
+=======
+  "dgSpecHash": "nanY4ENsvbo=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
+>>>>>>> origin/Sidse
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,10 +1,18 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "Qbrk5slGW+0=",
   "success": true,
   "projectFilePath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\govhe\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.4\\microsoft.aspnetcore.app.internal.assets.10.0.4.nupkg.sha512"
+=======
+  "dgSpecHash": "B80ruKWDIHU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sidse\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.6\\microsoft.aspnetcore.app.internal.assets.10.0.6.nupkg.sha512"
+>>>>>>> origin/Sidse
   ],
   "logs": []
 }

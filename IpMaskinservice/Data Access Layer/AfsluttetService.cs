@@ -2,5 +2,13 @@ namespace Business_Logic_Layer;
 
 public class AfsluttetService {
     private string Note{ get; set; }
-    private IServiceOpgave iServiceOpgave;
+    private DateOnly UdførtDato { get; set; }
+    private IServiceOpgave iServiceOpgave { get; set; }
+
+    internal AfsluttetService() { }
+    internal AfsluttetService(DateOnly udførtDato, string note, IServiceOpgave opgave) {
+        UdførtDato = udførtDato;
+        Note = note;
+        iServiceOpgave = opgave;
+    }
 }

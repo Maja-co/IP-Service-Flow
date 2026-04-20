@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "7X7vpmXf9eg=",
   "success": true,
   "projectFilePath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
+=======
+  "dgSpecHash": "LbIYJn1V3jA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
+>>>>>>> origin/Sidse
   "expectedPackageFiles": [],
   "logs": []
 }
