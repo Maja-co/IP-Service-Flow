@@ -17,22 +17,18 @@ public class Maskine {
         ServiceOgEftersynAftalerListe = new List<IServiceOpgave>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-
-    public void createServiceOpgave()
+    //måske de to metoder til create skal gøres anderledes ift. interface. jeg mangler dog noget indspark til hvordan ellers.
+    public void createServiceOpgave(ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
-        //TODO 
+        IServiceOpgave nyService = new Service(this, servicetype, opgaveTypeListe, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
+        ServiceOgEftersynAftalerListe.Add(nyService);
     }
-    public void addAfsluttetService(DateTime serviceDato, string information, MaterialeListe materialeListe) {
-        //TODO : Validering af input m. try/cath til uI
-        if (serviceDato > DateTime.Now)
-        {
-            throw new ArgumentOutOfRangeException(nameof(serviceDato), "Service dato kan ikke være i fremtiden.");
-        }
-        if (string.IsNullOrWhiteSpace(information))
-        {
-            throw new ArgumentException("Information må ikke være tom.", nameof(information));
-        }
-        AfsluttetService newAfsluttetService = new AfsluttetService(serviceDato, information, materialeListe);
-        ServiceHistorikListe.Add(newAfsluttetService);
+    public void createSikkerhedsEftersyn(List<EftersynsRegel> eftersynsRegel, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
+    {
+        IServiceOpgave nytEftersyn = new SikkerhedsEftersyn(this, eftersynsRegel, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
+        ServiceOgEftersynAftalerListe.Add(nytEftersyn);
+    }
+    public void addAfsluttetService(AfsluttetService afsluttet) {
+        ServiceHistorikListe.Add(afsluttet);
     }
 }

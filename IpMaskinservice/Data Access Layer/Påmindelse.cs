@@ -8,5 +8,5 @@ public class Påmindelse {
         PåmindelsesDato = påmindelsesDato;
         this.serviceOpgave = serviceOpgave;
     }
-
+    //TODO implementer mail på den her
 }
