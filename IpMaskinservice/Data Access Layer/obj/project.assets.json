@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
+      "projectUniqueName": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
       "projectName": "Data Access Layer",
-      "projectPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
+      "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj",
       "packagesPath": "C:\\Users\\govhe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\obj\\",
+      "outputPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

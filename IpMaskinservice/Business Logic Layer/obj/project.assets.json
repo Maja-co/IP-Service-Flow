@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
+      "projectUniqueName": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
       "projectName": "Business Logic Layer",
-      "projectPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
+      "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj",
       "packagesPath": "C:\\Users\\govhe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\obj\\",
+      "outputPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

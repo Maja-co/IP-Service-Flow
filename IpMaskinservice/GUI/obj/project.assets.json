@@ -51,11 +51,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
+      "projectUniqueName": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
       "projectName": "GUI",
-      "projectPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
+      "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
       "packagesPath": "C:\\Users\\govhe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\GUI\\obj\\",
+      "outputPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

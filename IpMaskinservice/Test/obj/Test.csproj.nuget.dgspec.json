@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj": {}
+    "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj": {
+    "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj",
+        "projectUniqueName": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj",
         "projectName": "Test",
-        "projectPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj",
+        "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Test\\Test.csproj",
         "packagesPath": "C:\\Users\\govhe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\govhe\\source\\repos\\IP-Service-Flow\\IpMaskinservice\\Test\\obj\\",
+        "outputPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
