@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "dEhKtEBJV4M=",
+  "dgSpecHash": "B80ruKWDIHU=",
   "success": true,
-  "projectFilePath": "/Users/majakragelund/Desktop/Datamatiker/IP MaskinService/IP-Service-Flow/IpMaskinservice/GUI/GUI.csproj",
+  "projectFilePath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
   "expectedPackageFiles": [
-    "/Users/majakragelund/.nuget/packages/microsoft.aspnetcore.app.internal.assets/10.0.3/microsoft.aspnetcore.app.internal.assets.10.0.3.nupkg.sha512"
+    "C:\\Users\\sidse\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.6\\microsoft.aspnetcore.app.internal.assets.10.0.6.nupkg.sha512"
   ],
   "logs": []
 }
