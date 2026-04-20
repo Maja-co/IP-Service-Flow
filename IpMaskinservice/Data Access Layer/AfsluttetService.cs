@@ -1,3 +1,5 @@
+using System;
+
 namespace Business_Logic_Layer;
 
 public class AfsluttetService {
@@ -7,6 +9,7 @@ public class AfsluttetService {
 
     internal AfsluttetService() { }
     internal AfsluttetService(DateOnly udførtDato, string note, IServiceOpgave opgave) {
+        
         UdførtDato = udførtDato;
         Note = note;
         iServiceOpgave = opgave;

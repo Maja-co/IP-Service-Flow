@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Business_Logic_Layer;
 
 public class Maskine {
