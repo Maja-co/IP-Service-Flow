@@ -3,7 +3,7 @@ namespace Business_Logic_Layer;
 public class Påmindelse {
     public int Id { get; set; }
     public DateOnly PåmindelsesDato { get; set; }
-    public ServiceOpgave ServiceOpgave { get; set; }
+    public ServiceOpgave? ServiceOpgave { get; set; }
     public int? ServiceOpgaveId { get; set; }
     internal Påmindelse() { }
     internal Påmindelse(DateOnly påmindelsesDato, ServiceOpgave serviceOpgave) {

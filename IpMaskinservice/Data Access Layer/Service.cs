@@ -2,8 +2,8 @@ namespace Business_Logic_Layer;
 
 public class Service : ServiceOpgave
 {
-    public ServiceType Servicetype { get; set; }
-    public List<OpgaveType> OpgaveTypeListe { get; set; }
+    public ServiceType? Servicetype { get; set; }
+    public List<OpgaveType>? OpgaveTypeListe { get; set; }
 
     public Service() { }
     public Service(Maskine maskine, ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, 
@@ -11,7 +11,7 @@ public class Service : ServiceOpgave
         : base(maskine, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker)
     {
         Servicetype = servicetype;
-        OpgaveTypeListe = opgaveTypeListe;
+        OpgaveTypeListe = opgaveTypeListe ?? new List<OpgaveType>();
     }
     public override void afslutOpgave(DateOnly udførtDato, string note)
     {

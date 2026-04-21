@@ -6,9 +6,9 @@ public class Maskine
 {
     public int Id { get; set; }
     public int? KundeId { get; set; }
-    public Kunde Kunde { get; private set; }
-    public string SerieNummer { get; private set; }
-    public string Producent { get; private set; }
+    public Kunde? Kunde { get; private set; }
+    public string? SerieNummer { get; private set; }
+    public string? Producent { get; private set; }
     public MaskineType MaskineType { get; private set; }
     public List<Service> ServiceListe { get; set; }
     public List<SikkerhedsEftersyn> SikkerhedsEftersynListe { get; set; }

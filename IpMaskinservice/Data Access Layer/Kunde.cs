@@ -5,11 +5,11 @@ namespace Business_Logic_Layer;
 public class Kunde
 {
     public int Id { get; set; }
-    public string FirmaNavn { get; private set; }
-    public string Adresse { get; private set; }
-    public string KontaktPersonNavn { get; private set; }
-    public string KontaktPersonTelefonnummer { get; private set; }
-    public string MailAdresse { get; private set; }
+    public string? FirmaNavn { get; private set; }
+    public string? Adresse { get; private set; }
+    public string? KontaktPersonNavn { get; private set; }
+    public string? KontaktPersonTelefonnummer { get; private set; }
+    public string? MailAdresse { get; private set; }
     public bool ErAktiv { get; private set; }
     public int CvrNummer { get; private set; }
     public List<Maskine> MaskineListe { get; private set; }

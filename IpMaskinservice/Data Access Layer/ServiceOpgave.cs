@@ -3,18 +3,18 @@ namespace Business_Logic_Layer;
 public abstract class ServiceOpgave {
     public int Id { get; set; } //PK
     public int? MaskineId { get; set; } //FK
-    public Maskine Maskine { get; set; }
-    public DateOnly SidstUdførtDato { get; set; }
+    public Maskine? Maskine { get; set; }
+    public DateOnly? SidstUdførtDato { get; set; }
     public DateOnly Deadline { get; set; }
-    public string SidstUdførtNote { get; set; }
+    public string? SidstUdførtNote { get; set; }
     public ServiceInterval ServiceInterval { get; set; }
-    public Medarbejder Medarbejder { get; set; }
+    public Medarbejder? Medarbejder { get; set; }
     public string? MedarbejderId { get; set; } //FK
-    public ServiceTeknikker ServiceTeknikker { get; set; }
+    public ServiceTeknikker? ServiceTeknikker { get; set; }
     public int? ServiceTeknikkerId { get; set; } //FK
-    public MaterialeListe MaterialeListe { get; set; }
+    public MaterialeListe? MaterialeListe { get; set; }
     public int? MaterialeListeId { get; set; } //FK
-    public List<Påmindelse> PåmindelseListe { get; set; }
+    public List<Påmindelse>? PåmindelseListe { get; set; }
     protected ServiceOpgave() {}
     protected ServiceOpgave(Maskine maskine, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, 
                             ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
