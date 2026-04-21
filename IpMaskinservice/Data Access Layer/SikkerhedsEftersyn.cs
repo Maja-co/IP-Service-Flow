@@ -1,4 +1,5 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
+
 public class SikkerhedsEftersyn : IServiceOpgave
 {
     private List<EftersynsRegel> EftersynsRegel { get; set; }

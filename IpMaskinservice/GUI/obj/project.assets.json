@@ -2,11 +2,7 @@
   "version": 3,
   "targets": {
     "net10.0": {
-<<<<<<< HEAD
       "Microsoft.AspNetCore.App.Internal.Assets/10.0.4": {
-=======
-      "Microsoft.AspNetCore.App.Internal.Assets/10.0.6": {
->>>>>>> origin/Sidse
         "type": "package",
         "build": {
           "build/Microsoft.AspNetCore.App.Internal.Assets.props": {},
@@ -15,21 +11,37 @@
         "buildMultiTargeting": {
           "buildMultiTargeting/Microsoft.AspNetCore.App.Internal.Assets.targets": {}
         }
+      },
+      "Business Logic Layer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Data Access Layer": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Business Logic Layer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Business Logic Layer.dll": {}
+        }
+      },
+      "Data Access Layer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Data Access Layer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Data Access Layer.dll": {}
+        }
       }
     }
   },
   "libraries": {
-<<<<<<< HEAD
     "Microsoft.AspNetCore.App.Internal.Assets/10.0.4": {
       "sha512": "M942X5Vy726SlvFBuoAC4cDczEMlPAFt1mmyFlrkw/QcpdVwVU0DkF4P9JabxX6eWNm9RvaYZHe25FN7oXoxpQ==",
       "type": "package",
       "path": "microsoft.aspnetcore.app.internal.assets/10.0.4",
-=======
-    "Microsoft.AspNetCore.App.Internal.Assets/10.0.6": {
-      "sha512": "3jRLKtAXwSCVDX0vUmGTDwcbSmL05jtf5vUHB9QXpw3wDbT0qU0dUJyKAOKgvwW3j0FI+aHHMbKIZCM63SPkOA==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.app.internal.assets/10.0.6",
->>>>>>> origin/Sidse
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -45,58 +57,46 @@
         "build/Microsoft.AspNetCore.App.Internal.Assets.targets",
         "buildMultiTargeting/Microsoft.AspNetCore.App.Internal.Assets.targets",
         "buildTransitive/Microsoft.AspNetCore.App.Internal.Assets.targets",
-<<<<<<< HEAD
         "microsoft.aspnetcore.app.internal.assets.10.0.4.nupkg.sha512",
-=======
-        "microsoft.aspnetcore.app.internal.assets.10.0.6.nupkg.sha512",
->>>>>>> origin/Sidse
         "microsoft.aspnetcore.app.internal.assets.nuspec"
       ]
+    },
+    "Business Logic Layer/1.0.0": {
+      "type": "project",
+      "path": "../Business Logic Layer/Business Logic Layer.csproj",
+      "msbuildProject": "../Business Logic Layer/Business Logic Layer.csproj"
+    },
+    "Data Access Layer/1.0.0": {
+      "type": "project",
+      "path": "../Data Access Layer/Data Access Layer.csproj",
+      "msbuildProject": "../Data Access Layer/Data Access Layer.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-<<<<<<< HEAD
+      "Business Logic Layer >= 1.0.0",
+      "Data Access Layer >= 1.0.0",
       "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.4"
     ]
   },
   "packageFolders": {
     "C:\\Users\\govhe\\.nuget\\packages\\": {},
-=======
-      "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.6"
-    ]
-  },
-  "packageFolders": {
-    "C:\\Users\\sidse\\.nuget\\packages\\": {},
->>>>>>> origin/Sidse
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
       "projectName": "GUI",
       "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
       "packagesPath": "C:\\Users\\govhe\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\GUI\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
-      "projectName": "GUI",
-      "projectPath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\GUI\\GUI.csproj",
-      "packagesPath": "C:\\Users\\sidse\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sidse\\Documents\\Skole\\4. semester\\Systemudviklingsmetoder\\IP-Service-Flow\\IpMaskinservice\\GUI\\obj\\",
->>>>>>> origin/Sidse
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-<<<<<<< HEAD
         "C:\\Users\\govhe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-        "C:\\Users\\sidse\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> origin/Sidse
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -105,17 +105,20 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-<<<<<<< HEAD
         "C:\\Program Files\\dotnet\\library-packs": {},
-=======
->>>>>>> origin/Sidse
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj": {
+              "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Business Logic Layer\\Business Logic Layer.csproj"
+            },
+            "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj": {
+              "projectPath": "C:\\Users\\govhe\\Downloads\\SUM\\SUM project\\IP-Service-Flow\\IpMaskinservice\\Data Access Layer\\Data Access Layer.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -128,21 +131,16 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.AspNetCore.App.Internal.Assets": {
             "suppressParent": "All",
             "target": "Package",
-<<<<<<< HEAD
             "version": "[10.0.4, )",
-=======
-            "version": "[10.0.6, )",
->>>>>>> origin/Sidse
             "autoReferenced": true
           }
         },
@@ -165,11 +163,7 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
->>>>>>> origin/Sidse
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

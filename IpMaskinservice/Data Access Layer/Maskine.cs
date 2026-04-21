@@ -1,4 +1,4 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public class Maskine {
     private string SerieNummer { get; set; }
@@ -8,8 +8,8 @@ public class Maskine {
     private List<IServiceOpgave> ServiceOgEftersynAftalerListe { get; set; }
     private List<AfsluttetService> ServiceHistorikListe { get; set; }
     
-    internal Maskine() { }
-    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType) {
+    public Maskine() { }
+    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType) {
         SerieNummer = serieNummer;
         Producent = producent;
         this.kunde = kunde;
@@ -30,5 +30,20 @@ public class Maskine {
     }
     public void addAfsluttetService(AfsluttetService afsluttet) {
         ServiceHistorikListe.Add(afsluttet);
+    }
+
+    //US2 Metoden til at tildele en kunde til denne maskine
+    public void SetKunde(Kunde nykunde) {
+        this.kunde = nykunde;
+    }
+
+    //Getter: Bruges til at identificere meskinen i UI
+    public string GetSerieNummer() {
+        return SerieNummer;
+    }
+
+    //get metod at teste om maskinen har en kunde tilknyttet
+    public string GetProducent() {
+        return Producent;
     }
 }

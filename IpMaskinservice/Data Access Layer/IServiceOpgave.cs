@@ -1,4 +1,4 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public interface IServiceOpgave {
     public Maskine Maskine { get; set; }

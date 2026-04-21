@@ -1,6 +1,6 @@
 using Microsoft.VisualBasic;
 
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public class Kunde
 {
@@ -39,5 +39,18 @@ public class Kunde
         }
         Maskine newMaskine = new Maskine(serieNummer, producent, kunde, maskineType);
         MaskineListe.Add(newMaskine);
+    }
+
+    //Tilføj en eksisterende maskine til kundes liste
+    public void AddMaskineTilListe(Maskine maskine)
+    {
+        if (maskine != null && !MaskineListe.Contains(maskine))
+        {
+            MaskineListe.Add(maskine);
+        }
+    }
+    //getter: Bruges til at identificere kunden i UI(Blazor)
+    public string GetFirmaNavn() { 
+        return FirmaNavn;
     }
 }

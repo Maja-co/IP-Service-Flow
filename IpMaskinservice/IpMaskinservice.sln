@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11527.330 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data Access Layer", "Data Access Layer\Data Access Layer.csproj", "{86912561-DECB-4994-B3BB-F3A2614315DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business Logic Layer", "Business Logic Layer\Business Logic Layer.csproj", "{24DD6EBE-BFCA-4997-949C-669A310BDBF2}"
@@ -30,5 +33,8 @@ Global
 		{173A9BC7-026A-4460-82EC-9EE15E7331B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{173A9BC7-026A-4460-82EC-9EE15E7331B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{173A9BC7-026A-4460-82EC-9EE15E7331B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

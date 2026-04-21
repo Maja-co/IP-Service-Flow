@@ -1,6 +1,10 @@
 using GUI.Components;
+using Business_Logic_Layer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//MaskineManager til GUI 
+//builder.Services.AddScoped<MaskineManager>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

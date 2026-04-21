@@ -1,8 +1,8 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public class MaterialeListe
 {
-    private List<MaterialeLinje> materialeLinjeListe { get; set; };
+    private List<MaterialeLinje> materialeLinjeListe { get; set; }
     internal MaterialeListe()
     {
         this.materialeLinjeListe = new List<MaterialeLinje>();
