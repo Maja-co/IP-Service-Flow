@@ -2,10 +2,11 @@ namespace Business_Logic_Layer;
 
 public class MaterialeListe
 {
-    private List<MaterialeLinje> materialeLinjeListe { get; set; };
+    public int Id { get; set; }
+    public List<MaterialeLinje> MaterialeLinjeListe { get; set; }
     internal MaterialeListe()
     {
-        this.materialeLinjeListe = new List<MaterialeLinje>();
+        MaterialeLinjeListe = new List<MaterialeLinje>();
     }
 
     public void createMaterialeLinje(int antal, string information, MaterialeType materialeType)
@@ -20,6 +21,6 @@ public class MaterialeListe
             throw new ArgumentException("Information må ikke være tom.", nameof(information));
         }
         MaterialeLinje newMaterialeLinje = new MaterialeLinje(antal, information, materialeType);
-        materialeLinjeListe.Add(newMaterialeLinje);
+        MaterialeLinjeListe.Add(newMaterialeLinje);
     }
 }

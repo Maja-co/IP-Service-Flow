@@ -1,14 +1,13 @@
 namespace Business_Logic_Layer;
 
 public class Medarbejder {
-    private string MedarbejderID { get; set; }
-    private string MedarbejderNavn { get; set; }
-    private string KodeOrdHash { get; set; }
-    private string Salt{get;set;}
-    private string MailAdresse { get; set; }
+    public string Id { get; set; }
+    public string MedarbejderNavn { get; set; }
+    public string KodeOrdHash { get; set; }
+    public string Salt{get;set;}
+    public string MailAdresse { get; set; }
     public Medarbejder() { }
-    public Medarbejder(string medarbejderID, string medarbejderNavn, string kodeOrdHash, string salt, string mailAdresse) {
-        MedarbejderID = medarbejderID;
+    public Medarbejder(string medarbejderNavn, string kodeOrdHash, string salt, string mailAdresse) {
         MedarbejderNavn = medarbejderNavn;
         KodeOrdHash = kodeOrdHash;
         Salt = salt;
