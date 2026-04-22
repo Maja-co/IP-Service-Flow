@@ -1,6 +1,6 @@
 using Microsoft.VisualBasic;
 
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public class Kunde
 {

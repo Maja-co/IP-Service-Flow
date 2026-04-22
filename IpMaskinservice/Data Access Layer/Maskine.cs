@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public class Maskine
 {
