@@ -1,7 +1,8 @@
 namespace Data_Access_Layer;
 
 public class OpgaveType {
-    private string OpgaveBeskrivelse { get; set; }
+    public int Id { get; set; }
+    public string? OpgaveBeskrivelse { get; set; }
     public OpgaveType() { }
     public OpgaveType(string OpgaveBeskrivelse)
     {

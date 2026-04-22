@@ -1,5 +1,10 @@
 namespace Data_Access_Layer;
 
 public class EftersynsRegel {
-    private string Regel { get; set; }
+    public int Id { get; set; }
+    public string? Regel { get; set; }
+    public EftersynsRegel() { }
+    public EftersynsRegel(string regel) {
+        Regel = regel;
+    }
 }
