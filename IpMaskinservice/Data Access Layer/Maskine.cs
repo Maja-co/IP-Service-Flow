@@ -27,13 +27,13 @@ public class Maskine
     }
 
 
-    internal Maskine()
+    public Maskine()
     {
         ServiceListe = new List<Service>();
         SikkerhedsEftersynListe = new List<SikkerhedsEftersyn>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
+    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
     {
         SerieNummer = serieNummer;
         Producent = producent;
@@ -44,6 +44,8 @@ public class Maskine
         SikkerhedsEftersynListe = new List<SikkerhedsEftersyn>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
+
+   
     //måske de to metoder til create skal gøres anderledes ift. interface. jeg mangler dog noget indspark til hvordan ellers.
     public void createServiceOpgave(ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
@@ -62,16 +64,17 @@ public class Maskine
 
     //US2 Metoden til at tildele en kunde til denne maskine
     public void SetKunde(Kunde nykunde) {
-        this.kunde = nykunde;
+        this.Kunde = nykunde;
+        this.KundeId = nykunde.Id;
     }
 
-    //Getter: Bruges til at identificere meskinen i UI
+    
     public string GetSerieNummer() {
         return SerieNummer;
     }
 
-    //get metod at teste om maskinen har en kunde tilknyttet
-    public string GetProducent() {
+    //US2-Bruges til grupperede i UI
+    public string? GetProducent() {
         return Producent;
     }
 }

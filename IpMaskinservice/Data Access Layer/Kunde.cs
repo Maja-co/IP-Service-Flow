@@ -17,6 +17,7 @@ public class Kunde
     public Kunde()
     {
         MaskineListe = new List<Maskine>();
+        ErAktiv = true; //default
     }
     public Kunde(string firmaNavn, string adresse, string kontaktPersonNavn, string kontaktPersonTelefonnummer, string mailAdresse, bool erAktiv, int cvrNummer)
     {
@@ -62,5 +63,15 @@ public class Kunde
         ErAktiv = false;
         //TODO - tjek op på, hvordan vi skal gøre i vores DB
         // overvej at tilføje logik der f.eks. også deaktiverer fremtidige påmindelser,
+    }
+
+    // US2: Forbinde maskine til Kunde
+    public void AddMaskineTilListe(Maskine maskine)
+    {
+        if (maskine != null && !MaskineListe.Contains(maskine))
+        {
+            MaskineListe.Add(maskine);
+            maskine.SetKunde(this); // Makineye "sahibin bu müşteri" dedik
+        }
     }
 }
