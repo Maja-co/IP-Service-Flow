@@ -12,6 +12,19 @@ namespace Data_Access_Layer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "EftersynsRegler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Regel = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EftersynsRegler", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Kunder",
                 columns: table => new
                 {
@@ -43,7 +56,7 @@ namespace Data_Access_Layer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MaterialeTyper",
+                name: "MaterialeType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -52,7 +65,7 @@ namespace Data_Access_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MaterialeTyper", x => x.Id);
+                    table.PrimaryKey("PK_MaterialeType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,13 +84,26 @@ namespace Data_Access_Layer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OpgaveTyper",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OpgaveBeskrivelse = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpgaveTyper", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServiceTeknikkere",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TeknikkerNavn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TelefonNummer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TeknikkerNavn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelefonNummer = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,9 +152,9 @@ namespace Data_Access_Layer.Migrations
                         principalTable: "MaterialeLister",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_MaterialeLinjer_MaterialeTyper_MaterialeTypeId",
+                        name: "FK_MaterialeLinjer_MaterialeType_MaterialeTypeId",
                         column: x => x.MaterialeTypeId,
-                        principalTable: "MaterialeTyper",
+                        principalTable: "MaterialeType",
                         principalColumn: "Id");
                 });
 
@@ -139,15 +165,13 @@ namespace Data_Access_Layer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MaskineId = table.Column<int>(type: "int", nullable: true),
-                    SidstUdførtDato = table.Column<DateOnly>(type: "date", nullable: false),
+                    SidstUdførtDato = table.Column<DateOnly>(type: "date", nullable: true),
                     Deadline = table.Column<DateOnly>(type: "date", nullable: false),
-                    SidstUdførtNote = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SidstUdførtNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ServiceInterval = table.Column<int>(type: "int", nullable: false),
                     MedarbejderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ServiceTeknikkerId = table.Column<int>(type: "int", nullable: true),
-                    MaterialeListeId = table.Column<int>(type: "int", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
-                    Servicetype = table.Column<int>(type: "int", nullable: true)
+                    MaterialeListeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,44 +225,6 @@ namespace Data_Access_Layer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EftersynsRegler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Regel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SikkerhedsEftersynId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EftersynsRegler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EftersynsRegler_ServiceOpgaver_SikkerhedsEftersynId",
-                        column: x => x.SikkerhedsEftersynId,
-                        principalTable: "ServiceOpgaver",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OpgaveTyper",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OpgaveBeskrivelse = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OpgaveTyper", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OpgaveTyper_ServiceOpgaver_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "ServiceOpgaver",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Påmindelser",
                 columns: table => new
                 {
@@ -257,6 +243,89 @@ namespace Data_Access_Layer.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Servicetype = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_ServiceOpgaver_Id",
+                        column: x => x.Id,
+                        principalTable: "ServiceOpgaver",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SikkerhedsEftersyn",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SikkerhedsEftersyn", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SikkerhedsEftersyn_ServiceOpgaver_Id",
+                        column: x => x.Id,
+                        principalTable: "ServiceOpgaver",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceOpgaveTypeLinks",
+                columns: table => new
+                {
+                    OpgaveTypeListeId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceOpgaveTypeLinks", x => new { x.OpgaveTypeListeId, x.ServiceId });
+                    table.ForeignKey(
+                        name: "FK_ServiceOpgaveTypeLinks_OpgaveTyper_OpgaveTypeListeId",
+                        column: x => x.OpgaveTypeListeId,
+                        principalTable: "OpgaveTyper",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceOpgaveTypeLinks_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EftersynsRegelLinks",
+                columns: table => new
+                {
+                    EftersynsRegelListeId = table.Column<int>(type: "int", nullable: false),
+                    SikkerhedsEftersynId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EftersynsRegelLinks", x => new { x.EftersynsRegelListeId, x.SikkerhedsEftersynId });
+                    table.ForeignKey(
+                        name: "FK_EftersynsRegelLinks_EftersynsRegler_EftersynsRegelListeId",
+                        column: x => x.EftersynsRegelListeId,
+                        principalTable: "EftersynsRegler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EftersynsRegelLinks_SikkerhedsEftersyn_SikkerhedsEftersynId",
+                        column: x => x.SikkerhedsEftersynId,
+                        principalTable: "SikkerhedsEftersyn",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AfsluttedeServices_MaskineId",
                 table: "AfsluttedeServices",
@@ -268,8 +337,8 @@ namespace Data_Access_Layer.Migrations
                 column: "ServiceOpgaveId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EftersynsRegler_SikkerhedsEftersynId",
-                table: "EftersynsRegler",
+                name: "IX_EftersynsRegelLinks_SikkerhedsEftersynId",
+                table: "EftersynsRegelLinks",
                 column: "SikkerhedsEftersynId");
 
             migrationBuilder.CreateIndex(
@@ -286,11 +355,6 @@ namespace Data_Access_Layer.Migrations
                 name: "IX_MaterialeLinjer_MaterialeTypeId",
                 table: "MaterialeLinjer",
                 column: "MaterialeTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OpgaveTyper_ServiceId",
-                table: "OpgaveTyper",
-                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Påmindelser_ServiceOpgaveId",
@@ -316,6 +380,11 @@ namespace Data_Access_Layer.Migrations
                 name: "IX_ServiceOpgaver_ServiceTeknikkerId",
                 table: "ServiceOpgaver",
                 column: "ServiceTeknikkerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceOpgaveTypeLinks_ServiceId",
+                table: "ServiceOpgaveTypeLinks",
+                column: "ServiceId");
         }
 
         /// <inheritdoc />
@@ -325,19 +394,31 @@ namespace Data_Access_Layer.Migrations
                 name: "AfsluttedeServices");
 
             migrationBuilder.DropTable(
-                name: "EftersynsRegler");
+                name: "EftersynsRegelLinks");
 
             migrationBuilder.DropTable(
                 name: "MaterialeLinjer");
 
             migrationBuilder.DropTable(
-                name: "OpgaveTyper");
-
-            migrationBuilder.DropTable(
                 name: "Påmindelser");
 
             migrationBuilder.DropTable(
-                name: "MaterialeTyper");
+                name: "ServiceOpgaveTypeLinks");
+
+            migrationBuilder.DropTable(
+                name: "EftersynsRegler");
+
+            migrationBuilder.DropTable(
+                name: "SikkerhedsEftersyn");
+
+            migrationBuilder.DropTable(
+                name: "MaterialeType");
+
+            migrationBuilder.DropTable(
+                name: "OpgaveTyper");
+
+            migrationBuilder.DropTable(
+                name: "Services");
 
             migrationBuilder.DropTable(
                 name: "ServiceOpgaver");
