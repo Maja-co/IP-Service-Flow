@@ -1,4 +1,4 @@
-namespace Data_Access_Layer.Models;
+namespace Data_Access_Layer;
 
 public enum MaskineType {
     Valsning,

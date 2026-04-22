@@ -1,6 +1,6 @@
 using Microsoft.VisualBasic;
 
-namespace Data_Access_Layer.Models;
+namespace Data_Access_Layer;
 
 public class Kunde
 {

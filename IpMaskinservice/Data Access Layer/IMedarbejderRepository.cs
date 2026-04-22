@@ -1,6 +1,4 @@
-﻿using Data_Access_Layer.Models;
-
-namespace Data_Access_Layer;
+﻿namespace Data_Access_Layer;
 
 public interface IMedarbejderRepository
 {

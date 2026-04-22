@@ -1,4 +1,4 @@
-namespace Data_Access_Layer.Models;
+namespace Data_Access_Layer;
 
 public class Service : ServiceOpgave
 {

@@ -1,4 +1,4 @@
-namespace Data_Access_Layer.Models;
+namespace Data_Access_Layer;
 
 public interface IServiceOpgave {
     public DateOnly SidstUdførtDato { get; set; }

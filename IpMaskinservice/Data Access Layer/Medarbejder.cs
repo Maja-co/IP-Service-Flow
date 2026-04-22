@@ -1,4 +1,4 @@
-namespace Data_Access_Layer.Models;
+namespace Data_Access_Layer;
 
 public class Medarbejder {
     public string? Id { get; set; }
