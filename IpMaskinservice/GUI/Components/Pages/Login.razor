@@ -46,7 +46,7 @@
         errorMessage = "";
 
         // Her kalder vi din AuthService i BLL
-        bool isSuccess = await AuthService.LoginAsync(userEmail, userPassword);
+        var (isSuccess, sessionId) = await AuthService.LoginAsync(userEmail, userPassword);
 
         if (isSuccess)
         {
