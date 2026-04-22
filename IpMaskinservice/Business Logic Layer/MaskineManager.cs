@@ -17,7 +17,6 @@ namespace Business_Logic_Layer
                 valgtMaskine.SetKunde(valgtKunde);
 
                 // 2. Tilføj maskinen til kundens oversigt (US-2 overblik)
-                
                 valgtKunde.AddMaskineTilListe(valgtMaskine);
             }
                 
