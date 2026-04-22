@@ -1,42 +1,73 @@
-﻿//namespace Test;
+﻿using Business_Logic_Layer;
+using Data_Access_Layer;
+using Xunit;
 
-//public class BusinessLayerTests {
-//    [Fact]
-//    public void BeregnNaesteDeadline_VedSeksMaaneder_ReturnererKorrektDato() {
-//        // Arrange: Opsætning af testdata baseret på klassediagrammet.
-//        var interval = ServiceInterval.SEKSMÅNEDER; // Fra ServiceInterval
-//        var sidsteDato = new DateTime(2025, 1, 1); // SidsteUdførtDato
+namespace Test;
 
-//        var serviceOpgave = new ServiceOpgave
-//        {
-//            sidstUdførtDato = sidsteDato,
-//            Interval = interval
-//        };
+public class BusinessLayerTests
+{
+    // Denne klasse bruges kun til at teste den abstrakte ServiceOpgave
+    public class ServiceOpgaveStub : ServiceOpgave
+    {
+        // Vi implementerer de abstrakte metoder tomt, da vi ikke tester dem her
+        public override void afslutOpgave(DateOnly udførtDato, string note) { }
+        public override void createPåmindelse(DateOnly påmindelsesDato) { }
+    }
+    [Fact]
+    public void BeregnNaesteDeadline_VedSeksMaaneder_ReturnererKorrektDato()
+    {
+        // Arrange
+        var sidsteDato = new DateOnly(2025, 1, 1);
 
-//        // Act: Handlingen der testes
-//        serviceOpgave.OpdaterDeadline();
+        // Vi bruger vores stub i stedet for den abstrakte klasse
+        var serviceOpgave = new ServiceOpgaveStub
+        {
+            SidstUdførtDato = sidsteDato,
+            ServiceInterval = ServiceInterval.SeksMåneder
+        };
 
-//        // Assert: Verificeringen af testen
-//        var forventetDato = sidsteDato.AddMonths(6);
-//        Assert.Equal(forventetDato, serviceOpgave.deadline);
-//    }
+        // Act
+        // Her kalder vi metoden i ServiceOpgave, som beregner deadlinen
+        serviceOpgave.OpdaterDeadline();
 
-//    public void AfslutSikkerhedsEftersyn_UdenAlleReglerTjekket_KasterException(){
-//        // Arrange:
-//        var eftersyn = new SikkerhedsEftersyn(); // Specialisering af IServiceOpgave
-//        var regel1 = new EftersynsRegel { regel = "Nødstop" };
-//        var regel2 = new EftersysnsRegel { regel = "Afskærming" };
+        // Assert
+        var forventetDato = sidsteDato.AddMonths(6);
+        Assert.Equal(forventetDato, serviceOpgave.Deadline);
+    }
 
-//        eftersyn.Regler.Add(regel1);
-//        eftersyn.Regler.Add(regel2);
+    [Fact]
+    public void afslutOpgave_AutomatiskWorkflow_OpdatererDeadlineOgOpretterPaamindelse()
+    {
+        // Arrange
+        var maskine = new Maskine { Id = 1 };
+        var interval = ServiceInterval.SeksMåneder;
+        var udførtDato = new DateOnly(2025, 1, 1);
 
-//        // Simulering af at teknikeren ikke har godkent alle regler
-//        var tjekkedeRegler = new List<EftersynsRegel> { regel1 };
-//        var teknikker = new ServiceTekniker { navn = "Mads" };
+        // Vi bruger SikkerhedsEftersyn, da det er en konkret klasse
+        var eftersyn = new SikkerhedsEftersyn
+        {
+            Maskine = maskine,
+            ServiceInterval = interval
+        };
 
-//        // Act og Assert:
-//        Assert.Throws<InvalidOperationException>(() =>
-//            eftersyn.Afslut(tekniker, tjekkedeRegler)
-//            );
-//    }
-//}
+        // Act
+        // Vi kalder afslutOpgave. Forventningen er, at denne metode nu 
+        // trigger hele workflowet bag kulisserne.
+        eftersyn.afslutOpgave(udførtDato, "Service udført efter bogen");
+
+        // Assert
+        // 1. Tjek at SidstUdførtDato er opdateret
+        Assert.Equal(udførtDato, eftersyn.SidstUdførtDato);
+
+        // 2. Tjek at den næste Deadline er beregnet korrekt (1. juli 2025)
+        var forventetNæsteDeadline = udførtDato.AddMonths(6);
+        Assert.Equal(forventetNæsteDeadline, eftersyn.Deadline);
+
+        // 3. Tjek at der automatisk er oprettet en påmindelse 14 dage før den nye deadline
+        // (1. juli minus 14 dage = 17. juni 2025)
+        var forventetPåmindelsesDato = forventetNæsteDeadline.AddDays(-14);
+
+        Assert.NotNull(eftersyn.PåmindelseListe);
+        Assert.Contains(eftersyn.PåmindelseListe, p => p.PåmindelsesDato == forventetPåmindelsesDato);
+    }
+}

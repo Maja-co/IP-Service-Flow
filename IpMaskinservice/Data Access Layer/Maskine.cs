@@ -27,13 +27,13 @@ public class Maskine
     }
 
 
-    internal Maskine()
+    public Maskine()
     {
         ServiceListe = new List<Service>();
         SikkerhedsEftersynListe = new List<SikkerhedsEftersyn>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
+    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
     {
         SerieNummer = serieNummer;
         Producent = producent;

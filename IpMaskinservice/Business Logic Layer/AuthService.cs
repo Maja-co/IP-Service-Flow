@@ -1,7 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using Data_Access_Layer;
-using Data_Access_Layer.Models;
 
 namespace Business_Logic_Layer
 {
