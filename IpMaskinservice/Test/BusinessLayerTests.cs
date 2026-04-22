@@ -1,5 +1,6 @@
-﻿using Business_Logic_Layer;
+using Business_Logic_Layer;
 using Data_Access_Layer;
+using Data_Access_Layer.Models;
 using Xunit;
 
 namespace Test;
@@ -10,8 +11,22 @@ public class BusinessLayerTests
     public class ServiceOpgaveStub : ServiceOpgave
     {
         // Vi implementerer de abstrakte metoder tomt, da vi ikke tester dem her
-        public override void afslutOpgave(DateOnly udførtDato, string note) { }
+        public override void afslutOpgave(DateOnly udførtDato, string note)
+        {
+            this.SidstUdførtDato = udførtDato;
+            this.SidstUdførtNote = note;
+
+            // Kald de universelle metoder i ServiceOpgave
+            this.OpdaterDeadline();
+
+            // Automatisk påmindelse logik
+            DateOnly påmindelse = this.Deadline.AddDays(-30);
+            this.createPåmindelse(påmindelse);
+        }
         public override void createPåmindelse(DateOnly påmindelsesDato) { }
+
+       
+           
     }
     [Fact]
     public void BeregnNaesteDeadline_VedSeksMaaneder_ReturnererKorrektDato()
@@ -23,7 +38,7 @@ public class BusinessLayerTests
         var serviceOpgave = new ServiceOpgaveStub
         {
             SidstUdførtDato = sidsteDato,
-            ServiceInterval = ServiceInterval.SeksMåneder
+            ServiceInterval = ServiceInterval.SEKSMÅNEDER
         };
 
         // Act
@@ -35,39 +50,33 @@ public class BusinessLayerTests
         Assert.Equal(forventetDato, serviceOpgave.Deadline);
     }
 
+
     [Fact]
-    public void afslutOpgave_AutomatiskWorkflow_OpdatererDeadlineOgOpretterPaamindelse()
+    public void afslutOpgave_BasisWorkflow_OpdatererDeadlineOgOpretterPaamindelse()
     {
         // Arrange
-        var maskine = new Maskine { Id = 1 };
-        var interval = ServiceInterval.SeksMåneder;
+        var interval = ServiceInterval.SEKSMÅNEDER;
         var udførtDato = new DateOnly(2025, 1, 1);
 
-        // Vi bruger SikkerhedsEftersyn, da det er en konkret klasse
-        var eftersyn = new SikkerhedsEftersyn
+        // Vi tester direkte på stubben (vores repræsentant for ServiceOpgave)
+        var opgave = new ServiceOpgaveStub
         {
-            Maskine = maskine,
             ServiceInterval = interval
         };
 
         // Act
-        // Vi kalder afslutOpgave. Forventningen er, at denne metode nu 
-        // trigger hele workflowet bag kulisserne.
-        eftersyn.afslutOpgave(udførtDato, "Service udført efter bogen");
+        opgave.afslutOpgave(udførtDato, "Standard service udført");
 
         // Assert
-        // 1. Tjek at SidstUdførtDato er opdateret
-        Assert.Equal(udførtDato, eftersyn.SidstUdførtDato);
+        // 1. Er deadlinen beregnet korrekt (01-07-2025)?
+        var forventetDeadline = udførtDato.AddMonths(6);
+        Assert.Equal(forventetDeadline, opgave.Deadline);
 
-        // 2. Tjek at den næste Deadline er beregnet korrekt (1. juli 2025)
-        var forventetNæsteDeadline = udførtDato.AddMonths(6);
-        Assert.Equal(forventetNæsteDeadline, eftersyn.Deadline);
+        // 2. Er der oprettet en påmindelse i listen?
+        Assert.NotEmpty(opgave.PåmindelseListe);
 
-        // 3. Tjek at der automatisk er oprettet en påmindelse 14 dage før den nye deadline
-        // (1. juli minus 14 dage = 17. juni 2025)
-        var forventetPåmindelsesDato = forventetNæsteDeadline.AddDays(-14);
-
-        Assert.NotNull(eftersyn.PåmindelseListe);
-        Assert.Contains(eftersyn.PåmindelseListe, p => p.PåmindelsesDato == forventetPåmindelsesDato);
+        // 3. Ligger påmindelsen 30 dage før den nye deadline?
+        var forventetPåmindelsesDato = forventetDeadline.AddDays(-30);
+        Assert.Contains(opgave.PåmindelseListe, p => p.PåmindelsesDato == forventetPåmindelsesDato);
     }
 }

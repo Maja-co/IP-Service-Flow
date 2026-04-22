@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Data_Access_Layer.Models;
 
 namespace Data_Access_Layer
 {

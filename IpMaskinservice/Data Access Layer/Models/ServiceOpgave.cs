@@ -43,9 +43,9 @@ public abstract class ServiceOpgave {
         {
             Deadline = ServiceInterval switch
             {
-                ServiceInterval.ToMåneder => SidstUdførtDato.Value.AddMonths(2),
-                ServiceInterval.SeksMåneder => SidstUdførtDato.Value.AddMonths(6),
-                ServiceInterval.TolvMåneder => SidstUdførtDato.Value.AddMonths(12),
+                ServiceInterval.TOMÅNEDER => SidstUdførtDato.Value.AddMonths(2),
+                ServiceInterval.SEKSMÅNEDER => SidstUdførtDato.Value.AddMonths(6),
+                ServiceInterval.TOLVMÅNEDER => SidstUdførtDato.Value.AddMonths(12),
                 _ => Deadline
             };
         }
