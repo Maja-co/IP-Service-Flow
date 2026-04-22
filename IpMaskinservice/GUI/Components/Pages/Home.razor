@@ -1,7 +1,50 @@
 ﻿@page "/"
+@using Business_Logic_Layer
+@using Data_Access_Layer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Service Homepage</h1>
 
-Welcome to your new app.
+
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Dato (faldende)</th>
+            <th>Firma</th>
+            <th>Type</th>
+            <th>Maskine</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline)) {
+            <tr>
+                <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
+                <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
+                <td>
+                    @if (opgave is Service s) {
+                        @s.Servicetype
+                    }
+                    else if (opgave is SikkerhedsEftersyn) {
+                        <text>Sikkerhedseftersyn</text>
+                    }
+                </td>
+                <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    // Tom liste 
+    private List<ServiceOpgave> _opgaver = new();
+
+    protected override void OnInitialized() {
+        // Test
+    }
+
+}
+
