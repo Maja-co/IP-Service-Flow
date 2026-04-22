@@ -1,44 +1,82 @@
-﻿//using Data_Access_Layer;
+using Business_Logic_Layer;
+using Data_Access_Layer;
+using Data_Access_Layer.Models;
+using Xunit;
 
-//namespace Test;
+namespace Test;
 
-//public class BusinessLayerTests {
-//    [Fact]
-//    public void BeregnNaesteDeadline_VedSeksMaaneder_ReturnererKorrektDato() {
-//        // Arrange: Opsætning af testdata baseret på klassediagrammet.
-//        var interval = ServiceInterval.SEKSMÅNEDER; // Fra ServiceInterval
-//        var sidsteDato = new DateTime(2025, 1, 1); // SidsteUdførtDato
+public class BusinessLayerTests
+{
+    // Denne klasse bruges kun til at teste den abstrakte ServiceOpgave
+    public class ServiceOpgaveStub : ServiceOpgave
+    {
+        // Vi implementerer de abstrakte metoder tomt, da vi ikke tester dem her
+        public override void afslutOpgave(DateOnly udførtDato, string note)
+        {
+            this.SidstUdførtDato = udførtDato;
+            this.SidstUdførtNote = note;
 
-//        var serviceOpgave = new ServiceOpgave();
-//        {
-//            sidstUdførtDato = sidsteDato,
-//            Interval = interval
-//        };
+            // Kald de universelle metoder i ServiceOpgave
+            this.OpdaterDeadline();
 
-//        // Act: Handlingen der testes
-//        serviceOpgave.OpdaterDeadline();
+            // Automatisk påmindelse logik
+            DateOnly påmindelse = this.Deadline.AddDays(-30);
+            this.createPåmindelse(påmindelse);
+        }
+        public override void createPåmindelse(DateOnly påmindelsesDato) { }
 
-//        // Assert: Verificeringen af testen
-//        var forventetDato = sidsteDato.AddMonths(6);
-//        Assert.Equal(forventetDato, serviceOpgave.deadline);
-//    }
+       
+           
+    }
+    [Fact]
+    public void BeregnNaesteDeadline_VedSeksMaaneder_ReturnererKorrektDato()
+    {
+        // Arrange
+        var sidsteDato = new DateOnly(2025, 1, 1);
 
-//    public void AfslutSikkerhedsEftersyn_UdenAlleReglerTjekket_KasterException(){
-//        // Arrange:
-//        var eftersyn = new SikkerhedsEftersyn(); // Specialisering af IServiceOpgave
-//        var regel1 = new EftersynsRegel { regel = "Nødstop" };
-//        var regel2 = new EftersysnsRegel { regel = "Afskærming" };
+        // Vi bruger vores stub i stedet for den abstrakte klasse
+        var serviceOpgave = new ServiceOpgaveStub
+        {
+            SidstUdførtDato = sidsteDato,
+            ServiceInterval = ServiceInterval.SEKSMÅNEDER
+        };
 
-//        eftersyn.Regler.Add(regel1);
-//        eftersyn.Regler.Add(regel2);
+        // Act
+        // Her kalder vi metoden i ServiceOpgave, som beregner deadlinen
+        serviceOpgave.OpdaterDeadline();
 
-//        // Simulering af at teknikeren ikke har godkent alle regler
-//        var tjekkedeRegler = new List<EftersynsRegel> { regel1 };
-//        var teknikker = new ServiceTekniker { navn = "Mads" };
+        // Assert
+        var forventetDato = sidsteDato.AddMonths(6);
+        Assert.Equal(forventetDato, serviceOpgave.Deadline);
+    }
 
-//        // Act og Assert:
-//        Assert.Throws<InvalidOperationException>(() =>
-//            eftersyn.Afslut(tekniker, tjekkedeRegler)
-//            );
-//    }
-//}
+
+    [Fact]
+    public void afslutOpgave_BasisWorkflow_OpdatererDeadlineOgOpretterPaamindelse()
+    {
+        // Arrange
+        var interval = ServiceInterval.SEKSMÅNEDER;
+        var udførtDato = new DateOnly(2025, 1, 1);
+
+        // Vi tester direkte på stubben (vores repræsentant for ServiceOpgave)
+        var opgave = new ServiceOpgaveStub
+        {
+            ServiceInterval = interval
+        };
+
+        // Act
+        opgave.afslutOpgave(udførtDato, "Standard service udført");
+
+        // Assert
+        // 1. Er deadlinen beregnet korrekt (01-07-2025)?
+        var forventetDeadline = udførtDato.AddMonths(6);
+        Assert.Equal(forventetDeadline, opgave.Deadline);
+
+        // 2. Er der oprettet en påmindelse i listen?
+        Assert.NotEmpty(opgave.PåmindelseListe);
+
+        // 3. Ligger påmindelsen 30 dage før den nye deadline?
+        var forventetPåmindelsesDato = forventetDeadline.AddDays(-30);
+        Assert.Contains(opgave.PåmindelseListe, p => p.PåmindelsesDato == forventetPåmindelsesDato);
+    }
+}

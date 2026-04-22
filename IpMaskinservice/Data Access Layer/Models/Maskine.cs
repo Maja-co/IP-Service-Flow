@@ -22,12 +22,12 @@ public class Maskine
     public List<SikkerhedsEftersyn> SikkerhedsEftersynListe => ServiceOgEftersynAftalerListe.OfType<SikkerhedsEftersyn>().ToList();
 
 
-    internal Maskine()
+    public Maskine()
     {
         ServiceOgEftersynAftalerListe = new List<ServiceOpgave>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
+    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
     {
         SerieNummer = serieNummer;
         Producent = producent;
