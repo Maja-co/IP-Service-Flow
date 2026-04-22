@@ -1,0 +1,103 @@
+@page "/kunde/{Id:int}"
+@using Data_Access_Layer.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data_Access_Layer.MaskinContext Db
+@implements IDisposable
+
+<PageTitle>Kunde: @(kunde?.FirmaNavn ?? "Henter...")</PageTitle>
+
+@if (kunde == null)
+{
+    <div class="alert alert-info">Henter kundedata...</div>
+}
+else
+{
+    <div class="kundeinfo-container">
+
+        @* ── Topbar med navn og tilbage-knap ── *@
+        <div class="kundeinfo-topbar">
+            <a href="/Kunder" class="tilbage-knap">← Tilbage</a>
+            <h1 class="kunde-navn">🏢 @kunde.FirmaNavn</h1>
+        </div>
+
+        <div class="kundeinfo-grid">
+
+            @* ── Stamdata-kort ── *@
+            <div class="info-kort">
+                <h2 class="kort-titel">Stamdata</h2>
+                <div class="info-linje">
+                    <span class="info-label">Firma</span>
+                    <span>@kunde.FirmaNavn</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Adresse</span>
+                    <span>@kunde.Adresse</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Kontakt navn</span>
+                    <span>@kunde.KontaktPersonNavn @kunde.KontaktPersonNavn</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Telefon</span>
+                    <a href="tel:@kunde.KontaktPersonTelefonnummer">@kunde.KontaktPersonTelefonnummer</a>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Email</span>
+                    <a href="mailto:@kunde.MailAdresse">@kunde.MailAdresse</a>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">CVR</span>
+                    <a href="mailto:@kunde.CvrNummer">@kunde.CvrNummer</a>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Aktiv</span>
+                    <a href="mailto:@kunde.ErAktiv">@kunde.ErAktiv</a>
+                </div>
+                
+            </div>
+            @* ── Maskinliste ── *@
+            <div class="maskiner-sektion">
+                <h2 class="kort-titel">Tilknyttede maskiner</h2>
+
+                @if (kunde.MaskineListe.Any())
+                {
+                    <div class="maskine-grid">
+                        @foreach (var maskine in kunde.MaskineListe)
+                        {
+                            <a href="/maskine/@maskine.Id" class="maskine-kort">
+                                <span class="maskine-ikon">🔧</span>
+                                <div>
+                                    <div class="maskine-navn">@maskine.MaskineType</div>
+                                    <div class="maskine-id">ID #@maskine.Id</div>
+                                </div>
+                                <span class="maskine-pil">→</span>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="ingen-maskiner">
+                        Ingen maskiner registreret på denne kunde.
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Kunde? kunde;
+
+    protected override async Task OnInitializedAsync()
+    {
+        kunde = await Db.Kunder
+            .Include(k => k.MaskineListe)
+            .FirstOrDefaultAsync(k => k.Id == Id);
+    }
+
+    public void Dispose() => Db.Dispose();
+}
