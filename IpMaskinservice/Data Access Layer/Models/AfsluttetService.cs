@@ -1,6 +1,4 @@
-using Data_Access_Layer;
-
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer.Models;
 
 public class AfsluttetService {
     public int Id { get; set; }
