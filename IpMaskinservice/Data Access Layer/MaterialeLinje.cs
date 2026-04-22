@@ -1,14 +1,17 @@
 namespace Business_Logic_Layer;
 
 public class MaterialeLinje {
-    private int Antal { get; set; }
-    private string information { get; set; }
-    private MaterialeType materialeType { get; set; }
+    public int Id { get; set; }
+    public int Antal { get; set; }
+    public string? Information { get; set; }
+    public MaterialeType? MaterialeType { get; set; }
+    public int? MatrialeTypeId { get; set; }
 
     internal MaterialeLinje() { }
     internal MaterialeLinje(int antal, string information, MaterialeType materialeType) {
         Antal = antal;
-        this.information = information;
-        this.materialeType = materialeType;
+        Information = information;
+        MaterialeType = materialeType;
+        MatrialeTypeId = materialeType?.Id;
     }
 }

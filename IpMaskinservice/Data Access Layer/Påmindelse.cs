@@ -3,12 +3,15 @@ using System;
 namespace Business_Logic_Layer;
 
 public class Påmindelse {
-    private DateOnly PåmindelsesDato { get; set; }
-    public IServiceOpgave serviceOpgave { get; set; }
+    public int Id { get; set; }
+    public DateOnly PåmindelsesDato { get; set; }
+    public ServiceOpgave? ServiceOpgave { get; set; }
+    public int? ServiceOpgaveId { get; set; }
     internal Påmindelse() { }
-    internal Påmindelse(DateOnly påmindelsesDato, IServiceOpgave serviceOpgave) {
+    internal Påmindelse(DateOnly påmindelsesDato, ServiceOpgave serviceOpgave) {
         PåmindelsesDato = påmindelsesDato;
-        this.serviceOpgave = serviceOpgave;
+        ServiceOpgave = serviceOpgave;
+        ServiceOpgaveId = serviceOpgave?.Id;
     }
     //TODO implementer mail på den her
 }

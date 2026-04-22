@@ -1,7 +1,8 @@
 namespace Business_Logic_Layer;
 
 public class MaterialeType {
-    private string MaterialeBeskrivelse { get; set; }
+    public int Id { get; set; }
+    public string? MaterialeBeskrivelse { get; set; }
 
     public MaterialeType(){}
     
