@@ -1,3 +1,5 @@
+using Data_Access_Layer;
+
 namespace Business_Logic_Layer;
 
 public abstract class ServiceOpgave {
