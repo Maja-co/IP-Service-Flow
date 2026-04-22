@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Data_Access_Layer;
+namespace Data_Access_Layer.Models;
 
 public class Maskine
 {
