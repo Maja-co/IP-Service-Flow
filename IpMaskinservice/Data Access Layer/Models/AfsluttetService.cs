@@ -1,6 +1,17 @@
 namespace Data_Access_Layer.Models;
 
 public class AfsluttetService {
-    public string Note{ get; set; }
-    public IServiceOpgave iServiceOpgave;
+    public int Id { get; set; }
+    public string? Note{ get; set; }
+    public DateOnly UdførtDato { get; set; }
+    public ServiceOpgave? ServiceOpgave { get; set; }
+    public int? ServiceOpgaveId { get; set; }
+
+    internal AfsluttetService() { }
+    internal AfsluttetService(DateOnly udførtDato, string note, ServiceOpgave opgave) {
+        UdførtDato = udførtDato;
+        Note = note;
+        ServiceOpgave = opgave;
+        ServiceOpgaveId = ServiceOpgave?.Id;
+    }
 }

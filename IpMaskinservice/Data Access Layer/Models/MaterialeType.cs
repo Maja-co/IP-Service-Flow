@@ -1,6 +1,12 @@
 namespace Data_Access_Layer.Models;
 
 public class MaterialeType {
-    public string MaterialeBeskrivelse { get; set; }
+    public int Id { get; set; }
+    public string? MaterialeBeskrivelse { get; set; }
+
+    public MaterialeType(){}
     
-}
+    public MaterialeType(string materialeBeskrivelse) {
+        MaterialeBeskrivelse = materialeBeskrivelse;
+    }
+};

@@ -19,7 +19,7 @@ namespace Test
 
             var testBruger = new Medarbejder
             {
-                MedarbejderID = "1",
+                Id = "1",
                 MailAdresse = "test@maskin.dk",
                 KodeOrdHash = "1234",
                 AktivSessionID = null // Starter uden session
@@ -88,7 +88,7 @@ namespace Test
 
             var aktivBruger = new Medarbejder
             {
-                MedarbejderID = "1",
+                Id = "1",
                 AktivSessionID = "GYLDIG_ID"
             };
 
@@ -110,7 +110,7 @@ namespace Test
 
             var aktivBruger = new Medarbejder
             {
-                MedarbejderID = "1",
+                Id = "1",
                 AktivSessionID = "NY_ID_FRA_ANDEN_BRUGER"
             };
 
