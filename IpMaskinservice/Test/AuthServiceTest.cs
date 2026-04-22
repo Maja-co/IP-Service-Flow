@@ -17,11 +17,17 @@ namespace Test
             var mockRepo = new Mock<IMedarbejderRepository>();
             var authService = new AuthService(mockRepo.Object);
 
+            string testPassword = "1234";
+            string testSalt = "HemmeligtSalt123";
+
+            string korrektHashIDatabase = GenererHashTilTest(testPassword + testSalt);
+
             var testBruger = new Medarbejder
             {
                 Id = "1",
                 MailAdresse = "test@maskin.dk",
-                KodeOrdHash = "1234",
+                KodeOrdHash = korrektHashIDatabase,
+                Salt = testSalt,
                 AktivSessionID = null // Starter uden session
             };
 
