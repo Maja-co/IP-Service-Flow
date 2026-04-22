@@ -1,6 +1,5 @@
 ﻿@page "/"
-@using Business_Logic_Layer
-@using Data_Access_Layer
+@using Data_Access_Layer.Models
 
 <PageTitle>Home</PageTitle>
 
@@ -18,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline)) {
+        @foreach (var opgave in _opgaver.OrderByDescending<ServiceOpgave, object>(o => o.Deadline)) {
             <tr>
                 <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
                 <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
