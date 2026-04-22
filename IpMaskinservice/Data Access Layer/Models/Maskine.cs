@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Collections.Generic;
 
-namespace Data_Access_Layer;
+namespace Data_Access_Layer.Models;
 
 public class Maskine
 {
@@ -10,71 +12,43 @@ public class Maskine
     public string? SerieNummer { get; private set; }
     public string? Producent { get; private set; }
     public MaskineType MaskineType { get; private set; }
-    public List<Service> ServiceListe { get; set; }
-    public List<SikkerhedsEftersyn> SikkerhedsEftersynListe { get; set; }
     public List<AfsluttetService> ServiceHistorikListe { get; set; }
-        // styres af koden og ignoreres af databasen
+    public List<ServiceOpgave> ServiceOgEftersynAftalerListe { get; set; } = new List<ServiceOpgave>();
+
     [NotMapped]
-    public List<ServiceOpgave> ServiceOgEftersynAftalerListe
-    {
-        get
-        {
-            var alle = new List<ServiceOpgave>();
-            alle.AddRange(ServiceListe);
-            alle.AddRange(SikkerhedsEftersynListe);
-            return alle;
-        }
-    }
+    public List<Service> ServiceListe => ServiceOgEftersynAftalerListe.OfType<Service>().ToList();
+
+    [NotMapped]
+    public List<SikkerhedsEftersyn> SikkerhedsEftersynListe => ServiceOgEftersynAftalerListe.OfType<SikkerhedsEftersyn>().ToList();
 
 
-    public Maskine()
+    internal Maskine()
     {
-        ServiceListe = new List<Service>();
-        SikkerhedsEftersynListe = new List<SikkerhedsEftersyn>();
+        ServiceOgEftersynAftalerListe = new List<ServiceOpgave>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
+    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
     {
         SerieNummer = serieNummer;
         Producent = producent;
         Kunde = kunde;
         KundeId = Kunde.Id;
         MaskineType = maskineType;
-        ServiceListe = new List<Service>();
-        SikkerhedsEftersynListe = new List<SikkerhedsEftersyn>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-
-   
     //måske de to metoder til create skal gøres anderledes ift. interface. jeg mangler dog noget indspark til hvordan ellers.
     public void createServiceOpgave(ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
         Service nyService = new Service(this, servicetype, opgaveTypeListe, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
-        ServiceListe.Add(nyService);
+        ServiceOgEftersynAftalerListe.Add(nyService);
     }
     public void createSikkerhedsEftersyn(List<EftersynsRegel> eftersynsRegel, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
         SikkerhedsEftersyn nytEftersyn = new SikkerhedsEftersyn(this, eftersynsRegel, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
-        SikkerhedsEftersynListe.Add(nytEftersyn);
+        ServiceOgEftersynAftalerListe.Add(nytEftersyn);
     }
     public void addAfsluttetService(AfsluttetService afsluttet)
     {
         ServiceHistorikListe.Add(afsluttet);
-    }
-
-    //US2 Metoden til at tildele en kunde til denne maskine
-    public void SetKunde(Kunde nykunde) {
-        this.Kunde = nykunde;
-        this.KundeId = nykunde.Id;
-    }
-
-    
-    public string GetSerieNummer() {
-        return SerieNummer;
-    }
-
-    //US2-Bruges til grupperede i UI
-    public string? GetProducent() {
-        return Producent;
     }
 }

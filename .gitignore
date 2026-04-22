@@ -1,4 +1,4 @@
-# ====================================================================
+﻿# ====================================================================
 # Bygge- og publiceringsfiler (C# / .NET)
 # ====================================================================
 [Bb]in/
@@ -40,3 +40,5 @@ _ReSharper*/
 .DS_Store
 .AppleDouble
 Thumbs.db
+/IpMaskinservice/Data Access Layer/MidlertidigMedarbejderRepository.cs
+/IpMaskinservice/GUI/obj/Debug/net10.0/rpswa.dswa.cache.json
