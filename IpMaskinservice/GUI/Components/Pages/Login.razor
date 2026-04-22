@@ -1,0 +1,62 @@
+﻿@page "/login"
+@using Business_Logic_Layer
+@inject AuthService AuthService
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+<PageTitle>Login - Maskin Service</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" class="form-control" @bind="userEmail" placeholder="Indtast din mail" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kodeord</label>
+                        <input type="password" class="form-control" @bind="userPassword" placeholder="Indtast kode" />
+                    </div>
+
+                    <button class="btn btn-primary w-100" @onclick="HandleLogin">Log ind</button>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger mt-3">@errorMessage</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string userEmail;
+    private string userPassword;
+    private string errorMessage;
+
+    private async Task HandleLogin()
+    {
+        // Vi nulstiller fejlbeskeden ved hvert forsøg
+        errorMessage = "";
+
+        // Her kalder vi din AuthService i BLL
+        bool isSuccess = await AuthService.LoginAsync(userEmail, userPassword);
+
+        if (isSuccess)
+        {
+            // Succes! Send brugeren videre til forsiden
+            NavManager.NavigateTo("/");
+        }
+        else
+        {
+            // Fejl! Vis en besked til brugeren
+            errorMessage = "Ugyldig e-mail eller kodeord. Prøv igen.";
+        }
+    }
+}

@@ -1,7 +1,7 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer.Models;
 
 public class Påmindelse {
-    private DateOnly PåmindelsesDato { get; set; }
+    public DateOnly PåmindelsesDato { get; set; }
     public IServiceOpgave serviceOpgave { get; set; }
     
 }
