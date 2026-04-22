@@ -2,12 +2,19 @@ using GUI.Components;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Data_Access_Layer;
+using Microsoft.EntityFrameworkCore;
+using Data_Access_Layer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<MaskinContext>();
+builder.Services.AddScoped<KundeService>();
+builder.Services.AddScoped<PåmindelsesService>();
 
 var app = builder.Build();
 
