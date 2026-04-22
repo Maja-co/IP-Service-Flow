@@ -1,7 +1,7 @@
-namespace Business_Logic_Layer;
+namespace Data_Access_Layer;
 
 public enum ServiceInterval {
-    ToMåneder,
-    SeksMåneder,
-    TolvMåneder
+    TOMÅNEDER,
+    SEKSMÅNEDER,
+    TOLVMÅNEDER
 }
