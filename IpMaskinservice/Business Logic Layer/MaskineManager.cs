@@ -1,7 +1,9 @@
-﻿using Data_Access_Layer;
+﻿using Data_Access_Layer.Models;
+using Data_Access_Layer.Repositories;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 
@@ -9,21 +11,34 @@ namespace Business_Logic_Layer
 {
     public class MaskineManager
     {
-        //Samlet logik til at forbinde en maskine og en kunde korrekt
+        // Repositories injiceres gennem constructor
+        private readonly MaskineRepository _maskineRepo;
+        private readonly KundeRepository _kundeRepo;
+
+        public MaskineManager(MaskineRepository maskineRepo, KundeRepository kundeRepo)
+        {
+            _maskineRepo = maskineRepo;
+            _kundeRepo = kundeRepo;
+        }
+
+        //US-2 & US-2.7: Forbinder en maskine til en kunde og gemmer ændringen i databasen.
         public void OpretMaskineForKunde(Maskine valgtMaskine, Kunde valgtKunde)
         {
+            // Validering: Sikrer at hverken maskine eller kunde er tomme (null)
             if (valgtMaskine != null && valgtKunde != null)
             {
-                // 1. Fortæl maskinen hvem dens ejer er
-                valgtMaskine.SetKunde(valgtKunde);
-
-                // 2. Tilføj maskinen til kundens oversigt (US-2 overblik)             
+                // 1. Logik i hukommelsen: Opdaterer forbindelsen mellem objekterne
+                valgtMaskine.SetKunde(valgtKunde);           
                 valgtKunde.AddMaskineTilListe(valgtMaskine);
+
+                //US2.7- Gem ændringerne i databasen
+                //Opdaterer maskinen i databasen med det nye KundeId
+                _maskineRepo.Update(valgtMaskine);
             }
 
         }
 
-        // 2.metod at TestGruppering
+        // US-2.11Grupperer kundens maskiner baseret på deres fabrikant (producent).
         public Dictionary<string, List<Maskine>> GrupperMaskinerEfterProducent(Kunde kunde)
         {
             var dictionary = new Dictionary<string, List<Maskine>>();
