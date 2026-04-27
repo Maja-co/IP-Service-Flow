@@ -36,7 +36,7 @@ public class Maskine
         MaskineType = maskineType;
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    //måske de to metoder til create skal gøres anderledes ift. interface. jeg mangler dog noget indspark til hvordan ellers.
+    // Måske de to metoder til create skal gøres anderledes ift. interface. Jeg mangler dog noget indspark til hvordan ellers.
     public void createServiceOpgave(ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
         Service nyService = new Service(this, servicetype, opgaveTypeListe, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
