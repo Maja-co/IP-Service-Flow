@@ -1,0 +1,53 @@
+@page "/maskine/{Id:int}"
+@using Data_Access_Layer.Models
+@using Microsoft.EntityFrameworkCore
+
+@* ToDo:
+@* Lige nu injicerer vi databasen direkte *@
+@inject Data_Access_Layer.MaskinContext db
+
+<PageTitle>Maskine Detaljer</PageTitle>
+
+@if (_valgtMaskine == null) {
+    <p><em>Leder efter maskinen i databasen...</em></p>
+}
+else {
+    <div class="machine-details">
+        @* Topbar med navn og tilbage knap *@
+        <div class="maskineinfo-topbar">
+            <a href="/Maskine" class="tilbage-knap">← Tilbage</a>
+            <h1 class="maskine-navn">⚙️@_valgtMaskine.MaskineType</h1>
+        </div>
+        <div class="maskineinfo-grid">
+                @* Stamdata *@
+                <div class="info-kort">
+                    <h2></h2>
+
+                </div>
+        </div>
+        
+        
+        
+        <h1>Maskine: @_valgtMaskine.Producent</h1>
+
+        <ul>
+            <li><strong>Serienummer:</strong> @_valgtMaskine.SerieNummer</li>
+            <li><strong>Maskin-ID:</strong> @_valgtMaskine.Id</li>
+            @* Her kan du bygge videre med alle de andre fede felter fra din Maskine-model! *@
+        </ul>
+
+        <a href="/Kunder" class="btn btn-primary">Tilbage til oversigt</a>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private Maskine? _valgtMaskine;
+
+    protected override async Task OnInitializedAsync() {
+        _valgtMaskine = await db.Maskiner.FirstOrDefaultAsync(m => m.Id == this.Id);
+    }
+
+}
+
