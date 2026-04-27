@@ -1,12 +1,15 @@
 ﻿@inherits LayoutComponentBase
+@using Business_Logic_Layer
+@inject AuthService AuthService
+@inject NavigationManager NavManager
+
 <div class="page">
-    <header class="top-row px-4">
-        <div class="d-flex gap-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Service</NavLink>
-            <NavLink class="nav-link" href="kunder">Kunder</NavLink>
-            <NavLink class="nav-link" href="påmindelser">Påmindelser</NavLink>
+    @if (AuthService.IsLoggedIn)
+    {
+        <div class="sidebar">
+            <NavMenu />
         </div>
-    </header>
+    }
 
     <main>
         <article class="content px-4">
@@ -15,8 +18,13 @@
     </main>
 </div>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+@code {
+    protected override void OnInitialized()
+    {
+        // Hvis man ikke er logget ind og ikke allerede er på login-siden, så send dem til login
+        if (!AuthService.IsLoggedIn && !NavManager.Uri.Contains("/login"))
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+}

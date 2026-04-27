@@ -1,49 +1,48 @@
 ﻿@page "/"
 @using Data_Access_Layer.Models
+@using Business_Logic_Layer
+@inject AuthService AuthService
 
 <PageTitle>Home</PageTitle>
 
-<h1>Service Homepage</h1>
+@if (AuthService.IsLoggedIn)
+{
+    <h1>Service Homepage</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Dato (faldende)</th>
+                    <th>Firma</th>
+                    <th>Type</th>
+                    <th>Maskine</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline))
+                {
+                    <tr>
+                        <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
+                        <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
+                        <td>
+                            @if (opgave is Service s)
+                            {
+                                @s.Servicetype
+                            }
+                            else if (opgave is SikkerhedsEftersyn)
+                            {
 
-
-<div class="table-container">
-    <table>
-        <thead>
-        <tr>
-            <th>Dato (faldende)</th>
-            <th>Firma</th>
-            <th>Type</th>
-            <th>Maskine</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var opgave in _opgaver.OrderByDescending<ServiceOpgave, object>(o => o.Deadline)) {
-            <tr>
-                <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
-                <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
-                <td>
-                    @if (opgave is Service s) {
-                        @s.Servicetype
-                    }
-                    else if (opgave is SikkerhedsEftersyn) {
-                        <text>Sikkerhedseftersyn</text>
-                    }
-                </td>
-                <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-
-@code {
-
-    // Tom liste 
-    private List<ServiceOpgave> _opgaver = new();
-
-    protected override void OnInitialized() {
-        // Test
-    }
-
+                                <text>Sikkerhedseftersyn</text>
+                            }
+                        </td>
+                        <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
+@code {
+    private List<ServiceOpgave> _opgaver = new();
+}

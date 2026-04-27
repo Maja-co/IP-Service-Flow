@@ -1,4 +1,4 @@
-namespace Data_Access_Layer;
+namespace Data_Access_Layer.Models;
 
 public interface IServiceOpgave {
     public Maskine Maskine { get; set; }

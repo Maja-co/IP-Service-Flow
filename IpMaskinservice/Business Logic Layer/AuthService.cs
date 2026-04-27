@@ -9,6 +9,11 @@ namespace Business_Logic_Layer
     {
         private readonly IMedarbejderRepository _medarbejderRepo;
 
+        // Egenskaber til at holde styr på sessionen i hukommelsen
+        public bool IsLoggedIn { get; private set; }
+        public Medarbejder? CurrentUser { get; private set; }
+        public string? CurrentSessionId { get; private set; }
+
         public AuthService(IMedarbejderRepository medarbejderRepo)
         {
             _medarbejderRepo = medarbejderRepo;
@@ -31,6 +36,7 @@ namespace Business_Logic_Layer
             // 4. Sammenlign med den hash, der ligger i databasen
             if (indtastetHash != medarbejder.KodeOrdHash)
             {
+                Logout();
                 return (false, string.Empty);
             }
 
@@ -38,6 +44,10 @@ namespace Business_Logic_Layer
             string nySessionID = Guid.NewGuid().ToString();
             medarbejder.AktivSessionID = nySessionID;
             await _medarbejderRepo.UpdateAsync(medarbejder);
+
+            IsLoggedIn = true;
+            CurrentUser = medarbejder;
+            CurrentSessionId = nySessionID;
 
             return (true, nySessionID);
         }
@@ -65,6 +75,13 @@ namespace Business_Logic_Layer
         {
             var medarbejder = await _medarbejderRepo.GetByIdAsync(id);
             return medarbejder != null && medarbejder.AktivSessionID == sessionId;
+        }
+
+        public void Logout()
+        {
+            IsLoggedIn = false;
+            CurrentUser = null;
+            CurrentSessionId = null;
         }
     }
 }
