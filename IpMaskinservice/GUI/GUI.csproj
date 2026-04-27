@@ -8,8 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Business Logic Layer\Business Logic Layer.csproj" />
-      <ProjectReference Include="..\Data Access Layer\Data Access Layer.csproj" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.6">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.6" />
     </ItemGroup>
 
     <ItemGroup>

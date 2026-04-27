@@ -37,4 +37,17 @@ public abstract class ServiceOpgave {
     }
     public abstract void afslutOpgave(DateOnly udførtDato, string note);
     public abstract void createPåmindelse(DateOnly påmindelsesDato);
+    public void OpdaterDeadline()
+    {
+        if (SidstUdførtDato.HasValue)
+        {
+            Deadline = ServiceInterval switch
+            {
+                ServiceInterval.TOMÅNEDER => SidstUdførtDato.Value.AddMonths(2),
+                ServiceInterval.SEKSMÅNEDER => SidstUdførtDato.Value.AddMonths(6),
+                ServiceInterval.TOLVMÅNEDER => SidstUdførtDato.Value.AddMonths(12),
+                _ => Deadline
+            };
+        }
+    }
 }

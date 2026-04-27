@@ -68,7 +68,6 @@ public class Kunde
     public void Deaktiver()
     {
         ErAktiv = false;
-        //TODO - tjek op på, hvordan vi skal gøre i vores DB
         // overvej at tilføje logik der f.eks. også deaktiverer fremtidige påmindelser,
     }
 }
