@@ -1,8 +1,7 @@
 @page "/Kunder"
 @using Data_Access_Layer.Models
 @using Microsoft.EntityFrameworkCore
-@inject Data_Access_Layer.MaskinContext Db
-@implements IDisposable
+
 
 <PageTitle>Kunder</PageTitle>
 
@@ -36,15 +35,22 @@ else
 
 
 
-@code {
-    private List<Kunde>? _kundeListe;
 
+
+
+@code {
+
+    private List<Kunde>? _kundeListe;
+    /*
     protected override async Task OnInitializedAsync() {
         // Vi bruger .Include for at sikre, at maskinerne bliver hentet med ud fra databasen
-        _kundeListe = await Db.Kunder
-            .Include(k => k.MaskineListe)
+        _kundeListe = await dbo.Kunder
+            .Include(k => _kundeListe.MaskineListe)
             .ToListAsync();
     }
+    
 
-    public void Dispose() => Db.Dispose();
+    public void Dispose() => dbo.Dispose();
+    */
 }
+
