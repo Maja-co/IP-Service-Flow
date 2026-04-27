@@ -5,7 +5,7 @@ namespace Data_Access_Layer.Models;
 public class Kunde
 {
     public int Id { get; set; }
-    public string? FirmaNavn { get; private set; }
+    public string? FirmaNavn { get; set; }
     public string? Adresse { get; private set; }
     public string? KontaktPersonNavn { get; private set; }
     public string? KontaktPersonTelefonnummer { get; private set; }
