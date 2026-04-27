@@ -4,8 +4,10 @@ using System.Net.Mail;
 
 namespace Data_Access_Layer;
 
-public class MaskinContext : DbContext
-{
+public class MaskinContext : DbContext {
+    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options) {
+    }
+
     public DbSet<Kunde> Kunder { get; set; }
     public DbSet<Maskine> Maskiner { get; set; }
     public DbSet<ServiceOpgave> ServiceOpgaver { get; set; }
@@ -20,10 +22,8 @@ public class MaskinContext : DbContext
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        if (!optionsBuilder.IsConfigured) {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
         }
     }
