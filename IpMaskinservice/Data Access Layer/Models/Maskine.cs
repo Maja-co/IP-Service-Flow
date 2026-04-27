@@ -22,12 +22,12 @@ public class Maskine
     public List<SikkerhedsEftersyn> SikkerhedsEftersynListe => ServiceOgEftersynAftalerListe.OfType<SikkerhedsEftersyn>().ToList();
 
 
-    internal Maskine()
+    public Maskine()
     {
         ServiceOgEftersynAftalerListe = new List<ServiceOpgave>();
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    internal Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
+    public Maskine(string serieNummer, string producent, Kunde kunde, MaskineType maskineType)
     {
         SerieNummer = serieNummer;
         Producent = producent;
@@ -36,7 +36,17 @@ public class Maskine
         MaskineType = maskineType;
         ServiceHistorikListe = new List<AfsluttetService>();
     }
-    //måske de to metoder til create skal gøres anderledes ift. interface. jeg mangler dog noget indspark til hvordan ellers.
+
+    public void SetKunde(Kunde nykunde)
+    {
+        Kunde = nykunde;
+        KundeId = nykunde.Id;
+    }
+
+    public string? GetProducent()
+    {
+        return Producent;
+    }
     public void createServiceOpgave(ServiceType servicetype, List<OpgaveType> opgaveTypeListe, DateOnly sidstUdførtDato, DateOnly deadline, string sidstUdførtNote, ServiceInterval serviceInterval, Medarbejder medarbejder, ServiceTeknikker serviceTeknikker)
     {
         Service nyService = new Service(this, servicetype, opgaveTypeListe, sidstUdførtDato, deadline, sidstUdførtNote, serviceInterval, medarbejder, serviceTeknikker);
