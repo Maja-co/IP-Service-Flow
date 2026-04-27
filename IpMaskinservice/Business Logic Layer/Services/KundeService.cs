@@ -1,9 +1,11 @@
-﻿using Data_Access_Layer.Models;
+﻿using Data_Access_Layer;
+using Data_Access_Layer.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Data_Access_Layer.Services
+namespace Business_Logic_Layer.Services
 {
     public class KundeService
     {
@@ -15,7 +17,10 @@ namespace Data_Access_Layer.Services
 
         public List<Kunde> GetAktiveKunder()
         {
-            return _context.Kunder.Where(k => k.ErAktiv == true).ToList();
+            return _context.Kunder
+                .Include(k => k.MaskineListe)
+                .Where(k => k.ErAktiv == true)
+                .ToList();
         }
 
         public void GemNyKunde(Kunde kunde)
@@ -38,6 +43,10 @@ namespace Data_Access_Layer.Services
                 kunde.Deaktiver();
                 _context.SaveChanges();
             }
+        }
+        public Kunde? GetKunde(int id)
+        {
+            return _context.Kunder.Find(id);
         }
     }
 }

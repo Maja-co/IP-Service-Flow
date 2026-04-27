@@ -1,56 +1,96 @@
-@page "/Kunder"
+@page "/kunder"
 @using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
 @using Microsoft.EntityFrameworkCore
-
+@inject KundeService KundeService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Kunder</PageTitle>
 
 <h1>Kundeoversigt</h1>
 
-@if (_kundeListe == null) {
+@if (kunder == null)
+{
     <p><em>Henter data...</em></p>
 }
 else
-    @foreach (var kunde in _kundeListe) {
-    <div class="customer-item">
-        <a href="/kunde/@kunde.Id" class="customer-link">
-            @kunde.FirmaNavn - @kunde.KontaktPersonNavn (@kunde.MailAdresse)
-        </a>
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 20px;"></th>
+                <th>Firma</th>
+                <th>CVR</th>
+                <th>Handlinger</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kunde in kunder)
+            {
+                <tr>
+                    <td>
+                        <button class="btn btn-sm" @onclick="() => ToggleKunde(kunde.Id)">
+                            @(udfoldedeKunder.Contains(kunde.Id) ? "▼" : "▶")
+                        </button>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" @onclick="() => SeKunde(kunde.Id)" style="font-weight:bold;">
+                            @kunde.FirmaNavn
+                        </a>
+                    </td>
+                    <td>@kunde.CvrNummer</td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" @onclick="() => Deaktiver(kunde.Id)">Deaktiver</button>
+                    </td>
+                </tr>
+                @if (udfoldedeKunder.Contains(kunde.Id))
+                {
+                    <tr class="table-light">
+                        <td colspan="4">
+                            <div class="ps-5">
+                                <strong>Maskiner:</strong>
+                                @if (kunde.MaskineListe != null && kunde.MaskineListe.Any())
+                                {
+                                    <ul>
+                                        @foreach (var m in kunde.MaskineListe)
+                                        {
+                                            <li>@m.Producent (@m.MaskineType) - S/N: @m.SerieNummer</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
 
-        <div class="machine-hover-box">
-            <strong>Maskiner (@kunde.MaskineListe.Count):</strong>
-            <div class="scroll-area">
-                <ul>
-                    @foreach (var maskine in kunde.MaskineListe) {
-                        <li>
-                            <a href="/maskine/@maskine.Id">@maskine.Producent (SN: @maskine.SerieNummer)</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
+                                    <span> Ingen maskiner registreret.</span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 }
-
-
-
-
-
-
 
 @code {
+    private List<Kunde>? kunder;
+    private HashSet<int> udfoldedeKunder = new();
 
-    private List<Kunde>? _kundeListe;
-    /*
-    protected override async Task OnInitializedAsync() {
-        // Vi bruger .Include for at sikre, at maskinerne bliver hentet med ud fra databasen
-        _kundeListe = await dbo.Kunder
-            .Include(k => _kundeListe.MaskineListe)
-            .ToListAsync();
+    protected override void OnInitialized() => Indlæs();
+
+    private void Indlæs() => kunder = KundeService.GetAktiveKunder();
+
+    private void ToggleKunde(int id)
+    {
+        if (udfoldedeKunder.Contains(id)) udfoldedeKunder.Remove(id);
+        else udfoldedeKunder.Add(id);
     }
-    
 
-    public void Dispose() => dbo.Dispose();
-    */
+    private void SeKunde(int id) => NavigationManager.NavigateTo($"/kundeinfo/{id}");
+
+    private void Deaktiver(int id)
+    {
+        KundeService.DeaktiverKunde(id);
+        Indlæs();
+    }
 }
-

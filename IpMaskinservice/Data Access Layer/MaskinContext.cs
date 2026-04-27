@@ -1,11 +1,17 @@
 ﻿using Data_Access_Layer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Runtime.InteropServices;
 using System.Net.Mail;
 
 namespace Data_Access_Layer;
 
 public class MaskinContext : DbContext {
-    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options) {
+    private readonly IConfiguration _configuration;
+    public MaskinContext(DbContextOptions<MaskinContext> options, IConfiguration configuration)
+         : base(options)
+    {
+        _configuration = configuration;
     }
 
     public DbSet<Kunde> Kunder { get; set; }
@@ -22,9 +28,23 @@ public class MaskinContext : DbContext {
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        if (!optionsBuilder.IsConfigured) {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // Mac logik: Prøv at hente password fra secrets
+                var dbPass = _configuration["DbPassword"] ?? "KodeOrd123!";
+                var dbUser = _configuration["DbUser"] ?? "sa";
+
+                optionsBuilder.UseSqlServer($@"Server=localhost;Database=IpMaskinDb;User Id={dbUser};Password={dbPass};TrustServerCertificate=True;");
+            }
+            else
+            {
+                // Windows logik (LocalDB bruger Windows Auth, så intet password kræves)
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
+            }
         }
     }
 
