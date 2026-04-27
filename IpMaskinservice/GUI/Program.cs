@@ -1,5 +1,7 @@
+using Data_Access_Layer;
 using GUI.Components;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,7 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// --- HER ER MAGIEN ---
+// Vi henter din connection string fra User Secrets
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Vi fortæller appen, at den skal bruge MaskinContext med SQL Server
+builder.Services.AddDbContext<MaskinContext>(options =>
+    options.UseSqlServer(connectionString));
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {
