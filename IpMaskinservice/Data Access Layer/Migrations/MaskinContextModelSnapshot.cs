@@ -22,7 +22,7 @@ namespace Data_Access_Layer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Data_Access_Layer.AfsluttetService", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.AfsluttetService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("AfsluttedeServices");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.EftersynsRegel", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.EftersynsRegel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("EftersynsRegler");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Kunde", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Kunde", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,7 +101,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("Kunder");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Maskine", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Maskine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("Maskiner");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.MaterialeLinje", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.MaterialeLinje", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +160,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("MaterialeLinjer");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.MaterialeListe", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.MaterialeListe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -173,7 +173,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("MaterialeLister");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.MaterialeType", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.MaterialeType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("MaterialeType");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Medarbejder", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Medarbejder", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -211,7 +211,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("Medarbejdere");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.OpgaveType", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.OpgaveType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +227,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("OpgaveTyper");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Påmindelse", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Påmindelse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,7 +248,7 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("Påmindelser");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.ServiceOpgave", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.ServiceOpgave", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,7 +295,7 @@ namespace Data_Access_Layer.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.ServiceTeknikker", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.ServiceTeknikker", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -344,9 +344,9 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("ServiceOpgaveTypeLinks", (string)null);
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Service", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Service", b =>
                 {
-                    b.HasBaseType("Data_Access_Layer.ServiceOpgave");
+                    b.HasBaseType("Data_Access_Layer.Models.ServiceOpgave");
 
                     b.Property<int?>("Servicetype")
                         .HasColumnType("int");
@@ -354,72 +354,72 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.SikkerhedsEftersyn", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.SikkerhedsEftersyn", b =>
                 {
-                    b.HasBaseType("Data_Access_Layer.ServiceOpgave");
+                    b.HasBaseType("Data_Access_Layer.Models.ServiceOpgave");
 
                     b.ToTable("SikkerhedsEftersyn");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.AfsluttetService", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.AfsluttetService", b =>
                 {
-                    b.HasOne("Data_Access_Layer.Maskine", null)
+                    b.HasOne("Data_Access_Layer.Models.Maskine", null)
                         .WithMany("ServiceHistorikListe")
                         .HasForeignKey("MaskineId");
 
-                    b.HasOne("Data_Access_Layer.ServiceOpgave", "ServiceOpgave")
+                    b.HasOne("Data_Access_Layer.Models.ServiceOpgave", "ServiceOpgave")
                         .WithMany()
                         .HasForeignKey("ServiceOpgaveId");
 
                     b.Navigation("ServiceOpgave");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Maskine", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Maskine", b =>
                 {
-                    b.HasOne("Data_Access_Layer.Kunde", "Kunde")
+                    b.HasOne("Data_Access_Layer.Models.Kunde", "Kunde")
                         .WithMany("MaskineListe")
                         .HasForeignKey("KundeId");
 
                     b.Navigation("Kunde");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.MaterialeLinje", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.MaterialeLinje", b =>
                 {
-                    b.HasOne("Data_Access_Layer.MaterialeListe", null)
+                    b.HasOne("Data_Access_Layer.Models.MaterialeListe", null)
                         .WithMany("MaterialeLinjeListe")
                         .HasForeignKey("MaterialeListeId");
 
-                    b.HasOne("Data_Access_Layer.MaterialeType", "MaterialeType")
+                    b.HasOne("Data_Access_Layer.Models.MaterialeType", "MaterialeType")
                         .WithMany()
                         .HasForeignKey("MaterialeTypeId");
 
                     b.Navigation("MaterialeType");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Påmindelse", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Påmindelse", b =>
                 {
-                    b.HasOne("Data_Access_Layer.ServiceOpgave", "ServiceOpgave")
+                    b.HasOne("Data_Access_Layer.Models.ServiceOpgave", "ServiceOpgave")
                         .WithMany("PåmindelseListe")
                         .HasForeignKey("ServiceOpgaveId");
 
                     b.Navigation("ServiceOpgave");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.ServiceOpgave", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.ServiceOpgave", b =>
                 {
-                    b.HasOne("Data_Access_Layer.Maskine", "Maskine")
+                    b.HasOne("Data_Access_Layer.Models.Maskine", "Maskine")
                         .WithMany("ServiceOgEftersynAftalerListe")
                         .HasForeignKey("MaskineId");
 
-                    b.HasOne("Data_Access_Layer.MaterialeListe", "MaterialeListe")
+                    b.HasOne("Data_Access_Layer.Models.MaterialeListe", "MaterialeListe")
                         .WithMany()
                         .HasForeignKey("MaterialeListeId");
 
-                    b.HasOne("Data_Access_Layer.Medarbejder", "Medarbejder")
+                    b.HasOne("Data_Access_Layer.Models.Medarbejder", "Medarbejder")
                         .WithMany()
                         .HasForeignKey("MedarbejderId");
 
-                    b.HasOne("Data_Access_Layer.ServiceTeknikker", "ServiceTeknikker")
+                    b.HasOne("Data_Access_Layer.Models.ServiceTeknikker", "ServiceTeknikker")
                         .WithMany()
                         .HasForeignKey("ServiceTeknikkerId");
 
@@ -434,13 +434,13 @@ namespace Data_Access_Layer.Migrations
 
             modelBuilder.Entity("EftersynsRegelSikkerhedsEftersyn", b =>
                 {
-                    b.HasOne("Data_Access_Layer.EftersynsRegel", null)
+                    b.HasOne("Data_Access_Layer.Models.EftersynsRegel", null)
                         .WithMany()
                         .HasForeignKey("EftersynsRegelListeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data_Access_Layer.SikkerhedsEftersyn", null)
+                    b.HasOne("Data_Access_Layer.Models.SikkerhedsEftersyn", null)
                         .WithMany()
                         .HasForeignKey("SikkerhedsEftersynId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -449,55 +449,55 @@ namespace Data_Access_Layer.Migrations
 
             modelBuilder.Entity("OpgaveTypeService", b =>
                 {
-                    b.HasOne("Data_Access_Layer.OpgaveType", null)
+                    b.HasOne("Data_Access_Layer.Models.OpgaveType", null)
                         .WithMany()
                         .HasForeignKey("OpgaveTypeListeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data_Access_Layer.Service", null)
+                    b.HasOne("Data_Access_Layer.Models.Service", null)
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Service", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Service", b =>
                 {
-                    b.HasOne("Data_Access_Layer.ServiceOpgave", null)
+                    b.HasOne("Data_Access_Layer.Models.ServiceOpgave", null)
                         .WithOne()
-                        .HasForeignKey("Data_Access_Layer.Service", "Id")
+                        .HasForeignKey("Data_Access_Layer.Models.Service", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.SikkerhedsEftersyn", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.SikkerhedsEftersyn", b =>
                 {
-                    b.HasOne("Data_Access_Layer.ServiceOpgave", null)
+                    b.HasOne("Data_Access_Layer.Models.ServiceOpgave", null)
                         .WithOne()
-                        .HasForeignKey("Data_Access_Layer.SikkerhedsEftersyn", "Id")
+                        .HasForeignKey("Data_Access_Layer.Models.SikkerhedsEftersyn", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Kunde", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Kunde", b =>
                 {
                     b.Navigation("MaskineListe");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.Maskine", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.Maskine", b =>
                 {
                     b.Navigation("ServiceHistorikListe");
 
                     b.Navigation("ServiceOgEftersynAftalerListe");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.MaterialeListe", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.MaterialeListe", b =>
                 {
                     b.Navigation("MaterialeLinjeListe");
                 });
 
-            modelBuilder.Entity("Data_Access_Layer.ServiceOpgave", b =>
+            modelBuilder.Entity("Data_Access_Layer.Models.ServiceOpgave", b =>
                 {
                     b.Navigation("PåmindelseListe");
                 });
