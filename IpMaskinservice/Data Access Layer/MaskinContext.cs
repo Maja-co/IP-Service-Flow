@@ -45,11 +45,10 @@ public class MaskinContext : DbContext
 
       
         modelBuilder.Entity<SikkerhedsEftersyn>()
-        .HasMany(s => s.EftersynsRegelListe) // (eller s.EftersynsRegelListe afhængig af dit præcise navn)
+        .HasMany(s => s.EftersynsRegelListe) 
         .WithMany()
         .UsingEntity(j => j.ToTable("EftersynsRegelLinks")
             .HasData(
-                // RETTET HER: Fra EftersynsRegelId til EftersynsRegelListeId
                 new { SikkerhedsEftersynId = 2, EftersynsRegelListeId = 1 }
             ));
 
@@ -86,7 +85,6 @@ public class MaskinContext : DbContext
         );
 
         // Maskiner
-        // (EF Core caster automatisk jeres enums, f.eks. MaskineType.Gravemaskine)
         modelBuilder.Entity<Maskine>().HasData(
             new { Id = 1, KundeId = 1, SerieNummer = "SN-1001", Producent = "Volvo", MaskineType = MaskineType.Valsning },
             new { Id = 2, KundeId = 2, SerieNummer = "SN-2002", Producent = "CAT", MaskineType = MaskineType.Pladelaser }
