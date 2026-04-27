@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Data_Access_Layer;
+using Microsoft.EntityFrameworkCore;
+using Data_Access_Layer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,10 @@ builder.Services.AddDbContext<ServiceDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IMedarbejderRepository, MedarbejderRepository>();
 builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddDbContext<MaskinContext>();
+builder.Services.AddScoped<KundeService>();
+builder.Services.AddScoped<PåmindelsesService>();
 
 var app = builder.Build();
 
