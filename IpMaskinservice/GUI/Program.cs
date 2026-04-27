@@ -5,6 +5,9 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//MaskineManager til GUI 
+//builder.Services.AddScoped<MaskineManager>();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
