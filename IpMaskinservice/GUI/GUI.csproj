@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+        <UserSecretsId>fb124009-bd7b-45d2-93e2-cad581ce46ee</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Business Logic Layer\Business Logic Layer.csproj" />
       <ProjectReference Include="..\Data Access Layer\Data Access Layer.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Styles\" />
     </ItemGroup>
 
 </Project>

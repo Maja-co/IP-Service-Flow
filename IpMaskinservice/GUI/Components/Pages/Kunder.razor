@@ -1,0 +1,56 @@
+@page "/Kunder"
+@using Data_Access_Layer.Models
+@using Microsoft.EntityFrameworkCore
+
+
+<PageTitle>Kunder</PageTitle>
+
+<h1>Kundeoversigt</h1>
+
+@if (_kundeListe == null) {
+    <p><em>Henter data...</em></p>
+}
+else
+    @foreach (var kunde in _kundeListe) {
+    <div class="customer-item">
+        <a href="/kunde/@kunde.Id" class="customer-link">
+            @kunde.FirmaNavn - @kunde.KontaktPersonNavn (@kunde.MailAdresse)
+        </a>
+
+        <div class="machine-hover-box">
+            <strong>Maskiner (@kunde.MaskineListe.Count):</strong>
+            <div class="scroll-area">
+                <ul>
+                    @foreach (var maskine in kunde.MaskineListe) {
+                        <li>
+                            <a href="/maskine/@maskine.Id">@maskine.Producent (SN: @maskine.SerieNummer)</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+@code {
+
+    private List<Kunde>? _kundeListe;
+    /*
+    protected override async Task OnInitializedAsync() {
+        // Vi bruger .Include for at sikre, at maskinerne bliver hentet med ud fra databasen
+        _kundeListe = await dbo.Kunder
+            .Include(k => _kundeListe.MaskineListe)
+            .ToListAsync();
+    }
+    
+
+    public void Dispose() => dbo.Dispose();
+    */
+}
+
