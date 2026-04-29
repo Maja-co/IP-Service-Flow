@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>Data_Access_Layer</RootNamespace>
+        <AssemblyName>Data_Access_Layer</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>

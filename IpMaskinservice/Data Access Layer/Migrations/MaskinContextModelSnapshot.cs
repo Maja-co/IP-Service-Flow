@@ -194,6 +194,9 @@ namespace Data_Access_Layer.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AktivSessionID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("KodeOrdHash")
                         .HasColumnType("nvarchar(max)");
 
