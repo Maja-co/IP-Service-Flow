@@ -8,7 +8,10 @@
 
 <PageTitle>Kunder</PageTitle>
 
-<h1>Kundeoversigt</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Kundeoversigt</h1>
+    <button class="btn btn-primary" @onclick="OpretNyKunde">Opret ny kunde</button>
+</div>
 
 @if (kunder == null)
 {
@@ -87,11 +90,12 @@ else
         else udfoldedeKunder.Add(id);
     }
 
-    private void SeKunde(int id) => NavigationManager.NavigateTo($"/kundeinfo/{id}");
+    private void SeKunde(int id) => NavigationManager.NavigateTo($"/kunde/{id}");
 
     private void Deaktiver(int id)
     {
         KundeService.DeaktiverKunde(id);
         Indlæs();
     }
+    private void OpretNyKunde() => NavigationManager.NavigateTo("/opretkunde");
 }
