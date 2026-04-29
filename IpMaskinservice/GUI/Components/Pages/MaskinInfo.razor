@@ -1,0 +1,113 @@
+@page "/maskine/{Id:int}"
+@using Data_Access_Layer.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data_Access_Layer.MaskinContext Db
+@implements IDisposable
+
+<PageTitle>Maskine: @(_valgtMaskine?.MaskineType)</PageTitle>
+
+@if (_valgtMaskine == null) {
+    <div class="alert alert-info">Henter maskindata...</div>
+}
+else {
+    <div class="maskineinfo-container">
+
+        @* ── Topbar med navn og tilbage-knap ── *@
+        <div class="maskineinfo-topbar">
+            <a href="/Kunder" class="tilbage-knap">← Tilbage</a>
+            <h1 class="maskine-overskrift">⚙️ @_valgtMaskine.MaskineType - @_valgtMaskine.Producent</h1>
+        </div>
+
+        <div class="maskineinfo-grid">
+
+            @* ── VENSTRE KOLONNE: Stamdata-kort ── *@
+            <div class="info-kort">
+                <h2 class="kort-titel">Stamdata</h2>
+                <div class="info-linje">
+                    <span class="info-label">Maskine Type</span>
+                    <span>@_valgtMaskine.MaskineType</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Producent</span>
+                    <span>@_valgtMaskine.Producent</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Serienummer</span>
+                    <span>@_valgtMaskine.SerieNummer</span>
+                </div>
+                <div class="info-linje">
+                    <span class="info-label">Maskine ID</span>
+                    <span>#@_valgtMaskine.Id</span>
+                </div>
+            </div>
+
+            @* ── HØJRE KOLONNE: Wrapper til de to lister ── *@
+            <div class="hoejre-kolonne">
+                
+                @* Service Historik *@
+                <div class="maskiner-sektion">
+                    <h2 class="kort-titel">Service Historik</h2>
+
+                    @if (_valgtMaskine.ServiceHistorikListe != null && _valgtMaskine.ServiceHistorikListe.Any()) {
+                        <div class="maskine-grid">
+                            @foreach (var historik in _valgtMaskine.ServiceHistorikListe) {
+                                <div class="maskine-kort">
+                                    <span class="maskine-ikon">✅</span>
+                                    <div>
+                                        <div class="maskine-navn">Service udført</div>
+                                        <div class="maskine-id">Opgave ID: #@historik.Id</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else {
+                        <div class="ingen-maskiner">
+                            Ingen servicehistorik registreret på denne maskine.
+                        </div>
+                    }
+                </div>
+
+                @* Kommende Aftaler *@
+                <div class="maskiner-sektion">
+                    <h2 class="kort-titel">Service- og Eftersynsaftaler</h2>
+
+                    @if (_valgtMaskine.ServiceOgEftersynAftalerListe != null && _valgtMaskine.ServiceOgEftersynAftalerListe.Any()) {
+                        <div class="maskine-grid">
+                            @foreach (var aftale in _valgtMaskine.ServiceOgEftersynAftalerListe) {
+                                <div class="maskine-kort">
+                                    <span class="maskine-ikon">📅</span>
+                                    <div>
+                                        <div class="maskine-navn">Kommende opgave</div>
+                                        <div class="maskine-id">Aftale ID: #@aftale.Id</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else {
+                        <div class="ingen-maskiner">
+                            Ingen fremtidige aftaler planlagt.
+                        </div>
+                    }
+                </div>
+
+            </div> @* Afslutter hoejre-kolonne *@
+
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Maskine? _valgtMaskine;
+
+    protected override async Task OnInitializedAsync() {
+        _valgtMaskine = await Db.Maskiner
+            .Include(m => m.ServiceHistorikListe)
+            .Include(m => m.ServiceOgEftersynAftalerListe)
+            .FirstOrDefaultAsync(m => m.Id == Id);
+    }
+
+    public void Dispose() => Db.Dispose();
+}
