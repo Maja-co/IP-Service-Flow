@@ -57,7 +57,7 @@
             @* ── Maskinliste ── *@
             <div class="maskiner-sektion">
                 <div class="d-flex justify-content-between align-items-center maskiner-header-container">
-                    <h2 class="kort-titel maskiner-header-titel">Tilknyttede maskiner</h2>
+                    <h2 class="kort-titel maskiner-header-titel">Maskiner</h2>
                     <button class="btn btn-primary btn-sm" @onclick="OpretMaskine">Tilføj maskine</button>
                 </div>
                 @if (kunde.MaskineListe != null && kunde.MaskineListe.Any()) {
@@ -67,7 +67,7 @@
                                 <span class="maskine-ikon">🔧</span>
                                 <div>
                                     <div class="maskine-navn">@maskine.MaskineType</div>
-                                    <div class="maskine-id">ID #@maskine.Id</div>
+                                    <div class="maskine-id">@maskine.Producent</div>
                                 </div>
                                 <span class="maskine-pil">→</span>
                             </a>
