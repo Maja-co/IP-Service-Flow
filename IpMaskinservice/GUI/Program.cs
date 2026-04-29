@@ -1,5 +1,4 @@
 using Data_Access_Layer;
-using GUI.Components;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Business_Logic_Layer.Services;
+using GUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -19,7 +19,10 @@ namespace Business_Logic_Layer.Services
         public async Task<Maskine?> GetMaskineMedHistorikAsync(int id)
         {
             return await _context.Maskiner
+                .Include(m => m.Kunde)
                 .Include(m => m.ServiceHistorikListe)
+                    .ThenInclude(h => h.ServiceOpgave)
+                       .ThenInclude(o => o.ServiceTeknikker)
                 .Include(m => m.ServiceOgEftersynAftalerListe)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
