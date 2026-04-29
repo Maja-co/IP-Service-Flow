@@ -14,15 +14,6 @@ namespace Business_Logic_Layer.Services
         {
             _context = context;
         }
-
-        public List<Kunde> GetAktiveKunder()
-        {
-            return _context.Kunder
-                .Include(k => k.MaskineListe)
-                .Where(k => k.ErAktiv == true)
-                .ToList();
-        }
-
         public void GemNyKunde(Kunde kunde)
         {
             _context.Kunder.Add(kunde);
@@ -34,7 +25,13 @@ namespace Business_Logic_Layer.Services
             _context.Kunder.Update(opdateretKunde);
             _context.SaveChanges();
         }
-
+        public List<Kunde> GetAktiveKunder()
+        {
+            return _context.Kunder
+                .Include(k => k.MaskineListe)
+                .Where(k => k.ErAktiv == true)
+                .ToList();
+        }
         public void DeaktiverKunde(int kundeId)
         {
             var kunde = _context.Kunder.Find(kundeId);
@@ -47,6 +44,23 @@ namespace Business_Logic_Layer.Services
         public Kunde? GetKunde(int id)
         {
             return _context.Kunder.Find(id);
+        }
+        public List<Kunde> GetDeaktiveredeKunder()
+        {
+            return _context.Kunder
+                .Include(k => k.MaskineListe)
+                .Where(k => k.ErAktiv == false)
+                .ToList();
+        }
+
+        public void AktiverKunde(int kundeId)
+        {
+            var kunde = _context.Kunder.Find(kundeId);
+            if (kunde != null)
+            {
+                kunde.Aktiver();
+                _context.SaveChanges();
+            }
         }
     }
 }

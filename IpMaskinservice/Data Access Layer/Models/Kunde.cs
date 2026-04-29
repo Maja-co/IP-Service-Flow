@@ -57,9 +57,6 @@ public class Kunde
         MaskineListe.Add(newMaskine);
     }
 
-    public void Deaktiver()
-    {
-        ErAktiv = false;
-        // overvej at tilføje logik der f.eks. også deaktiverer fremtidige påmindelser,
-    }
+    public void Deaktiver(){ErAktiv = false;}
+    public void Aktiver(){ErAktiv = true; }
 }
