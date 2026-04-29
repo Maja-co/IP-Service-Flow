@@ -1,7 +1,7 @@
 using Data_Access_Layer;
-using Data_Access_Layer.Repositories;
 using GUI.Components;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Data_Access_Layer;
@@ -18,11 +18,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Fra sidse
 builder.Services.AddDbContext<MaskinContext>();
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 
+// --- HER ER MAGIEN ---
+// Vi henter din connection string fra User Secrets
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Vi fortæller appen, at den skal bruge MaskinContext med SQL Server
+builder.Services.AddDbContext<MaskinContext>(options =>
+    options.UseSqlServer(connectionString));
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {

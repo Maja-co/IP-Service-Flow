@@ -1,8 +1,9 @@
 @page "/Kunder"
 @using Data_Access_Layer.Models
 @using Microsoft.EntityFrameworkCore
-@inject Data_Access_Layer.MaskinContext Db
+@inject Data_Access_Layer.MaskinContext db
 @implements IDisposable
+
 
 <PageTitle>Kunder</PageTitle>
 
@@ -10,6 +11,7 @@
 
 @if (_kundeListe == null) {
     <p><em>Henter data...</em></p>
+    <p><em>Der kunne ikke findes nogle kunder. Opret en kunde for at se dem</em></p>
 }
 else
     @foreach (var kunde in _kundeListe) {
@@ -35,16 +37,16 @@ else
 
 
 
-
 @code {
     private List<Kunde>? _kundeListe;
 
     protected override async Task OnInitializedAsync() {
-        // Vi bruger .Include for at sikre, at maskinerne bliver hentet med ud fra databasen
-        _kundeListe = await Db.Kunder
+        // Vi peger direkte på k, som er den enkelte kunde
+        _kundeListe = await db.Kunder
             .Include(k => k.MaskineListe)
             .ToListAsync();
     }
 
-    public void Dispose() => Db.Dispose();
+    public void Dispose() => db.Dispose();
 }
+

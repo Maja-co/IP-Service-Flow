@@ -6,12 +6,10 @@
 
 <PageTitle>Kunde: @(kunde?.FirmaNavn ?? "Henter...")</PageTitle>
 
-@if (kunde is null)
-{
+@if (kunde == null) {
     <div class="alert alert-info">Henter kundedata...</div>
 }
-else
-{
+else {
     <div class="kundeinfo-container">
 
         @* ── Topbar med navn og tilbage-knap ── *@
@@ -35,7 +33,7 @@ else
                 </div>
                 <div class="info-linje">
                     <span class="info-label">Kontakt navn</span>
-                    <span>@kunde.KontaktPersonNavn @kunde.KontaktPersonNavn</span>
+                    <span>@kunde.KontaktPersonNavn</span>
                 </div>
                 <div class="info-linje">
                     <span class="info-label">Telefon</span>
@@ -53,17 +51,15 @@ else
                     <span class="info-label">Aktiv</span>
                     <span>@(kunde.ErAktiv ? "Ja" : "Nej")</span>
                 </div>
-                
+
             </div>
             @* ── Maskinliste ── *@
             <div class="maskiner-sektion">
                 <h2 class="kort-titel">Tilknyttede maskiner</h2>
 
-                @if (kunde.MaskineListe.Any())
-                {
+                @if (kunde.MaskineListe.Any()) {
                     <div class="maskine-grid">
-                        @foreach (var maskine in kunde.MaskineListe)
-                        {
+                        @foreach (var maskine in kunde.MaskineListe) {
                             <a href="/maskine/@maskine.Id" class="maskine-kort">
                                 <span class="maskine-ikon">🔧</span>
                                 <div>
@@ -75,8 +71,7 @@ else
                         }
                     </div>
                 }
-                else
-                {
+                else {
                     <div class="ingen-maskiner">
                         Ingen maskiner registreret på denne kunde.
                     </div>
@@ -92,8 +87,7 @@ else
     [Parameter] public int Id { get; set; }
     private Kunde? kunde;
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         kunde = await Db.Kunder
             .Include(k => k.MaskineListe)
             .FirstOrDefaultAsync(k => k.Id == Id);
