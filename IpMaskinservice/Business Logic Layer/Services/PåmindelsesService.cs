@@ -1,10 +1,11 @@
 ﻿using Data_Access_Layer.Models;
+using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Access_Layer.Services
+namespace Business_Logic_Layer.Services
 {
     public class PåmindelsesService
     {

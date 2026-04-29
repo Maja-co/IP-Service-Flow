@@ -1,12 +1,12 @@
 using Data_Access_Layer;
-using GUI.Components;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
-using Data_Access_Layer.Services;
+using Business_Logic_Layer.Services;
+using GUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Fra sidse
-builder.Services.AddDbContext<MaskinContext>();
-builder.Services.AddScoped<KundeService>();
-builder.Services.AddScoped<PåmindelsesService>();
-
-// --- HER ER MAGIEN ---
-// Vi henter din connection string fra User Secrets
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Vi fortæller appen, at den skal bruge MaskinContext med SQL Server
 builder.Services.AddDbContext<MaskinContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddScoped<KundeService>();
+builder.Services.AddScoped<PåmindelsesService>();
+builder.Services.AddScoped<MaskineService>();
 
 var app = builder.Build();
 
@@ -40,6 +36,7 @@ if (!app.Environment.IsDevelopment()) {
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapStaticAssets();

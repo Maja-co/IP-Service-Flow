@@ -1,0 +1,136 @@
+@page "/maskine/{Id:int}"
+@rendermode InteractiveServer
+@using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
+@inject MaskineService MaskineService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Maskine: @(_valgtMaskine?.MaskineType)</PageTitle>
+
+@if (_valgtMaskine == null)
+{
+	<div class="alert alert-info">Henter maskindata...</div>
+}else
+{
+	<div class="maskineinfo-container">
+
+		@* ── Topbar med navn og tilbage-knap ── *@
+		<div class="maskineinfo-topbar">
+			<a href="/Kunder" class="tilbage-knap">← Tilbage</a>
+			<h1 class="maskine-overskrift">⚙️ @_valgtMaskine.MaskineType - @_valgtMaskine.Producent</h1>
+		</div>
+
+		<div class="maskineinfo-grid">
+
+			@* ── VENSTRE KOLONNE: Stamdata-kort ── *@
+			<div class="info-kort">
+				<h2 class="kort-titel">Stamdata</h2>
+				<div class="info-linje">
+					<span class="info-label">Kunde</span>
+					@if (_valgtMaskine.Kunde != null)
+					{
+						<span>
+							<a href="/kunde/@_valgtMaskine.Kunde.Id" class="kunde-link">
+								@_valgtMaskine.Kunde.FirmaNavn
+							</a>
+						</span>
+					}
+				</div>
+				<div class="info-linje">
+					<span class="info-label">Maskine Type</span>
+					<span>@_valgtMaskine.MaskineType</span>
+				</div>
+				<div class="info-linje">
+					<span class="info-label">Producent</span>
+					<span>@_valgtMaskine.Producent</span>
+				</div>
+				<div class="info-linje">
+					<span class="info-label">Serienummer</span>
+					<span>@_valgtMaskine.SerieNummer</span>
+				</div>
+			</div>
+
+			@* ── HØJRE KOLONNE: Wrapper til de to lister ── *@
+			<div class="hoejre-kolonne">
+
+				@* Kommende Aftaler *@
+				<div class="maskiner-sektion">
+					<h2 class="kort-titel">Service- og Eftersynsaftaler</h2>
+
+					@if (_valgtMaskine.ServiceOgEftersynAftalerListe?.Any() == true)
+                    {
+                        <div class="maskine-grid">
+                            @foreach (var aftale in _valgtMaskine.ServiceOgEftersynAftalerListe)
+                            {
+                                <div class="maskine-kort maskine-aftale-kort" @onclick='() => NavigationManager.NavigateTo($"/serviceaftale/{aftale.Id}")'>
+                                    <span class="maskine-ikon">📅</span>
+                                    <div>
+                                        <div class="maskine-navn">Planlagt Service</div>
+                                        <div class="maskine-id">Aftale ID: #@aftale.Id (Klik for detaljer)</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+					else
+					{
+						<div class="ingen-maskiner">
+							Ingen fremtidige aftaler planlagt.
+						</div>
+					}
+				</div>
+
+				@* Service Historik, træ struktur *@
+				<div class="maskiner-sektion">
+                    <h2 class="kort-titel">Service Historik</h2>
+                    @if (_valgtMaskine.ServiceHistorikListe?.Any() == true)
+                    {
+                        <div class="list-group">
+                            @foreach (var historik in _valgtMaskine.ServiceHistorikListe.OrderByDescending(afsluttet => afsluttet.UdførtDato))
+                            {
+                                <div class="list-group-item list-group-item-action mb-1 shadow-sm border">
+                                    <div class="d-flex justify-content-between align-items-center historik-header" @onclick="() => ToggleHistorik(historik.Id)">
+                                        <div>
+                                            <strong>@(historik.UdførtDato.ToShortDateString())</strong> - Service udført
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill">@(udfoldedeHistorik.Contains(historik.Id) ? "▲" : "▼")</span>
+                                    </div>
+
+                                    @if (udfoldedeHistorik.Contains(historik.Id))
+                                    {
+                                        <div class="mt-3 p-3 bg-light border-top">
+                                            <p><strong>Note fra tekniker:</strong><br />@(string.IsNullOrWhiteSpace(historik.Note) ? "Ingen note tilføjet." : historik.Note)</p>
+                                            <div class="row text-muted historik-detaljer">
+												<div class="col-sm-6 text-end">Udført af: @(historik.ServiceOpgave?.ServiceTeknikker?.TeknikkerNavn ?? "Ukendt")</div>                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="ingen-maskiner">Ingen servicehistorik registreret.</div>
+                    }
+				</div>
+			</div> @* Afslutter hoejre-kolonne *@
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter] public int Id { get; set; }
+    private Maskine? _valgtMaskine;
+    private HashSet<int> udfoldedeHistorik = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _valgtMaskine = await MaskineService.GetMaskineMedHistorikAsync(Id);
+    }
+
+    private void ToggleHistorik(int id)
+    {
+        if (udfoldedeHistorik.Contains(id)) udfoldedeHistorik.Remove(id);
+        else udfoldedeHistorik.Add(id);
+    }
+}

@@ -1,12 +1,12 @@
 /* ── Container ── */
-.kundeinfo-container {
+.maskineinfo-container {
     max-width: 960px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
 /* ── Topbar ── */
-.kundeinfo-topbar {
+.maskineinfo-topbar {
     display: flex;
     align-items: center;
     gap: 1.25rem;
@@ -28,7 +28,7 @@
         background: #f7fafc;
     }
 
-.kunde-navn {
+.maskine-overskrift {
     font-size: 1.6rem;
     font-weight: 700;
     color: #1a1a2e;
@@ -36,15 +36,22 @@
 }
 
 /* ── To-kolonne grid ── */
-.kundeinfo-grid {
+.maskineinfo-grid {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 1.5rem;
     align-items: start;
 }
 
+/* Den nye wrapper til højre side, så de stables pænt ovenpå hinanden */
+.hoejre-kolonne {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 @media (max-width: 680px) {
-    .kundeinfo-grid {
+    .maskineinfo-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -85,15 +92,6 @@
     margin-bottom: 0.15rem;
 }
 
-.info-linje a {
-    color: #3182ce;
-    text-decoration: none;
-}
-
-    .info-linje a:hover {
-        text-decoration: underline;
-    }
-
 /* ── Maskiner sektion ── */
 .maskiner-sektion {
     background: #ffffff;
@@ -103,7 +101,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* ── Maskine-grid ── */
+/* ── Maskine-grid (Lister) ── */
 .maskine-grid {
     display: flex;
     flex-direction: column;
@@ -141,13 +139,6 @@
     color: #a0aec0;
 }
 
-.maskine-pil {
-    margin-left: auto;
-    color: #a0aec0;
-    font-size: 1rem;
-}
-
-/* ── Ingen maskiner ── */
 .ingen-maskiner {
     color: #a0aec0;
     font-style: italic;
@@ -155,15 +146,21 @@
     padding: 0.5rem;
 }
 
-/* ── Opret maskine header ── */
-.maskiner-header-container {
-    border-bottom: 2px solid #ebf4ff;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+.kunde-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #007bff;
 }
 
-.maskiner-header-titel {
-    border: none;
-    margin: 0;
-    padding: 0;
+.maskine-aftale-kort {
+    cursor: pointer;
+    border-left: 4px solid #ffc107;
+}
+
+.historik-header {
+    cursor: pointer;
+}
+
+.historik-detaljer {
+    font-size: 0.9rem;
 }
