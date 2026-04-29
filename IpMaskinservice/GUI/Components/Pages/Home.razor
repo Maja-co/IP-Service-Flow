@@ -12,9 +12,9 @@
     <table class="table custom-table">
         <thead class="table-header">
         <tr>
-            @* Gør kolonnen klikbar og vis en pil for retningen *@
             <th class="sortable-header" @onclick="SorterEfterDato">
-                Dato @(_sorterStigende ? "  ↕" : "  ↕")
+                <span>Dato</span>
+                <span class="sort-arrow">@(_sorterStigende ? "↑ ↓" : "↑ ↓")</span>
             </th>
             <th>Firma</th>
             <th>Type</th>
