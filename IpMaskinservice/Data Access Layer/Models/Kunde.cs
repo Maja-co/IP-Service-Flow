@@ -22,7 +22,7 @@ public class Kunde
     {
         if (string.IsNullOrWhiteSpace(firmaNavn))
         {
-            throw new ArgumentException("Firmanavn skal udfyldes.", nameof(firmaNavn));
+            throw new ArgumentException("Firmanavn skal udfyldes.");
         }
         if (string.IsNullOrWhiteSpace(kontaktPersonTelefonnummer) || string.IsNullOrWhiteSpace(mailAdresse))
         {
@@ -30,7 +30,7 @@ public class Kunde
         }
         if (cvrNummer < 10000000 || cvrNummer > 99999999)
         {
-            throw new ArgumentException("CVR-nummeret skal være præcis 8 cifre langt.", nameof(cvrNummer));
+            throw new ArgumentException("CVR-nummeret skal være præcis 8 cifre langt.");
         }
         FirmaNavn = firmaNavn;
         Adresse = adresse;
