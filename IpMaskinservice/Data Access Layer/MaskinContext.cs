@@ -32,9 +32,9 @@ public class MaskinContext : DbContext {
     {
         if (!optionsBuilder.IsConfigured)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            // Fanger både Mac (nativt) og Linux (Docker)
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                // Mac logik: Prøv at hente password fra secrets
                 var dbPass = _configuration["DbPassword"] ?? "KodeOrd123!";
                 var dbUser = _configuration["DbUser"] ?? "sa";
 
