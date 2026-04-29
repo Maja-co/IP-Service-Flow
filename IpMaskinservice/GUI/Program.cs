@@ -4,11 +4,12 @@ using Data_Access_Layer.Models;
 using GUI.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
-using Data_Access_Layer.Services;
+using Business_Logic_Layer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +24,16 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IMedarbejderRepository, MedarbejderRepository>();
 builder.Services.AddScoped<AuthService>();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Vi fortæller appen, at den skal bruge MaskinContext med SQL Server
+builder.Services.AddDbContext<MaskinContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {
@@ -38,6 +45,7 @@ if (!app.Environment.IsDevelopment()) {
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
