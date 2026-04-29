@@ -1,0 +1,15 @@
+/* --- Sorterbar Overskrift --- */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.sortable-header:hover {
+    background-color: #e9ecef;
+}
+
+a {
+    text-decoration: none; 
+    color: inherit;
+}
