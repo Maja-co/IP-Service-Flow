@@ -1,12 +1,12 @@
 @page "/kunde/{Id:int}"
-@using Data_Access_Layer.Models
+@using Data_Access.Layer.Models
 @using Microsoft.EntityFrameworkCore
 @inject Data_Access_Layer.MaskinContext Db
 @implements IDisposable
 
 <PageTitle>Kunde: @(kunde?.FirmaNavn ?? "Henter...")</PageTitle>
 
-@if (kunde == null)
+@if (kunde is null)
 {
     <div class="alert alert-info">Henter kundedata...</div>
 }
@@ -47,11 +47,11 @@ else
                 </div>
                 <div class="info-linje">
                     <span class="info-label">CVR</span>
-                    <a href="mailto:@kunde.CvrNummer">@kunde.CvrNummer</a>
+                    <span>@kunde.CvrNummer</span>
                 </div>
                 <div class="info-linje">
                     <span class="info-label">Aktiv</span>
-                    <a href="mailto:@kunde.ErAktiv">@kunde.ErAktiv</a>
+                    <span>@(kunde.ErAktiv ? "Ja" : "Nej")</span>
                 </div>
                 
             </div>
