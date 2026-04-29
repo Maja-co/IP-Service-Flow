@@ -21,26 +21,35 @@ namespace Business_Logic_Layer
 
         public async Task<(bool success, string sessionId)> LoginAsync(string email, string password)
         {
-            // 1. Hent medarbejderen fra "databasen"
-            var medarbejder = await _medarbejderRepo.GetByEmailAsync(email);
+            // Vi kalder variablerne noget helt andet lokalt for at undgå navne-forvirring
+            string mailFraUI = email;
+            string kodeFraUI = password;
+
+            Console.WriteLine($"--- KONTROL-TJEK ---");
+            Console.WriteLine($"Mail fra parameter: [{mailFraUI}]");
+            Console.WriteLine($"Kode fra parameter: [{kodeFraUI}]");
+
+            var medarbejder = await _medarbejderRepo.GetByEmailAsync(mailFraUI);
 
             if (medarbejder == null) return (false, string.Empty);
 
-            // 2. Kombiner det indtastede password med medarbejderens unikke salt
-            // Det er vigtigt at bruge præcis samme rækkefølge som da man oprettede brugeren
-            string saltetPassword = password + medarbejder.Salt;
+            // HER TVINGER VI DEN TIL AT BRUGE DE NYE NAVNE
+            string denSamledeTekstDerSkalHashes = kodeFraUI + medarbejder.Salt;
 
-            // 3. Generer en hash af det indtastede password + salt
-            string indtastetHash = GenererSHA256Hash(saltetPassword);
+            // --- DETTE ER DEN VIGTIGSTE LINJE ---
+            Console.WriteLine($"DEN TEKST DER SENDES TIL HASH-FUNKTION: [{denSamledeTekstDerSkalHashes}]");
 
-            // 4. Sammenlign med den hash, der ligger i databasen
-            if (indtastetHash != medarbejder.KodeOrdHash)
+            string beregnetHash = GenererSHA256Hash(denSamledeTekstDerSkalHashes);
+
+            Console.WriteLine($"Beregnet hash: {beregnetHash}");
+            Console.WriteLine($"Database hash: {medarbejder.KodeOrdHash}");
+
+            if (beregnetHash != medarbejder.KodeOrdHash)
             {
-                Logout();
                 return (false, string.Empty);
             }
 
-            // 5. SUCCESS: Kør din Single Session logik
+            // SUCCESS LOGIK
             string nySessionID = Guid.NewGuid().ToString();
             medarbejder.AktivSessionID = nySessionID;
             await _medarbejderRepo.UpdateAsync(medarbejder);

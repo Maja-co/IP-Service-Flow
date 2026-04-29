@@ -42,21 +42,29 @@
 
     private async Task HandleLogin()
     {
-        // Vi nulstiller fejlbeskeden ved hvert forsøg
         errorMessage = "";
+        Console.WriteLine("DEBUG: Forsøger at logge ind...");
 
-        // Her kalder vi din AuthService i BLL
-        var (isSuccess, sessionId) = await AuthService.LoginAsync(userEmail, userPassword);
-
-        if (isSuccess)
+        try
         {
-            // Succes! Send brugeren videre til forsiden
-            NavManager.NavigateTo("/");
+            var (isSuccess, sessionId) = await AuthService.LoginAsync(userEmail, userPassword);
+        
+            Console.WriteLine($"DEBUG: LoginAsync færdig. Resultat: {isSuccess}");
+
+            if (isSuccess)
+            {
+                Console.WriteLine("DEBUG: Navigerer nu til forsiden...");
+                NavManager.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Ugyldig e-mail eller kodeord.";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Fejl! Vis en besked til brugeren
-            errorMessage = "Ugyldig e-mail eller kodeord. Prøv igen.";
+            Console.WriteLine($"KRITISK FEJL: {ex.Message}");
+            errorMessage = "Der skete en teknisk fejl under login.";
         }
     }
 }

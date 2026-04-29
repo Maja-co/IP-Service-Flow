@@ -18,12 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddDbContext<ServiceDbContext>(options =>
+builder.Services.AddDbContext<MaskinContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IMedarbejderRepository, MedarbejderRepository>();
 builder.Services.AddScoped<AuthService>();
 
-builder.Services.AddDbContext<MaskinContext>();
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 

@@ -19,6 +19,14 @@ public class MaskinContext : DbContext
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
+    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options)
+    {
+    }
+
+    public MaskinContext()
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
