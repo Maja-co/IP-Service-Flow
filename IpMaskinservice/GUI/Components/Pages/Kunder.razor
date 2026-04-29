@@ -1,52 +1,122 @@
-@page "/Kunder"
+@page "/kunder"
+@rendermode InteractiveServer
 @using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
 @using Microsoft.EntityFrameworkCore
-@inject Data_Access_Layer.MaskinContext db
-@implements IDisposable
-
+@inject KundeService KundeService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Kunder</PageTitle>
 
-<h1>Kundeoversigt</h1>
+<div class="header-container">
+    <h1>Kundeoversigt</h1>
+    <button class="btn btn-primary" @onclick="OpretNyKunde">Opret ny kunde</button>
+</div>
 
-@if (_kundeListe == null) {
+<div class="toggle-container form-check">
+    <input type="checkbox" class="form-check-input" id="visInaktiveCheck" @onchange="ToggleVisInaktive"/>
+    <label class="form-check-label inaktiv-label" for="visInaktiveCheck">Vis deaktiverede kunder</label>
+</div>
+
+@if (kunder == null) {
     <p><em>Henter data...</em></p>
-    <p><em>Der kunne ikke findes nogle kunder. Opret en kunde for at se dem</em></p>
 }
-else
-    @foreach (var kunde in _kundeListe) {
-    <div class="customer-item">
-        <a href="/kunde/@kunde.Id" class="customer-link">
-            @kunde.FirmaNavn - @kunde.KontaktPersonNavn (@kunde.MailAdresse)
-        </a>
-
-        <div class="machine-hover-box">
-            <strong>Maskiner (@kunde.MaskineListe.Count):</strong>
-            <div class="scroll-area">
-                <ul>
-                    @foreach (var maskine in kunde.MaskineListe) {
-                        <li>
-                            <a href="/maskine/@maskine.Id">@maskine.Producent (SN: @maskine.SerieNummer)</a>
-                        </li>
+else {
+    <table class="table custom-table">
+        <thead class="table-header">
+        <tr>
+            <th class="col-toggle"></th>
+            <th>Firma</th>
+            <th>CVR</th>
+            <th class="actions-col">Handlinger</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var kunde in kunder) {
+            <tr class="@(!kunde.ErAktiv ? "kunde-inaktiv" : "")">
+                <td>
+                    <button class="btn btn-sm btn-toggle" @onclick="() => ToggleKunde(kunde.Id)">
+                        @(udfoldedeKunder.Contains(kunde.Id) ? "▼" : "▶")
+                    </button>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" @onclick="() => SeKunde(kunde.Id)" class="firma-link">
+                        @kunde.FirmaNavn
+                    </a>
+                </td>
+                <td>@kunde.CvrNummer</td>
+                <td class="actions-col">
+                    @if (kunde.ErAktiv) {
+                        <button class="btn btn-outline-danger btn-sm" @onclick="() => Deaktiver(kunde.Id)">Deaktiver
+                        </button>
                     }
-                </ul>
-            </div>
-        </div>
-    </div>
+                    else {
+                        <button class="btn btn-outline-success btn-sm" @onclick="() => Aktiver(kunde.Id)">Aktiver
+                        </button>
+                    }
+                </td>
+            </tr>
+            @if (udfoldedeKunder.Contains(kunde.Id)) {
+                <tr>
+                    <td colspan="4" class="maskine-celle">
+                        <div class="maskine-container">
+                            <strong class="maskine-header">Maskiner:</strong>
+                            @if (kunde.MaskineListe != null && kunde.MaskineListe.Any()) {
+                                <ul class="maskine-liste">
+                                    @foreach (var m in kunde.MaskineListe) {
+                                        <li>
+                                            <a href="/maskine/@m.Id" class="maskine-link">
+                                                @m.Producent (@m.MaskineType) - S/N: @m.SerieNummer
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else {
+                                <span class="ingen-maskiner">Ingen maskiner registreret.</span>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
 }
-
-
 
 @code {
-    private List<Kunde>? _kundeListe;
+    private List<Kunde>? kunder;
+    private HashSet<int> udfoldedeKunder = new();
 
-    protected override async Task OnInitializedAsync() {
-        // Vi peger direkte på k, som er den enkelte kunde
-        _kundeListe = await db.Kunder
-            .Include(k => k.MaskineListe)
-            .ToListAsync();
+    protected override void OnInitialized() => Indlæs();
+
+    private void ToggleKunde(int id) {
+        if (udfoldedeKunder.Contains(id)) udfoldedeKunder.Remove(id);
+        else udfoldedeKunder.Add(id);
     }
 
-    public void Dispose() => db.Dispose();
-}
+    private void SeKunde(int id) => NavigationManager.NavigateTo($"/kunde/{id}");
 
+    private void Deaktiver(int id) {
+        KundeService.DeaktiverKunde(id);
+        Indlæs();
+    }
+
+    private void OpretNyKunde() => NavigationManager.NavigateTo("/opretkunde");
+
+    private bool visInaktive = false;
+
+    private void Indlæs() {
+        kunder = visInaktive ? KundeService.GetDeaktiveredeKunder() : KundeService.GetAktiveKunder();
+    }
+
+    private void ToggleVisInaktive(ChangeEventArgs e) {
+        visInaktive = (bool)e.Value;
+        Indlæs();
+    }
+
+    private void Aktiver(int id) {
+        KundeService.AktiverKunde(id);
+        Indlæs();
+    }
+}

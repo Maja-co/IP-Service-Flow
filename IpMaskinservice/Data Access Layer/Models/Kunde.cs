@@ -57,17 +57,6 @@ public class Kunde
         MaskineListe.Add(newMaskine);
     }
 
-    public void AddMaskineTilListe(Maskine maskine)
-    {
-        if (maskine != null && !MaskineListe.Contains(maskine))
-        {
-            MaskineListe.Add(maskine);
-        }
-    }
-
-    public void Deaktiver()
-    {
-        ErAktiv = false;
-        // overvej at tilføje logik der f.eks. også deaktiverer fremtidige påmindelser,
-    }
+    public void Deaktiver(){ErAktiv = false;}
+    public void Aktiver(){ErAktiv = true; }
 }

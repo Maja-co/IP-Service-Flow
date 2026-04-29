@@ -29,6 +29,9 @@
       <None Update="Components\Pages\MaskinInfo.razor.css">
         <DependentUpon>MaskinInfo.razor</DependentUpon>
       </None>
+      <None Update="Components\Pages\Kunder.razor.css">
+        <DependentUpon>Kunder.razor</DependentUpon>
+      </None>
     </ItemGroup>
 
 </Project>
