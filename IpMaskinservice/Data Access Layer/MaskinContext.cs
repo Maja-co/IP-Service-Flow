@@ -28,25 +28,25 @@ public class MaskinContext : DbContext {
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            // Fanger både Mac (nativt) og Linux (Docker)
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                var dbPass = _configuration["DbPassword"] ?? "KodeOrd123!";
-                var dbUser = _configuration["DbUser"] ?? "sa";
+    //protected override void onconfiguring(dbcontextoptionsbuilder optionsbuilder)
+    //{
+    //    if (!optionsbuilder.isconfigured)
+    //    {
+    //        // fanger både mac (nativt) og linux (docker)
+    //        if (!runtimeinformation.isosplatform(osplatform.windows))
+    //        {
+    //            var dbpass = _configuration["dbpassword"] ?? "kodeord123!";
+    //            var dbuser = _configuration["dbuser"] ?? "sa";
 
-                optionsBuilder.UseSqlServer($@"Server=localhost;Database=IpMaskinDb;User Id={dbUser};Password={dbPass};TrustServerCertificate=True;");
-            }
-            else
-            {
-                // Windows logik (LocalDB bruger Windows Auth, så intet password kræves)
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
-            }
-        }
-    }
+    //            optionsbuilder.usesqlserver($@"server=localhost;database=ipmaskindb;user id={dbuser};password={dbpass};trustservercertificate=true;");
+    //        }
+    //        else
+    //        {
+    //            // windows logik (localdb bruger windows auth, så intet password kræves)
+    //            optionsbuilder.usesqlserver(@"server=(localdb)\mssqllocaldb;database=ipmaskindb;trusted_connection=true;");
+    //        }
+    //    }
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

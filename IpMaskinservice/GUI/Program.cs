@@ -14,8 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Fra sidse
-builder.Services.AddDbContext<MaskinContext>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Vi fortæller appen, at den skal bruge MaskinContext med SQL Server
+builder.Services.AddDbContext<MaskinContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 
