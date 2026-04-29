@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(MaskinContext))]
-    [Migration("20260427092841_OrganizedModelsAndAuth")]
-    partial class OrganizedModelsAndAuth
+    [Migration("20260429102330_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,16 @@ namespace Data_Access_Layer.Migrations
                     b.HasIndex("ServiceOpgaveId");
 
                     b.ToTable("AfsluttedeServices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MaskineId = 1,
+                            Note = "Service afsluttet uden anmærkninger",
+                            ServiceOpgaveId = 1,
+                            UdførtDato = new DateOnly(2025, 10, 1)
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.EftersynsRegel", b =>
@@ -68,6 +78,18 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EftersynsRegler");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Regel = "Tjek bremser for slid"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Regel = "Tjek nødstop funktion"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.Kunde", b =>
@@ -102,6 +124,30 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Kunder");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adresse = "Testvej 1",
+                            CvrNummer = 11223344,
+                            ErAktiv = true,
+                            FirmaNavn = "Byg & Maskin A/S",
+                            KontaktPersonNavn = "Jens Jensen",
+                            KontaktPersonTelefonnummer = "12341234",
+                            MailAdresse = "B&M@test.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adresse = "Testvej 2",
+                            CvrNummer = 99887766,
+                            ErAktiv = true,
+                            FirmaNavn = "Skovens Entreprenør",
+                            KontaktPersonNavn = "Mia Skov",
+                            KontaktPersonTelefonnummer = "43214321",
+                            MailAdresse = "Skovens@test.com"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.Maskine", b =>
@@ -129,6 +175,24 @@ namespace Data_Access_Layer.Migrations
                     b.HasIndex("KundeId");
 
                     b.ToTable("Maskiner");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            KundeId = 1,
+                            MaskineType = 0,
+                            Producent = "Volvo",
+                            SerieNummer = "SN-1001"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            KundeId = 2,
+                            MaskineType = 2,
+                            Producent = "CAT",
+                            SerieNummer = "SN-2002"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.MaterialeLinje", b =>
@@ -190,6 +254,18 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MaterialeType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MaterialeBeskrivelse = "Motorolie 5W-30"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MaterialeBeskrivelse = "Hydraulikslange 2m"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.Medarbejder", b =>
@@ -215,6 +291,14 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medarbejdere");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "M1",
+                            MailAdresse = "admin@ipmaskin.dk",
+                            MedarbejderNavn = "Admin Alice"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.OpgaveType", b =>
@@ -231,6 +315,18 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OpgaveTyper");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OpgaveBeskrivelse = "Olieskift"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OpgaveBeskrivelse = "Udskiftning af hydraulikslange"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.Påmindelse", b =>
@@ -252,6 +348,20 @@ namespace Data_Access_Layer.Migrations
                     b.HasIndex("ServiceOpgaveId");
 
                     b.ToTable("Påmindelser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PåmindelsesDato = new DateOnly(2026, 9, 1),
+                            ServiceOpgaveId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            PåmindelsesDato = new DateOnly(2026, 10, 1),
+                            ServiceOpgaveId = 2
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.ServiceOpgave", b =>
@@ -318,6 +428,14 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceTeknikkere");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            TeknikkerNavn = "Tom Værktøj",
+                            TelefonNummer = "11223344"
+                        });
                 });
 
             modelBuilder.Entity("EftersynsRegelSikkerhedsEftersyn", b =>
@@ -333,6 +451,13 @@ namespace Data_Access_Layer.Migrations
                     b.HasIndex("SikkerhedsEftersynId");
 
                     b.ToTable("EftersynsRegelLinks", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EftersynsRegelListeId = 1,
+                            SikkerhedsEftersynId = 2
+                        });
                 });
 
             modelBuilder.Entity("OpgaveTypeService", b =>
@@ -348,6 +473,18 @@ namespace Data_Access_Layer.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceOpgaveTypeLinks", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            OpgaveTypeListeId = 1,
+                            ServiceId = 1
+                        },
+                        new
+                        {
+                            OpgaveTypeListeId = 2,
+                            ServiceId = 1
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.Service", b =>
@@ -358,6 +495,20 @@ namespace Data_Access_Layer.Migrations
                         .HasColumnType("int");
 
                     b.ToTable("Services");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Deadline = new DateOnly(2026, 10, 1),
+                            MaskineId = 1,
+                            MedarbejderId = "M1",
+                            ServiceInterval = 2,
+                            ServiceTeknikkerId = 1,
+                            SidstUdførtDato = new DateOnly(2025, 10, 1),
+                            SidstUdførtNote = "Olie skiftet, alt ok",
+                            Servicetype = 0
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.SikkerhedsEftersyn", b =>
@@ -365,6 +516,19 @@ namespace Data_Access_Layer.Migrations
                     b.HasBaseType("Data_Access_Layer.Models.ServiceOpgave");
 
                     b.ToTable("SikkerhedsEftersyn");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Deadline = new DateOnly(2026, 11, 1),
+                            MaskineId = 2,
+                            MedarbejderId = "M1",
+                            ServiceInterval = 2,
+                            ServiceTeknikkerId = 1,
+                            SidstUdførtDato = new DateOnly(2025, 11, 1),
+                            SidstUdførtNote = "Nødstop testet og godkendt"
+                        });
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.AfsluttetService", b =>

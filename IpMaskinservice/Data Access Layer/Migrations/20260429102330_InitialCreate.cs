@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Data_Access_Layer.Migrations
 {
     /// <inheritdoc />
@@ -76,7 +78,8 @@ namespace Data_Access_Layer.Migrations
                     MedarbejderNavn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KodeOrdHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MailAdresse = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    MailAdresse = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AktivSessionID = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -324,6 +327,108 @@ namespace Data_Access_Layer.Migrations
                         principalTable: "SikkerhedsEftersyn",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "EftersynsRegler",
+                columns: new[] { "Id", "Regel" },
+                values: new object[,]
+                {
+                    { 1, "Tjek bremser for slid" },
+                    { 2, "Tjek nødstop funktion" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Kunder",
+                columns: new[] { "Id", "Adresse", "CvrNummer", "ErAktiv", "FirmaNavn", "KontaktPersonNavn", "KontaktPersonTelefonnummer", "MailAdresse" },
+                values: new object[,]
+                {
+                    { 1, "Testvej 1", 11223344, true, "Byg & Maskin A/S", "Jens Jensen", "12341234", "B&M@test.com" },
+                    { 2, "Testvej 2", 99887766, true, "Skovens Entreprenør", "Mia Skov", "43214321", "Skovens@test.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MaterialeType",
+                columns: new[] { "Id", "MaterialeBeskrivelse" },
+                values: new object[,]
+                {
+                    { 1, "Motorolie 5W-30" },
+                    { 2, "Hydraulikslange 2m" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Medarbejdere",
+                columns: new[] { "Id", "AktivSessionID", "KodeOrdHash", "MailAdresse", "MedarbejderNavn", "Salt" },
+                values: new object[] { "M1", null, null, "admin@ipmaskin.dk", "Admin Alice", null });
+
+            migrationBuilder.InsertData(
+                table: "OpgaveTyper",
+                columns: new[] { "Id", "OpgaveBeskrivelse" },
+                values: new object[,]
+                {
+                    { 1, "Olieskift" },
+                    { 2, "Udskiftning af hydraulikslange" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ServiceTeknikkere",
+                columns: new[] { "Id", "TeknikkerNavn", "TelefonNummer" },
+                values: new object[] { 1, "Tom Værktøj", "11223344" });
+
+            migrationBuilder.InsertData(
+                table: "Maskiner",
+                columns: new[] { "Id", "KundeId", "MaskineType", "Producent", "SerieNummer" },
+                values: new object[,]
+                {
+                    { 1, 1, 0, "Volvo", "SN-1001" },
+                    { 2, 2, 2, "CAT", "SN-2002" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ServiceOpgaver",
+                columns: new[] { "Id", "Deadline", "MaskineId", "MaterialeListeId", "MedarbejderId", "ServiceInterval", "ServiceTeknikkerId", "SidstUdførtDato", "SidstUdførtNote" },
+                values: new object[,]
+                {
+                    { 1, new DateOnly(2026, 10, 1), 1, null, "M1", 2, 1, new DateOnly(2025, 10, 1), "Olie skiftet, alt ok" },
+                    { 2, new DateOnly(2026, 11, 1), 2, null, "M1", 2, 1, new DateOnly(2025, 11, 1), "Nødstop testet og godkendt" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AfsluttedeServices",
+                columns: new[] { "Id", "MaskineId", "Note", "ServiceOpgaveId", "UdførtDato" },
+                values: new object[] { 1, 1, "Service afsluttet uden anmærkninger", 1, new DateOnly(2025, 10, 1) });
+
+            migrationBuilder.InsertData(
+                table: "Påmindelser",
+                columns: new[] { "Id", "PåmindelsesDato", "ServiceOpgaveId" },
+                values: new object[,]
+                {
+                    { 1, new DateOnly(2026, 9, 1), 1 },
+                    { 2, new DateOnly(2026, 10, 1), 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Services",
+                columns: new[] { "Id", "Servicetype" },
+                values: new object[] { 1, 0 });
+
+            migrationBuilder.InsertData(
+                table: "SikkerhedsEftersyn",
+                column: "Id",
+                value: 2);
+
+            migrationBuilder.InsertData(
+                table: "EftersynsRegelLinks",
+                columns: new[] { "EftersynsRegelListeId", "SikkerhedsEftersynId" },
+                values: new object[] { 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "ServiceOpgaveTypeLinks",
+                columns: new[] { "OpgaveTypeListeId", "ServiceId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(
