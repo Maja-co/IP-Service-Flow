@@ -1,48 +1,60 @@
 ﻿@page "/"
 @using Data_Access_Layer.Models
-@using Business_Logic_Layer
+@using Business_Logic_Layer.Services
 @inject AuthService AuthService
+@inject NavigationManager NavManager
 
 <PageTitle>Home</PageTitle>
 
-@if (AuthService.IsLoggedIn)
-{
-    <h1>Service Homepage</h1>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Dato (faldende)</th>
-                    <th>Firma</th>
-                    <th>Type</th>
-                    <th>Maskine</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline))
-                {
-                    <tr>
-                        <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
-                        <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
-                        <td>
-                            @if (opgave is Service s)
-                            {
-                                @s.Servicetype
-                            }
-                            else if (opgave is SikkerhedsEftersyn)
-                            {
+<h1>Service Homepage</h1>
+<p>Velkommen, @AuthService.CurrentUser?.MedarbejderNavn!</p>
 
-                                <text>Sikkerhedseftersyn</text>
-                            }
-                        </td>
-                        <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Dato (faldende)</th>
+                <th>Firma</th>
+                <th>Type</th>
+                <th>Maskine</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline))
+            {
+                <tr>
+                    <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
+                    <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
+                    <td>
+                        @if (opgave is Service s)
+                        {
+                            @s.Servicetype
+                        }
+                        else if (opgave is SikkerhedsEftersyn)
+                        {
+                            <text>Sikkerhedseftersyn</text>
+                        }
+                    </td>
+                    <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<button class="btn btn-secondary mt-3" @onclick="HandleLogout">Log ud</button>
 
 @code {
     private List<ServiceOpgave> _opgaver = new();
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    private void HandleLogout()
+    {
+        AuthService.Logout();
+        NavManager.NavigateTo("/login");
+    }
 }
