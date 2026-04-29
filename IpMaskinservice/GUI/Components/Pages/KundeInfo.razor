@@ -1,15 +1,15 @@
 @page "/kunde/{Id:int}"
+@rendermode InteractiveServer
 @using Data_Access_Layer.Models
-@using Microsoft.EntityFrameworkCore
-@inject Data_Access_Layer.MaskinContext Db
-@implements IDisposable
+@using Business_Logic_Layer.Services
+@inject KundeService KundeService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Kunde: @(kunde?.FirmaNavn ?? "Henter...")</PageTitle>
 
 @if (kunde == null) {
     <div class="alert alert-info">Henter kundedata...</div>
-}
-else {
+} else {
     <div class="kundeinfo-container">
 
         @* ── Topbar med navn og tilbage-knap ── *@
@@ -45,19 +45,22 @@ else {
                 </div>
                 <div class="info-linje">
                     <span class="info-label">CVR</span>
-                    <a href="mailto:@kunde.CvrNummer">@kunde.CvrNummer</a>
+                    <span>@kunde.CvrNummer</span>
                 </div>
                 <div class="info-linje">
-                    <span class="info-label">Aktiv</span>
-                    <a href="mailto:@kunde.ErAktiv">@kunde.ErAktiv</a>
+                    <span class="info-label">Status</span>
+                    <span>@(kunde.ErAktiv ? "Aktiv" : "Inaktiv")</span>
                 </div>
 
             </div>
+
             @* ── Maskinliste ── *@
             <div class="maskiner-sektion">
-                <h2 class="kort-titel">Tilknyttede maskiner</h2>
-
-                @if (kunde.MaskineListe.Any()) {
+                <div class="d-flex justify-content-between align-items-center maskiner-header-container">
+                    <h2 class="kort-titel maskiner-header-titel">Tilknyttede maskiner</h2>
+                    <button class="btn btn-primary btn-sm" @onclick="OpretMaskine">Tilføj maskine</button>
+                </div>
+                @if (kunde.MaskineListe != null && kunde.MaskineListe.Any()) {
                     <div class="maskine-grid">
                         @foreach (var maskine in kunde.MaskineListe) {
                             <a href="/maskine/@maskine.Id" class="maskine-kort">
@@ -70,8 +73,7 @@ else {
                             </a>
                         }
                     </div>
-                }
-                else {
+                } else {
                     <div class="ingen-maskiner">
                         Ingen maskiner registreret på denne kunde.
                     </div>
@@ -82,16 +84,15 @@ else {
     </div>
 }
 
-
 @code {
     [Parameter] public int Id { get; set; }
     private Kunde? kunde;
 
     protected override async Task OnInitializedAsync() {
-        kunde = await Db.Kunder
-            .Include(k => k.MaskineListe)
-            .FirstOrDefaultAsync(k => k.Id == Id);
+        kunde = await KundeService.GetKundeMedMaskinerAsync(Id);
     }
-
-    public void Dispose() => Db.Dispose();
+    private void OpretMaskine()
+    {
+        NavigationManager.NavigateTo($"/opretmaskine/{Id}");
+    }
 }
