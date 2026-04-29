@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MaskinContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
+builder.Services.AddScoped<MaskineService>();
 
 var app = builder.Build();
 
