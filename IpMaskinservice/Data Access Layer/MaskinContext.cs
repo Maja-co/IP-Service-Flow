@@ -7,7 +7,14 @@ using System.Net.Mail;
 namespace Data_Access_Layer;
 
 public class MaskinContext : DbContext {
-    private readonly IConfiguration _configuration;
+    private readonly IConfiguration? _configuration;
+
+    public MaskinContext(DbContextOptions<MaskinContext> options) 
+         : base(options)
+    {
+        _configuration = null;
+    }
+
     public MaskinContext(DbContextOptions<MaskinContext> options, IConfiguration configuration)
          : base(options)
     {

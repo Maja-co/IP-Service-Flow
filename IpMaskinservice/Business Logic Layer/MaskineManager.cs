@@ -29,7 +29,7 @@ namespace Business_Logic_Layer
             {
                 // 1. Logik i hukommelsen: Opdaterer forbindelsen mellem objekterne
                 valgtMaskine.SetKunde(valgtKunde);           
-                valgtKunde.AddMaskineTilListe(valgtMaskine);
+                valgtKunde.MaskineListe.Add(valgtMaskine);
 
                 //US2.7- Gem ændringerne i databasen
                 //Opdaterer maskinen i databasen med det nye KundeId

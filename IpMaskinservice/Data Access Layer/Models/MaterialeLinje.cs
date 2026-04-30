@@ -7,7 +7,7 @@ public class MaterialeLinje {
     public MaterialeType? MaterialeType { get; set; }
     public int? MatrialeTypeId { get; set; }
 
-    internal MaterialeLinje() { }
+    public MaterialeLinje() { }
     internal MaterialeLinje(int antal, string information, MaterialeType materialeType) {
         Antal = antal;
         Information = information;

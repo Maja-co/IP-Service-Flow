@@ -2,6 +2,8 @@
 using Data_Access_Layer;
 using Data_Access_Layer.Models;
 using Data_Access_Layer.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Text;
 using Xunit;
 
@@ -15,7 +17,10 @@ public class MaskineIntegraionTests
     {
 
         // Arrange
-        var db = new MaskinContext();
+        var options = new DbContextOptionsBuilder<MaskinContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        var db = new MaskinContext(options);
         var maskineRepo = new MaskineRepository(db);
         var kundeRepo = new KundeRepository(db);
         var manager = new MaskineManager(maskineRepo, kundeRepo);
@@ -42,7 +47,10 @@ public class MaskineIntegraionTests
     {
 
         //Arrange
-        var db = new MaskinContext();
+        var options = new DbContextOptionsBuilder<MaskinContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        var db = new MaskinContext(options);
         var maskineRepo = new MaskineRepository(db);
         var kundeRepo = new KundeRepository(db);
         var manager = new MaskineManager(maskineRepo, kundeRepo);
@@ -54,9 +62,9 @@ public class MaskineIntegraionTests
         var maskine3 = new Maskine("SN-003", "Scania", kunde, MaskineType.Rørbukning);
 
         //Assert
-        kunde.AddMaskineTilListe(maskine1);
-        kunde.AddMaskineTilListe(maskine2);
-        kunde.AddMaskineTilListe(maskine3);
+        kunde.MaskineListe.Add(maskine1);
+        kunde.MaskineListe.Add(maskine2);
+        kunde.MaskineListe.Add(maskine3);
 
         // Act - Kalder grupperingslogikken
         var grupperet = manager.GrupperMaskinerEfterProducent(kunde);
@@ -73,7 +81,10 @@ public class MaskineIntegraionTests
     public void DatabaseTest()
     {
         // Arrange
-        var db = new MaskinContext();
+        var options = new DbContextOptionsBuilder<MaskinContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        var db = new MaskinContext(options);
         var kundeRepo = new KundeRepository(db);
         var maskineRepo = new MaskineRepository(db);
 
