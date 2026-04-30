@@ -96,7 +96,7 @@ public class MaskinContext : DbContext {
         );
 
         modelBuilder.Entity<Medarbejder>().HasData(
-            new { Id = "M1", MedarbejderNavn = "Admin Alice", MailAdresse = "admin@ipmaskin.dk" }
+            new { Id = "M1", MedarbejderNavn = "Admin Alice", MailAdresse = "admin@ipmaskin.dk",  }
         );
 
         modelBuilder.Entity<ServiceTeknikker>().HasData(

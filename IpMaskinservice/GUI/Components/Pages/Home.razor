@@ -2,8 +2,10 @@
 @rendermode InteractiveServer
 @using Data_Access_Layer.Models
 @using Business_Logic_Layer.Services
+@using Microsoft.EntityFrameworkCore
 @inject AuthService AuthService
 @inject NavigationManager NavManager
+@inject Data_Access_Layer.MaskinContext Db
 
 <PageTitle>Home</PageTitle>
 
