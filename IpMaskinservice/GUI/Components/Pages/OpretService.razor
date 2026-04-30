@@ -1,6 +1,213 @@
-@page "/OpretService"
-<h3>OpretService</h3>
+@page "/opretservice"
+@page "/opretservice/{KundeId:int}/{MaskineId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+<div class="container mt-4">
+    <h1>Opret ny serviceopgave</h1>
+    <hr/>
+
+    <EditForm Model="dummyModel" OnValidSubmit="GemServiceopgave" FormName="opretservice">
+        <DataAnnotationsValidator/>
+        <ValidationSummary class="text-danger"/>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Firma (Kunde)</label>
+                <InputSelect @bind-Value="ValgtKundeId" class="form-select">
+                    <option value="">-- Vælg kunde --</option>
+                </InputSelect>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Maskine</label>
+                <InputSelect @bind-Value="ValgtMaskineId" class="form-select">
+                    <option value="">-- Vælg maskine --</option>
+                </InputSelect>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Type</label>
+                <InputSelect @bind-Value="ValgtType" class="form-select">
+                    <option value="">-- Vælg type --</option>
+                    <option value="Sikkerhedseftersyn">Sikkerhedseftersyn</option>
+                    <option value="FuldService">Fuld service</option>
+                    <option value="DelService">Del-service</option>
+                </InputSelect>
+            </div>
+
+            <div class="col-md-6">
+                @if (ValgtType == "Sikkerhedseftersyn")
+                {
+                    <label class="form-label border-start border-warning ps-2 text-warning">Regel for eftersyn</label>
+                    <InputSelect @bind-Value="ValgtUndertypeId" class="form-select border-warning">
+                        <option value="">-- Vælg --</option>
+                        <option value="Aarligt">Årligt lovpligtigt eftersyn</option>
+                        <option value="Halvaarligt">Halvårligt eftersyn</option>
+                    </InputSelect>
+                }
+                else if (ValgtType == "FuldService")
+                {
+                    <label class="form-label">Servicepakke</label>
+                    <InputSelect @bind-Value="ValgtUndertypeId" class="form-select">
+                        <option value="">-- Vælg --</option>
+                        <option value="Standard">Standard servicepakke</option>
+                        <option value="Premium">Premium servicepakke</option>
+                        <option value="OEM">OEM-specificeret service</option>
+                    </InputSelect>
+                }
+                else if (ValgtType == "DelService")
+                {
+                    <label class="form-label">Delservice-område</label>
+                    <InputSelect @bind-Value="ValgtUndertypeId" class="form-select">
+                        <option value="">-- Vælg --</option>
+                        <option value="Hydraulik">Hydraulik</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Mekanik">Mekanik</option>
+                    </InputSelect>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Deadline</label>
+                <InputDate @bind-Value="Deadline" class="form-control"/>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Interval (måneder)</label>
+                <InputNumber @bind-Value="Interval" class="form-control"/>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Servicetekniker (valgfri)</label>
+                <InputSelect @bind-Value="ValgtTeknikerId" class="form-select">
+                    <option value="">-- Vælg tekniker --</option>
+                </InputSelect>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Ansvarlig medarbejder</label>
+                <InputSelect @bind-Value="ValgtMedarbejderId" class="form-select">
+                    <option value="">-- Vælg medarbejder --</option>
+                </InputSelect>
+            </div>
+
+            <div class="col-12 mt-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Materialeliste</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (!Materialer.Any())
+                        {
+                            <p class="text-muted fst-italic">Ingen materialer tilføjet endnu.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group mb-3">
+                                @foreach (var (materiale, index) in Materialer.Select((m, i) => (m, i)))
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>@materiale</span>
+                                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                                @onclick="() => FjernMateriale(index)">
+                                            Fjern
+                                        </button>
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="d-flex mt-2 materiale-input-gruppe">
+                            <InputText @bind-Value="NytMateriale"
+                                       class="form-control me-2 materiale-input"
+                                       placeholder="Skriv et materiale her..."/>
+                            <button type="button" class="btn btn-primary materiale-knap" @onclick="TilfojMateriale">
+                                Tilføj til listen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <label class="form-label">Note</label>
+                <InputTextArea @bind-Value="Note" class="form-control" rows="6"
+                               placeholder="Andet vigtigt til opgaven..."/>
+            </div>
+
+            <div class="col-12 mt-4 mb-5 d-flex gap-2 justify-content-between">
+                <button type="button" class="btn btn-secondary" @onclick="GaaTilbage">Tilbage</button>
+                <button type="submit" class="btn btn-primary">Gem serviceopgave</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
 
 @code {
-    
+    [Parameter] public int? KundeId { get; set; }
+    [Parameter] public int? MaskineId { get; set; }
+
+    private object dummyModel = new();
+
+    private string _valgtType = "";
+    private string ValgtType
+    {
+        get => _valgtType;
+        set
+        {
+            _valgtType = value;
+            ValgtUndertypeId = "";
+            StateHasChanged();
+        }
+    }
+
+    private int? ValgtKundeId;
+    private int? ValgtMaskineId;
+    private string ValgtUndertypeId = "";
+    private DateTime Deadline = DateTime.Now.AddDays(14);
+    private int Interval = 12;
+    private int? ValgtTeknikerId;
+    private int? ValgtMedarbejderId;
+    private string Note = "";
+
+    private List<string> Materialer = new();
+    private string NytMateriale = "";
+
+    protected override void OnInitialized()
+    {
+        if (KundeId.HasValue)   ValgtKundeId   = KundeId.Value;
+        if (MaskineId.HasValue) ValgtMaskineId = MaskineId.Value;
+    }
+
+    private void TilfojMateriale()
+    {
+        if (!string.IsNullOrWhiteSpace(NytMateriale))
+        {
+            Materialer = new List<string>(Materialer) { NytMateriale.Trim() };
+            NytMateriale = "";
+            StateHasChanged(); // ← dette manglede
+        }
+    }
+
+    private void FjernMateriale(int index)
+    {
+        if (index >= 0 && index < Materialer.Count)
+        {
+            var ny = new List<string>(Materialer);
+            ny.RemoveAt(index);
+            Materialer = ny;
+            StateHasChanged(); // ← dette manglede
+        }
+    }
+
+    private void GemServiceopgave()
+    {
+        Console.WriteLine($"Klar til at gemme! Type: {ValgtType}, Undertype: {ValgtUndertypeId}, MaskineId: {ValgtMaskineId}");
+    }
+
+    private void GaaTilbage()
+    {
+        NavManager.NavigateTo("/");
+    }
 }
