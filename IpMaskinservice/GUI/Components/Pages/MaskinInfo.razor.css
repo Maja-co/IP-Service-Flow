@@ -9,8 +9,14 @@
 .maskineinfo-topbar {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    justify-content: space-between;
     margin-bottom: 1.75rem;
+}
+
+.topbar-venstre {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
 }
 
 .tilbage-knap {
@@ -43,7 +49,6 @@
     align-items: start;
 }
 
-/* Den nye wrapper til højre side, så de stables pænt ovenpå hinanden */
 .hoejre-kolonne {
     display: flex;
     flex-direction: column;
@@ -99,6 +104,19 @@
     border-radius: 10px;
     padding: 1.25rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ── Headere til bokse ── */
+.maskiner-header-container {
+    border-bottom: 2px solid #ebf4ff;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.maskiner-header-titel {
+    border: none;
+    margin: 0;
+    padding: 0;
 }
 
 /* ── Maskine-grid (Lister) ── */
@@ -163,4 +181,9 @@
 
 .historik-detaljer {
     font-size: 0.9rem;
+}
+
+/* ── Modal Baggrund ── */
+.modal-backdrop-custom {
+    background-color: rgba(0, 0, 0, 0.5);
 }
