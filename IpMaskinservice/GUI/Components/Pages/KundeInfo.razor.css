@@ -1,5 +1,4 @@
-
-    /* ── Container ── */
+/* ── Container ── */
 .kundeinfo-container {
     max-width: 960px;
     margin: 2rem auto;
@@ -25,9 +24,9 @@
     white-space: nowrap;
 }
 
-.tilbage-knap:hover {
-    background: #f7fafc;
-}
+    .tilbage-knap:hover {
+        background: #f7fafc;
+    }
 
 .kunde-navn {
     font-size: 1.6rem;
@@ -45,7 +44,9 @@
 }
 
 @media (max-width: 680px) {
-    .kundeinfo-grid { grid-template-columns: 1fr; }
+    .kundeinfo-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ── Stamdata-kort ── */
@@ -88,7 +89,10 @@
     color: #3182ce;
     text-decoration: none;
 }
-.info-linje a:hover { text-decoration: underline; }
+
+    .info-linje a:hover {
+        text-decoration: underline;
+    }
 
 /* ── Maskiner sektion ── */
 .maskiner-sektion {
@@ -118,10 +122,10 @@
     transition: background 0.15s, border-color 0.15s;
 }
 
-.maskine-kort:hover {
-    background: #ebf4ff;
-    border-color: #4299e8;
-}
+    .maskine-kort:hover {
+        background: #ebf4ff;
+        border-color: #4299e8;
+    }
 
 .maskine-ikon {
     font-size: 1.2rem;
@@ -151,3 +155,15 @@
     padding: 0.5rem;
 }
 
+/* ── Opret maskine header ── */
+.maskiner-header-container {
+    border-bottom: 2px solid #ebf4ff;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.maskiner-header-titel {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
