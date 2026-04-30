@@ -53,6 +53,13 @@ public class MaskinContext : DbContext {
         // 1. TPT & Tabeller
         modelBuilder.Entity<ServiceOpgave>().UseTptMappingStrategy();
 
+        // 1b. En-til-mange relationer
+        modelBuilder.Entity<Medarbejder>()
+            .HasMany(m => m.ServiceOpgaveListe)
+            .WithOne(s => s.Medarbejder)
+            .HasForeignKey(s => s.MedarbejderId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         // 2. Mange-til-mange relationer inkl. seed af bro-tabeller
         modelBuilder.Entity<Service>()
             .HasMany(s => s.OpgaveTypeListe)

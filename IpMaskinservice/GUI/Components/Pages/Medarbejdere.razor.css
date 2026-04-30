@@ -1,0 +1,51 @@
+.medarbejder-container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.medarbejder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #ebf4ff;
+    padding-bottom: 1rem;
+}
+
+    .medarbejder-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0;
+    }
+
+.header-knapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.bruger-header {
+    cursor: pointer;
+}
+
+.aftale-link {
+    text-decoration: none;
+    color: #3182ce;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+    .aftale-link:hover {
+        color: #2b6cb0;
+        text-decoration: underline;
+    }
+
+.modal-backdrop-custom {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.flyt-ansvar-liste {
+    max-height: 200px;
+    overflow-y: auto;
+}
