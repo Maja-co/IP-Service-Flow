@@ -9,4 +9,12 @@ public class MaterialeType {
     public MaterialeType(string materialeBeskrivelse) {
         MaterialeBeskrivelse = materialeBeskrivelse;
     }
+
+    public static MaterialeType CreateMaterialeType(string beskrivelse)
+    {
+        if (string.IsNullOrWhiteSpace(beskrivelse))
+            throw new ArgumentException("Beskrivelse må ikke være tom.");
+
+        return new MaterialeType(beskrivelse);
+    }
 };
