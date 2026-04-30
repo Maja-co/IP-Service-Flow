@@ -24,9 +24,9 @@
     white-space: nowrap;
 }
 
-.tilbage-knap:hover {
-    background: #f7fafc;
-}
+    .tilbage-knap:hover {
+        background: #f7fafc;
+    }
 
 .maskine-overskrift {
     font-size: 1.6rem;
@@ -51,7 +51,9 @@
 }
 
 @media (max-width: 680px) {
-    .maskineinfo-grid { grid-template-columns: 1fr; }
+    .maskineinfo-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ── Stamdata-kort ── */
@@ -118,10 +120,10 @@
     transition: background 0.15s, border-color 0.15s;
 }
 
-.maskine-kort:hover {
-    background: #ebf4ff;
-    border-color: #4299e8;
-}
+    .maskine-kort:hover {
+        background: #ebf4ff;
+        border-color: #4299e8;
+    }
 
 .maskine-ikon {
     font-size: 1.2rem;
@@ -142,4 +144,23 @@
     font-style: italic;
     font-size: 0.9rem;
     padding: 0.5rem;
+}
+
+.kunde-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.maskine-aftale-kort {
+    cursor: pointer;
+    border-left: 4px solid #ffc107;
+}
+
+.historik-header {
+    cursor: pointer;
+}
+
+.historik-detaljer {
+    font-size: 0.9rem;
 }

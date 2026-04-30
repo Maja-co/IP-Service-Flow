@@ -10,11 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Business_Logic_Layer.Services;
+using GUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//MaskineManager til GUI 
-//builder.Services.AddScoped<MaskineManager>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -31,6 +29,7 @@ builder.Services.AddDbContext<MaskinContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
+builder.Services.AddScoped<MaskineService>();
 
 var app = builder.Build();
 

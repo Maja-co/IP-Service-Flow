@@ -1,0 +1,33 @@
+/* --- Sorterbar Overskrift --- 
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+}
+*/
+/* --- Sorterbar Overskrift --- */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Skubber "Dato" til venstre og pilen helt ud til højre */
+}
+
+.sort-arrow {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+
+
+.sortable-header:hover {
+    background-color: #e9ecef;
+}
+
+a {
+    text-decoration: none; 
+    color: inherit;
+}

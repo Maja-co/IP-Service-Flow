@@ -52,7 +52,12 @@ namespace Business_Logic_Layer.Services
                 .Where(k => k.ErAktiv == false)
                 .ToList();
         }
-
+        public async Task<Kunde?> GetKundeMedMaskinerAsync(int id)
+        {
+            return await _context.Kunder
+                .Include(k => k.MaskineListe)
+                .FirstOrDefaultAsync(k => k.Id == id);
+        }
         public void AktiverKunde(int kundeId)
         {
             var kunde = _context.Kunder.Find(kundeId);

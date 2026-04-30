@@ -1,4 +1,5 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 @using Data_Access_Layer.Models
 @using Business_Logic_Layer.Services
 @inject AuthService AuthService
@@ -10,46 +11,86 @@
 <p>Velkommen, @AuthService.CurrentUser?.MedarbejderNavn!</p>
 
 <div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Dato (faldende)</th>
-                <th>Firma</th>
-                <th>Type</th>
-                <th>Maskine</th>
-            </tr>
+    <table class="table custom-table">
+        <thead class="table-header">
+        <tr>
+            <th class="sortable-header" @onclick="SorterEfterDato">
+                <span>Dato</span>
+                <span class="sort-arrow">@(_sorterStigende ? "↑ ↓" : "↑ ↓")</span>
+            </th>
+            <th>Firma</th>
+            <th>Type</th>
+            <th>Maskine</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var opgave in _opgaver.OrderByDescending(o => o.Deadline))
-            {
+        @if (_opgaver == null) {
+            <tr><td colspan="4"><em>Henter opgaver...</em></td></tr>
+        }
+        else if (!_opgaver.Any()) {
+            <tr><td colspan="4">Ingen opgaver fundet.</td></tr>
+        }
+        else {
+            @foreach (var opgave in _opgaver) {
                 <tr>
                     <td>@opgave.Deadline.ToString("dd.MM.yyyy")</td>
-                    <td>@opgave.Maskine?.Kunde?.FirmaNavn</td>
+                    
                     <td>
-                        @if (opgave is Service s)
-                        {
-                            @s.Servicetype
-                        }
-                        else if (opgave is SikkerhedsEftersyn)
-                        {
-                            <text>Sikkerhedseftersyn</text>
+                        @if (opgave.Maskine?.Kunde != null) {
+                            <a href="/kunde/@opgave.Maskine.Kunde.Id" class="firma-link">
+                                @opgave.Maskine.Kunde.FirmaNavn
+                            </a>
                         }
                     </td>
-                    <td>@opgave.Maskine?.Producent (@opgave.Maskine?.SerieNummer)</td>
+                    
+                    <td>
+                        <a href="/opgave/@opgave.Id" class="maskine-link">
+                            @if (opgave is Service s) {
+                                @s.Servicetype
+                            }
+                            else if (opgave is SikkerhedsEftersyn) {
+                                <text>Sikkerhedseftersyn</text>
+                            }
+                        </a>
+                    </td>
+                    
+                    <td>
+                        @if (opgave.Maskine != null) {
+                            <a href="/maskine/@opgave.Maskine.Id" class="maskine-link">
+                                @opgave.Maskine.Producent (@opgave.Maskine.MaskineType) - S/N: @opgave.Maskine.SerieNummer
+                            </a>
+                        }
+                    </td>
                 </tr>
             }
+        }
         </tbody>
     </table>
 </div>
 
-<button class="btn btn-secondary mt-3" @onclick="HandleLogout">Log ud</button>
-
 @code {
-    private List<ServiceOpgave> _opgaver = new();
+    private List<ServiceOpgave>? _opgaver;
+    private bool _sorterStigende = false; // Start med faldende visning
 
-    protected override void OnInitialized()
-    {
+    protected override async Task OnInitializedAsync() {
+        _opgaver = await Db.Set<ServiceOpgave>()
+            .Include(o => o.Maskine)
+                .ThenInclude(m => m!.Kunde)
+            .OrderByDescending(o => o.Deadline)
+            .ToListAsync();
+    }
+
+    private void SorterEfterDato() {
+        if (_opgaver == null) return;
         
+        // Vend bool for at skifte retning
+        _sorterStigende = !_sorterStigende;
+        
+        if (_sorterStigende) {
+            _opgaver = _opgaver.OrderBy(o => o.Deadline).ToList();
+        } else {
+            _opgaver = _opgaver.OrderByDescending(o => o.Deadline).ToList();
+        }
     }
 
     private void HandleLogout()

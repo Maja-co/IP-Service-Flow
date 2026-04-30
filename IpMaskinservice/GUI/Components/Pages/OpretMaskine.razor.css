@@ -1,0 +1,75 @@
+/* ── Container og Layout ── */
+.opret-maskine-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.opret-maskine-topbar {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.maskine-overskrift {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+/* ── Form Kort ── */
+.form-kort {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-sektion-titel {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ebf4ff;
+}
+
+/* ── Inputs og Labels ── */
+.input-gruppe {
+    margin-bottom: 1.25rem;
+}
+
+.input-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Knapper ── */
+.button-gruppe {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.tilbage-knap {
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: none;
+    transition: background 0.15s;
+}
+
+    .tilbage-knap:hover {
+        background: #f7fafc;
+    }

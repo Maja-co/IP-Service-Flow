@@ -1,0 +1,93 @@
+@page "/opretmaskine/{KundeId:int}"
+@rendermode InteractiveServer
+@using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
+@inject KundeService KundeService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Opret Maskine</PageTitle>
+
+<div class="opret-maskine-container">
+    @* ── Topbar ── *@
+    <div class="opret-maskine-topbar">
+        <button class="btn btn-link tilbage-knap" @onclick="Annuller">← Tilbage</button>
+        <h1 class="maskine-overskrift">Tilføj ny maskine</h1>
+    </div>
+
+    @if (valgtKunde == null)
+    {
+        <div class="alert alert-info">Henter kundedata...</div>
+    }
+    else
+    {
+        <div class="form-kort">
+            <h2 class="form-sektion-titel">Maskininformation for @valgtKunde.FirmaNavn</h2>
+            
+            @if (!string.IsNullOrEmpty(fejlBesked))
+            {
+                <div class="alert alert-danger">@fejlBesked</div>
+            }
+
+            <div class="input-gruppe">
+                <label class="input-label">Producent</label>
+                <input class="form-control" @bind="producent" placeholder="F.eks. Volvo, CAT..." />
+            </div>
+
+            <div class="input-gruppe">
+                <label class="input-label">Maskine Type</label>
+                <select class="form-select" @bind="valgtType">
+                    @foreach (var type in Enum.GetValues<MaskineType>())
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
+
+            <div class="input-gruppe">
+                <label class="input-label">Serienummer</label>
+                <input class="form-control" @bind="serieNummer" placeholder="Indtast unikt S/N" />
+            </div>
+
+            <div class="button-gruppe">
+                <button class="btn btn-success" @onclick="GemMaskine">Gem maskine</button>
+                <button class="btn btn-secondary" @onclick="Annuller">Annuller</button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int KundeId { get; set; }
+    private Kunde? valgtKunde;
+    
+    private string producent = "";
+    private string serieNummer = "";
+    private MaskineType valgtType;
+    private string fejlBesked = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        valgtKunde = await KundeService.GetKundeMedMaskinerAsync(KundeId);
+    }
+
+    private void GemMaskine()
+    {
+        try
+        {
+            if (valgtKunde != null)
+            {
+                valgtKunde.createMaskine(serieNummer, producent, valgtKunde, valgtType);
+                
+                KundeService.OpdaterKunde(valgtKunde);
+                
+                NavigationManager.NavigateTo($"/kunde/{KundeId}");
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            fejlBesked = ex.Message;
+        }
+    }
+
+    private void Annuller() => NavigationManager.NavigateTo($"/kunde/{KundeId}");
+}
