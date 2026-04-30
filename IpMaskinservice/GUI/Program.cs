@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MaskinContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IMedarbejderRepository, MedarbejderRepository>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddHostedService<ServicePåmindelsesWorker>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

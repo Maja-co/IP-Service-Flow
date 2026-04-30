@@ -96,7 +96,7 @@ public class MaskinContext : DbContext {
         );
 
         modelBuilder.Entity<Medarbejder>().HasData(
-            new { Id = "M1", MedarbejderNavn = "Admin Alice", MailAdresse = "admin@ipmaskin.dk",  }
+            new { Id = "M1", MedarbejderNavn = "Admin Alice", KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123", MailAdresse = "admin@ipmaskin.dk"}
         );
 
         modelBuilder.Entity<ServiceTeknikker>().HasData(
@@ -131,8 +131,8 @@ public class MaskinContext : DbContext {
             {
                 Id = 1,
                 MaskineId = 1,
-                SidstUdførtDato = new DateOnly(2025, 10, 1),
-                Deadline = new DateOnly(2026, 10, 1),
+                SidstUdførtDato = new DateOnly(2025, 5, 30),
+                Deadline = new DateOnly(2026, 5, 30),
                 SidstUdførtNote = "Olie skiftet, alt ok",
                 ServiceInterval = ServiceInterval.TOLVMÅNEDER,
                 MedarbejderId = "M1",
@@ -140,6 +140,7 @@ public class MaskinContext : DbContext {
                 Servicetype = ServiceType.Fuldservice
             }
         );
+
 
         modelBuilder.Entity<SikkerhedsEftersyn>().HasData(
             new
