@@ -7,12 +7,10 @@
 
 <PageTitle>Maskine: @(_valgtMaskine?.MaskineType)</PageTitle>
 
-@if (_valgtMaskine == null)
-{
+@if (_valgtMaskine == null) {
 	<div class="alert alert-info">Henter maskindata...</div>
 }
-else
-{
+else {
 	<div class="maskineinfo-container">
 
 		@* ── Topbar med navn og tilbage-knap ── *@
@@ -31,8 +29,7 @@ else
 				<h2 class="kort-titel">Stamdata</h2>
 				<div class="info-linje">
 					<span class="info-label">Kunde</span>
-					@if (_valgtMaskine.Kunde != null)
-					{
+					@if (_valgtMaskine.Kunde != null) {
 						<span>
 							<a href="/kunde/@_valgtMaskine.Kunde.Id" class="kunde-link">
 								@_valgtMaskine.Kunde.FirmaNavn
@@ -63,12 +60,11 @@ else
 						<h2 class="kort-titel maskiner-header-titel">Service- og Eftersynsaftaler</h2>
 						<button class="btn btn-primary btn-sm" @onclick="OpretServiceAftale">Opret aftale</button>
 					</div>
-					@if (_valgtMaskine.ServiceOgEftersynAftalerListe?.Any() == true)
-					{
+					@if (_valgtMaskine.ServiceOgEftersynAftalerListe?.Any() == true) {
 						<div class="maskine-grid">
-							@foreach (var aftale in _valgtMaskine.ServiceOgEftersynAftalerListe)
-							{
-								<div class="maskine-kort maskine-aftale-kort" @onclick='() => NavigationManager.NavigateTo($"/serviceaftale/{aftale.Id}")'>
+							@foreach (var aftale in _valgtMaskine.ServiceOgEftersynAftalerListe) {
+								<div class="maskine-kort maskine-aftale-kort"
+								     @onclick='() => NavigationManager.NavigateTo($"/serviceaftale/{aftale.Id}")'>
 									<span class="maskine-ikon">📅</span>
 									<div>
 										<div class="maskine-navn">Planlagt Service</div>
@@ -78,8 +74,7 @@ else
 							}
 						</div>
 					}
-					else
-					{
+					else {
 						<div class="ingen-maskiner">
 							Ingen fremtidige aftaler planlagt.
 						</div>
@@ -89,25 +84,27 @@ else
 				@* Service Historik, træ struktur *@
 				<div class="maskiner-sektion">
 					<h2 class="kort-titel">Service Historik</h2>
-					@if (_valgtMaskine.ServiceHistorikListe?.Any() == true)
-					{
+					@if (_valgtMaskine.ServiceHistorikListe?.Any() == true) {
 						<div class="list-group">
-							@foreach (var historik in _valgtMaskine.ServiceHistorikListe.OrderByDescending(afsluttet => afsluttet.UdførtDato))
-							{
+							@foreach (var historik in _valgtMaskine.ServiceHistorikListe.OrderByDescending(afsluttet => afsluttet.UdførtDato)) {
 								<div class="list-group-item list-group-item-action mb-1 shadow-sm border">
-									<div class="d-flex justify-content-between align-items-center historik-header" @onclick="() => ToggleHistorik(historik.Id)">
+									<div class="d-flex justify-content-between align-items-center historik-header"
+									     @onclick="() => ToggleHistorik(historik.Id)">
 										<div>
 											<strong>@(historik.UdførtDato.ToShortDateString())</strong> - Service udført
 										</div>
-										<span class="badge bg-primary rounded-pill">@(udfoldedeHistorik.Contains(historik.Id) ? "▲" : "▼")</span>
+										<span
+											class="badge bg-primary rounded-pill">@(udfoldedeHistorik.Contains(historik.Id) ? "▲" : "▼")</span>
 									</div>
 
-									@if (udfoldedeHistorik.Contains(historik.Id))
-									{
+									@if (udfoldedeHistorik.Contains(historik.Id)) {
 										<div class="mt-3 p-3 bg-light border-top">
-											<p><strong>Note fra tekniker:</strong><br />@(string.IsNullOrWhiteSpace(historik.Note) ? "Ingen note tilføjet." : historik.Note)</p>
+											<p><strong>Note fra
+													tekniker:</strong><br/>@(string.IsNullOrWhiteSpace(historik.Note) ? "Ingen note tilføjet." : historik.Note)
+											</p>
 											<div class="row text-muted historik-detaljer">
-												<div class="col-sm-6 text-end">Udført af: @(historik.ServiceOpgave?.ServiceTeknikker?.TeknikkerNavn ?? "Ukendt")</div>
+												<div class="col-sm-6 text-end">Udført
+													af: @(historik.ServiceOpgave?.ServiceTeknikker?.TeknikkerNavn ?? "Ukendt")</div>
 											</div>
 										</div>
 									}
@@ -115,8 +112,7 @@ else
 							}
 						</div>
 					}
-					else
-					{
+					else {
 						<div class="ingen-maskiner">Ingen servicehistorik registreret.</div>
 					}
 				</div>
@@ -125,8 +121,7 @@ else
 	</div>
 
 	@* ── SLET BEKRÆFTELSES MODAL ── *@
-	@if (visSletModal)
-	{
+	@if (visSletModal) {
 		<div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content border-danger">
@@ -136,18 +131,20 @@ else
 					</div>
 					<div class="modal-body">
 						<p>Er du sikker på, at du vil slette denne maskine?</p>
-						<p><strong>Dette kan ikke fortrydes!</strong> Tilhørende serviceaftaler og påmindelser vil også blive permanent slettet.</p>
+						<p><strong>Dette kan ikke fortrydes!</strong> Tilhørende serviceaftaler og påmindelser vil også
+							blive permanent slettet.</p>
 					</div>
 					<div class="modal-footer">
 						@* autofocus sikrer at "Enter" afbryder handlingen *@
-						<button type="button" class="btn btn-secondary" autofocus @onclick="LukSletModal">Annuller</button>
-						<button type="button" class="btn btn-danger" @onclick="SletMaskineBekræftet">Bekræft sletning</button>
+						<button type="button" class="btn btn-secondary" autofocus @onclick="LukSletModal">Annuller
+						</button>
+						<button type="button" class="btn btn-danger" @onclick="SletMaskineBekræftet">Bekræft sletning
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	}
-
 }
 
 @code {
@@ -156,13 +153,11 @@ else
 	private HashSet<int> udfoldedeHistorik = new();
 	private bool visSletModal = false;
 
-	protected override async Task OnInitializedAsync()
-	{
+	protected override async Task OnInitializedAsync() {
 		_valgtMaskine = await MaskineService.GetMaskineMedHistorikAsync(Id);
 	}
 
-	private void ToggleHistorik(int id)
-	{
+	private void ToggleHistorik(int id) {
 		if (udfoldedeHistorik.Contains(id)) udfoldedeHistorik.Remove(id);
 		else udfoldedeHistorik.Add(id);
 	}
@@ -170,25 +165,22 @@ else
 	private void VisSletBekræftelse() => visSletModal = true;
 	private void LukSletModal() => visSletModal = false;
 
-	private async Task SletMaskineBekræftet()
-	{
+	private async Task SletMaskineBekræftet() {
 		visSletModal = false; // Lukker boksen
 		int kundeId = _valgtMaskine?.Kunde?.Id ?? 0;
-        
+
 		await MaskineService.SletMaskineAsync(Id);
-        
-		if (kundeId > 0)
-		{
+
+		if (kundeId > 0) {
 			NavigationManager.NavigateTo($"/kunde/{kundeId}");
 		}
-		else
-		{
+		else {
 			NavigationManager.NavigateTo("/Kunder");
 		}
 	}
 
-	private void OpretServiceAftale()
-	{
-		NavigationManager.NavigateTo($"/opretservice/{Id}");
+	private void OpretServiceAftale() {
+		NavigationManager.NavigateTo($"/opretservice");
 	}
+
 }
