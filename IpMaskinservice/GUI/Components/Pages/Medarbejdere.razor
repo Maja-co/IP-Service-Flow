@@ -12,7 +12,7 @@
         <h1>Administrer Brugere</h1>
         <div class="header-knapper">
             <button class="btn btn-primary" @onclick="OpretBruger">Opret bruger</button>
-            <button class="btn btn-warning" @onclick="VisFlytAnsvarModal">Flyt ansvar</button>
+            <button class="btn btn-primary" @onclick="VisFlytAnsvarModal">Flyt ansvar</button>
         </div>
     </div>
 
@@ -30,14 +30,13 @@
                 <div class="list-group-item list-group-item-action mb-2 shadow-sm border rounded">
                     <div class="d-flex justify-content-between align-items-center bruger-header" @onclick="() => ToggleBruger(medarbejder.Id)">
                         <div>
-                            <strong>@medarbejder.MedarbejderNavn</strong>
+                            <strong>@medarbejder.MedarbejderNavn</strong> - @medarbejder.Id
                             <span class="text-muted ms-2">(@(medarbejder.ServiceOpgaveListe?.Count ?? 0) aftaler)</span>
                         </div>
                         <div>
                             <button class="btn btn-sm btn-danger me-3"
-                                    disabled="@harAftaler"
                                     @onclick:stopPropagation="true"
-                                    @onclick="() => VisSletModal(medarbejder)">
+                                    @onclick="() => ForsøgSletBruger(medarbejder)">
                                 Slet
                             </button>
                             <span class="badge bg-secondary rounded-pill">@(udfoldedeBrugere.Contains(medarbejder.Id) ? "▲" : "▼")</span>
@@ -71,7 +70,29 @@
         </div>
     }
 
-    @* ── SLET MODAL ── *@
+    @* ── ADVARSEL MODAL (Kan ikke slette) ── *@
+    @if (advarselModalSynlig && valgtTilSletning != null)
+    {
+        <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">⚠️ Handling kan ikke udføres</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="LukAdvarselModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Du kan ikke slette <strong>@valgtTilSletning.MedarbejderNavn</strong>, da brugeren stadig står som ansvarlig for en eller flere serviceaftaler.
+                        <br /><br />Brug "Flyt ansvar" funktionen øverst på siden til at overdrage aftalerne til en anden medarbejder, før du kan slette.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" autofocus @onclick="LukAdvarselModal">Forstået</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ── SLET MODAL (Bekræft sletning) ── *@
     @if (sletModalSynlig && valgtTilSletning != null)
     {
         <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
@@ -99,10 +120,10 @@
     {
         <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content border-warning">
-                    <div class="modal-header bg-warning text-dark">
+                <div class="modal-content border-primary">
+                    <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title">🔄 Flyt Ansvar</h5>
-                        <button type="button" class="btn-close" @onclick="LukFlytAnsvarModal"></button>
+                        <button type="button" class="btn-close btn-close-white" @onclick="LukFlytAnsvarModal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -167,6 +188,7 @@
     private HashSet<string> udfoldedeBrugere = new();
 
     private bool sletModalSynlig = false;
+    private bool advarselModalSynlig = false;
     private Medarbejder? valgtTilSletning;
 
     private bool flytAnsvarModalSynlig = false;
@@ -208,19 +230,28 @@
 
     private void OpretBruger() => NavigationManager.NavigateTo("/opretmedarbejder");
 
-    private void VisSletModal(Medarbejder m)
+    // Tjekker om medarbejderen kan slettes, eller om vi skal vise advarslen
+    private void ForsøgSletBruger(Medarbejder m)
     {
         valgtTilSletning = m;
-        sletModalSynlig = true;
+        if (m.ServiceOpgaveListe?.Any() == true)
+        {
+            advarselModalSynlig = true;
+        }
+        else
+        {
+            sletModalSynlig = true;
+        }
     }
 
+    private void LukAdvarselModal() => advarselModalSynlig = false;
     private void LukSletModal() => sletModalSynlig = false;
 
     private async Task SletBrugerBekræftet()
     {
         if (valgtTilSletning != null)
         {
-            await MedarbejderService.SletMedarbejderAsync(valgtTilSletning.Id);
+            await MedarbejderService.SletMedarbejderAsync(valgtTilSletning.Id); 
             await IndlæsData();
         }
         LukSletModal();
