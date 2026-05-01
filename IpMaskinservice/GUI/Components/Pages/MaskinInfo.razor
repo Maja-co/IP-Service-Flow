@@ -180,7 +180,7 @@ else {
 	}
 
 	private void OpretServiceAftale() {
-		NavigationManager.NavigateTo($"/opretservice");
+		NavigationManager.NavigateTo($"/opretservice/{_valgtMaskine.Kunde.Id}/{_valgtMaskine.Id}");
 	}
 
 }

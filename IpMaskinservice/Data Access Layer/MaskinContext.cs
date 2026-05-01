@@ -129,7 +129,7 @@ public class MaskinContext : DbContext {
                 ServiceInterval = ServiceInterval.TOLVMÅNEDER,
                 MedarbejderId = "M1",
                 ServiceTeknikkerId = 1,
-                Servicetype = ServiceType.Fuldservice
+                Servicetype = ServiceType.FULDSERVICE
             }
         );
 
