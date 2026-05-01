@@ -31,6 +31,8 @@ builder.Services.AddDbContext<MaskinContext>(options =>
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 builder.Services.AddScoped<MaskineService>();
+builder.Services.AddScoped<MedarbejderService>();
+builder.Services.AddScoped<ServiceOpgaveService>();
 
 var app = builder.Build();
 

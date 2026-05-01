@@ -1,5 +1,4 @@
-@page "/opretservice"
-@page "/opretservice/{KundeId:int}/{MaskineId:int}"
+@page "/serviceinfo/{OpgaveId:int}"
 @rendermode InteractiveServer
 @using Business_Logic_Layer.Extensions
 @using Business_Logic_Layer.Services
@@ -8,7 +7,14 @@
 @inject ServiceOpgaveService ServiceOpgaveService
 
 <div class="container mt-4">
-    <h1>Opret ny serviceopgave</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Serviceopgave (#@OpgaveId)</h1>
+        @if (!ServiceOpgaveService.ErRedigeringAktiv) {
+            <button class="btn btn-outline-primary" @onclick="ServiceOpgaveService.ToggleRedigering">
+                <i class="bi bi-pencil"></i> Rediger Opgave
+            </button>
+        }
+    </div>
     <hr/>
 
     @if (!string.IsNullOrEmpty(ErrorMessage)) {
@@ -18,11 +24,12 @@
         </div>
     }
 
-    <EditForm Model="ServiceOpgaveService" OnSubmit="GemServiceopgave" FormName="opretservice">
+    <EditForm Model="ServiceOpgaveService" OnSubmit="GemÆndringer" FormName="serviceinfo">
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Firma (Kunde)</label>
-                <InputSelect Value="ServiceOpgaveService.ValgtKundeId"
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             Value="ServiceOpgaveService.ValgtKundeId"
                              ValueExpression="() => ServiceOpgaveService.ValgtKundeId"
                              ValueChanged="(int? val) => OnKundeValgt(val)"
                              class="form-select">
@@ -35,7 +42,8 @@
 
             <div class="col-md-6">
                 <label class="form-label">Maskine</label>
-                <InputSelect @bind-Value="ServiceOpgaveService.ValgtMaskineId" class="form-select">
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             @bind-Value="ServiceOpgaveService.ValgtMaskineId" class="form-select">
                     <option value="">-- Vælg maskine --</option>
                     @foreach (var maskine in ServiceOpgaveService.MaskineListe) {
                         <option value="@maskine.Id">@maskine.Producent - @maskine.SerieNummer</option>
@@ -45,7 +53,8 @@
 
             <div class="col-md-6">
                 <label class="form-label">Kategori</label>
-                <InputSelect @bind-Value="ServiceOpgaveService.ValgtKategori" class="form-select border-primary">
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             @bind-Value="ServiceOpgaveService.ValgtKategori" class="form-select border-primary">
                     <option value="">-- Vælg kategori --</option>
                     <option value="Sikkerhedseftersyn">Sikkerhedseftersyn</option>
                     <option value="Service">Service</option>
@@ -55,7 +64,9 @@
             <div class="col-md-6">
                 @if (ServiceOpgaveService.ValgtKategori == "Sikkerhedseftersyn") {
                     <label class="form-label border-start border-warning ps-2 text-warning">Eftersynsregel</label>
-                    <InputSelect @bind-Value="ServiceOpgaveService.ValgtEftersynsRegelId" class="form-select border-warning">
+                    <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                                 @bind-Value="ServiceOpgaveService.ValgtEftersynsRegelId"
+                                 class="form-select border-warning">
                         <option value="">-- Vælg regel --</option>
                         @foreach (var regel in ServiceOpgaveService.EftersynsReglerListe) {
                             <option value="@regel.Id">@regel.Regel</option>
@@ -66,7 +77,8 @@
                     <div class="d-flex flex-column gap-2">
                         <div>
                             <label class="form-label">Servicetype</label>
-                            <InputSelect @bind-Value="ServiceOpgaveService.ValgtServiceType" class="form-select">
+                            <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                                         @bind-Value="ServiceOpgaveService.ValgtServiceType" class="form-select">
                                 <option value="">-- Vælg servicetype --</option>
                                 @foreach (var type in ServiceOpgaveService.ServiceTyper) {
                                     <option value="@type">@type.ToString()</option>
@@ -75,7 +87,8 @@
                         </div>
                         <div>
                             <label class="form-label">Opgavetype</label>
-                            <InputSelect @bind-Value="ServiceOpgaveService.ValgtOpgaveTypeId" class="form-select">
+                            <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                                         @bind-Value="ServiceOpgaveService.ValgtOpgaveTypeId" class="form-select">
                                 <option value="">-- Vælg opgavetype --</option>
                                 @foreach (var type in ServiceOpgaveService.OpgaveTyperListe) {
                                     <option value="@type.Id">@type.OpgaveBeskrivelse</option>
@@ -88,12 +101,14 @@
 
             <div class="col-md-6">
                 <label class="form-label">Deadline</label>
-                <InputDate @bind-Value="ServiceOpgaveService.Deadline" class="form-control"/>
+                <InputDate disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                           @bind-Value="ServiceOpgaveService.Deadline" class="form-control"/>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Interval</label>
-                <InputSelect @bind-Value="ServiceOpgaveService.ValgtInterval" class="form-select">
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             @bind-Value="ServiceOpgaveService.ValgtInterval" class="form-select">
                     <option value="">-- Vælg interval --</option>
                     @foreach (var interval in ServiceOpgaveService.ServiceIntervaller) {
                         <option value="@interval">@interval.TilDansk()</option>
@@ -103,7 +118,8 @@
 
             <div class="col-md-6">
                 <label class="form-label">Servicetekniker (Valgfri)</label>
-                <InputSelect @bind-Value="ServiceOpgaveService.ValgtTeknikerId" class="form-select">
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             @bind-Value="ServiceOpgaveService.ValgtTeknikerId" class="form-select">
                     <option value="">-- Vælg tekniker --</option>
                     @foreach (var tekniker in ServiceOpgaveService.TeknikerListe) {
                         <option value="@tekniker.Id">@tekniker.TeknikkerNavn</option>
@@ -113,7 +129,8 @@
 
             <div class="col-md-6">
                 <label class="form-label">Ansvarlig medarbejder</label>
-                <InputSelect @bind-Value="ServiceOpgaveService.ValgtMedarbejderId" class="form-select">
+                <InputSelect disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                             @bind-Value="ServiceOpgaveService.ValgtMedarbejderId" class="form-select">
                     <option value="">-- Vælg medarbejder --</option>
                     @foreach (var medarbejder in ServiceOpgaveService.MedarbejderListe) {
                         <option value="@medarbejder.Id">@medarbejder.MedarbejderNavn</option>
@@ -135,78 +152,85 @@
                                 @foreach (var (materiale, index) in ServiceOpgaveService.Materialer.Select((m, i) => (m, i))) {
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>@materiale</span>
-                                        <button type="button" class="btn btn-outline-danger btn-sm"
-                                                @onclick="() => ServiceOpgaveService.FjernMateriale(index)">
-                                            Fjern
-                                        </button>
+                                        @if (ServiceOpgaveService.ErRedigeringAktiv) {
+                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    @onclick="() => ServiceOpgaveService.FjernMateriale(index)">
+                                                Fjern
+                                            </button>
+                                        }
                                     </li>
                                 }
                             </ul>
                         }
 
-                        <div class="d-flex mt-2 materiale-input-gruppe">
-                            <InputText @bind-Value="ServiceOpgaveService.NytMateriale"
-                                       class="form-control me-2 materiale-input"
-                                       placeholder="Skriv et materiale her..."/>
-                            <button type="button" class="btn btn-primary materiale-knap" @onclick="ServiceOpgaveService.TilføjMateriale">
-                                Tilføj til listen
-                            </button>
-                        </div>
+                        @if (ServiceOpgaveService.ErRedigeringAktiv) {
+                            <div class="d-flex mt-2 materiale-input-gruppe">
+                                <InputText @bind-Value="ServiceOpgaveService.NytMateriale"
+                                           class="form-control me-2 materiale-input"
+                                           placeholder="Skriv et materiale her..."/>
+                                <button type="button" class="btn btn-primary materiale-knap"
+                                        @onclick="ServiceOpgaveService.TilføjMateriale">
+                                    Tilføj til listen
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
 
             <div class="col-12 mt-4">
                 <label class="form-label">Note (Valgfri)</label>
-                <InputTextArea @bind-Value="ServiceOpgaveService.Note" class="form-control" rows="6"
+                <InputTextArea disabled="@(!ServiceOpgaveService.ErRedigeringAktiv)"
+                               @bind-Value="ServiceOpgaveService.Note" class="form-control" rows="6"
                                placeholder="Andet vigtigt til opgaven..."/>
             </div>
 
             <div class="col-12 mt-4 mb-5 d-flex gap-2 justify-content-between">
-                <button type="button" class="btn btn-secondary" @onclick='() => NavManager.NavigateTo("/")'>Tilbage</button>
-                <button type="submit" class="btn btn-primary">Gem serviceopgave</button>
+                <button type="button" class="btn btn-secondary" @onclick='() => NavManager.NavigateTo("/")'>Tilbage
+                </button>
+
+                @if (ServiceOpgaveService.ErRedigeringAktiv) {
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" @onclick="AfbrydRedigering">Annuller
+                        </button>
+                        <button type="submit" class="btn btn-success">Gem ændringer</button>
+                    </div>
+                }
             </div>
         </div>
     </EditForm>
 </div>
 
 @code {
-    [Parameter] public int? KundeId { get; set; }
-    [Parameter] public int? MaskineId { get; set; }
-
+    [Parameter] public int OpgaveId { get; set; }
     private string? ErrorMessage;
 
     protected override async Task OnInitializedAsync() {
-        await ServiceOpgaveService.InitializeStateAsync(KundeId, MaskineId);
+        try {
+            await ServiceOpgaveService.HentOpgaveTilInfoAsync(OpgaveId);
+        }
+        catch (Exception ex) {
+            ErrorMessage = "Kunne ikke hente opgaven: " + ex.Message;
+        }
     }
 
     private async Task OnKundeValgt(int? kundeId) {
         await ServiceOpgaveService.KundeValgtAsync(kundeId);
     }
 
-    private async Task GemServiceopgave() {
+    private async Task GemÆndringer() {
         ErrorMessage = null;
-        
-        // Simpel validering for at fange brugeren hurtigt
-        if (!ServiceOpgaveService.ValgtKundeId.HasValue) {
-            ErrorMessage = "Et firma skal vælges."; return;
-        }
-        if (string.IsNullOrEmpty(ServiceOpgaveService.ValgtKategori)) {
-            ErrorMessage = "En kategori skal vælges."; return;
-        }
-
         try {
-            await ServiceOpgaveService.OpretOpgaveFraUiAsync(
-                ServiceOpgaveService.ValgtKategori, ServiceOpgaveService.ValgtMaskineId, ServiceOpgaveService.Deadline, ServiceOpgaveService.ValgtInterval,
-                ServiceOpgaveService.Note, ServiceOpgaveService.ValgtTeknikerId, ServiceOpgaveService.ValgtMedarbejderId,
-                ServiceOpgaveService.ValgtEftersynsRegelId, ServiceOpgaveService.ValgtServiceType, ServiceOpgaveService.ValgtOpgaveTypeId, ServiceOpgaveService.Materialer);
-            
-            // Husk at rydde op i state, så formen er tom næste gang vi besøger den
-            ServiceOpgaveService.NulstilState();
-            NavManager.NavigateTo("/");
+            await ServiceOpgaveService.OpdaterOpgaveFraUiAsync();
+            ServiceOpgaveService.ErRedigeringAktiv = false;
         }
         catch (Exception ex) {
             ErrorMessage = ex.Message;
         }
     }
+
+    private async Task AfbrydRedigering() {
+        await ServiceOpgaveService.HentOpgaveTilInfoAsync(OpgaveId);
+    }
+
 }
