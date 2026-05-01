@@ -5,70 +5,126 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Business_Logic_Layer.Services;
 
-public class ServiceOpgaveService 
-{
+public class ServiceOpgaveService {
     private readonly MaskinContext _context;
-    
-    public ServiceOpgaveService(MaskinContext context)
-    {
+
+    public ServiceOpgaveService(MaskinContext context) {
         _context = context;
     }
-
-    // --- Data til UI Dropdowns ---
-    public async Task<List<OpgaveType>> GetOpgaveTyperAsync() => await _context.OpgaveTyper.ToListAsync();
-    public async Task<List<EftersynsRegel>> GetEftersynsReglerAsync() => await _context.EftersynsRegler.ToListAsync();
-    public List<ServiceInterval> GetServiceIntervaller() => Enum.GetValues(typeof(ServiceInterval)).Cast<ServiceInterval>().ToList();
-    public List<ServiceType> GetServiceTyper() => Enum.GetValues(typeof(ServiceType)).Cast<ServiceType>().ToList();
-    public async Task<List<Kunde>> GetAlleKunderAsync() => await _context.Kunder.Where(k => k.ErAktiv).ToListAsync();
-    public async Task<List<Maskine>> GetMaskinerByKundeIdAsync(int kundeId) => await _context.Maskiner.Where(m => m.KundeId == kundeId).ToListAsync();
-    public async Task<List<ServiceTeknikker>> GetAlleTeknikereAsync() => await _context.ServiceTeknikkere.ToListAsync();
-    public async Task<List<Medarbejder>> GetAlleMedarbejdereAsync() => await _context.Medarbejdere.ToListAsync();
     
-    [Required(ErrorMessage = "Et Firma (Kunde) skal vælges.")]
     public int? ValgtKundeId { get; set; }
-
-    [Required(ErrorMessage = "En maskine skal vælges.")]
     public int? ValgtMaskineId { get; set; }
-
-    [Required(ErrorMessage = "Vælg venligst en kategori (Sikkerhedseftersyn eller Service).")]
     public string ValgtKategori { get; set; } = "";
-
     public int? ValgtEftersynsRegelId { get; set; }
     public ServiceType? ValgtServiceType { get; set; }
     public int? ValgtOpgaveTypeId { get; set; }
-    
     public DateTime Deadline { get; set; } = DateTime.Now.AddMonths(1);
-
-    [Required(ErrorMessage = "Et interval skal vælges.")]
     public ServiceInterval? ValgtInterval { get; set; }
-
     public int? ValgtTeknikerId { get; set; }
-
-    [Required(ErrorMessage = "En ansvarlig medarbejder skal vælges.")]
     public string? ValgtMedarbejderId { get; set; }
-
     public string Note { get; set; } = "";
-    
     public List<string> Materialer { get; set; } = new();
+    public string NytMateriale { get; set; } = "";
+
+    // Lister
+    public List<Kunde> KunderListe { get; set; } = new();
+    public List<Maskine> MaskineListe { get; set; } = new();
+    public List<EftersynsRegel> EftersynsReglerListe { get; set; } = new();
+    public List<OpgaveType> OpgaveTyperListe { get; set; } = new();
+    public List<ServiceType> ServiceTyper { get; set; } = new();
+    public List<ServiceInterval> ServiceIntervaller { get; set; } = new();
+    public List<ServiceTeknikker> TeknikerListe { get; set; } = new();
+    public List<Medarbejder> MedarbejderListe { get; set; } = new();
+
+    // --- DINE EKSISTERENDE GET-METODER (Behold dem som de er) ---
+    public async Task<List<OpgaveType>> GetOpgaveTyperAsync() => await _context.OpgaveTyper.ToListAsync();
+
+    public async Task<List<EftersynsRegel>> GetEftersynsReglerAsync() =>
+        await _context.EftersynsRegler.ToListAsync();
+
+    public List<ServiceInterval> GetServiceIntervaller() =>
+        Enum.GetValues(typeof(ServiceInterval)).Cast<ServiceInterval>().ToList();
+
+    public List<ServiceType> GetServiceTyper() => Enum.GetValues(typeof(ServiceType)).Cast<ServiceType>().ToList();
+
+    public async Task<List<Kunde>> GetAlleKunderAsync() =>
+        await _context.Kunder.Where(k => k.ErAktiv).ToListAsync();
+
+    public async Task<List<Maskine>> GetMaskinerByKundeIdAsync(int kundeId) =>
+        await _context.Maskiner.Where(m => m.KundeId == kundeId).ToListAsync();
+
+    public async Task<List<ServiceTeknikker>> GetAlleTeknikereAsync() =>
+        await _context.ServiceTeknikkere.ToListAsync();
+
+    public async Task<List<Medarbejder>> GetAlleMedarbejdereAsync() => await _context.Medarbejdere.ToListAsync();
+
+    // --- NYE UI-HANDLINGER (Actions) ---
+    public async Task InitializeStateAsync(int? paramKundeId, int? paramMaskineId) {
+        KunderListe = await GetAlleKunderAsync();
+        EftersynsReglerListe = await GetEftersynsReglerAsync();
+        OpgaveTyperListe = await GetOpgaveTyperAsync();
+        TeknikerListe = await GetAlleTeknikereAsync();
+        MedarbejderListe = await GetAlleMedarbejdereAsync();
+        ServiceTyper = GetServiceTyper();
+        ServiceIntervaller = GetServiceIntervaller();
+
+        if (paramKundeId.HasValue) {
+            await KundeValgtAsync(paramKundeId.Value);
+            if (paramMaskineId.HasValue) ValgtMaskineId = paramMaskineId.Value;
+        }
+    }
+
+    public async Task KundeValgtAsync(int? kundeId) {
+        ValgtKundeId = kundeId;
+        ValgtMaskineId = null;
+        MaskineListe = kundeId.HasValue ? await GetMaskinerByKundeIdAsync(kundeId.Value) : new();
+    }
+
+    public void TilfojMateriale() {
+        if (!string.IsNullOrWhiteSpace(NytMateriale)) {
+            Materialer.Add(NytMateriale.Trim());
+            NytMateriale = "";
+        }
+    }
+
+    public void FjernMateriale(int index) => Materialer.RemoveAt(index);
+
+    public void NulstilState() {
+        // Vigtigt i Blazor: Nulstil variablerne så næste opgave ikke husker den gamle
+        ValgtKundeId = null;
+        ValgtMaskineId = null;
+        ValgtKategori = "";
+        ValgtEftersynsRegelId = null;
+        ValgtServiceType = null;
+        ValgtOpgaveTypeId = null;
+        Deadline = DateTime.Now.AddMonths(1);
+        ValgtInterval = null;
+        ValgtTeknikerId = null;
+        ValgtMedarbejderId = null;
+        Note = "";
+        Materialer.Clear();
+        NytMateriale = "";
+        MaskineListe.Clear();
+    }
 
     public async Task OpretOpgaveFraUIAsync(
-        string kategori, 
-        int? maskineId, 
-        DateTime deadline, 
-        ServiceInterval? interval, 
+        string kategori,
+        int? maskineId,
+        DateTime deadline,
+        ServiceInterval? interval,
         string note,
         int? teknikerId,
         string? medarbejderId,
         int? eftersynsRegelId,
         ServiceType? serviceType,
         int? opgaveTypeId,
-        List<string> materialer)
-    {
+        List<string> materialer) {
         // 1. Benhård validering af obligatoriske felter
         if (!maskineId.HasValue) throw new ArgumentException("En maskine skal vælges.");
         if (!interval.HasValue) throw new ArgumentException("Et interval skal vælges.");
-        if (string.IsNullOrWhiteSpace(medarbejderId)) throw new ArgumentException("En ansvarlig medarbejder skal vælges.");
-        
+        if (string.IsNullOrWhiteSpace(medarbejderId))
+            throw new ArgumentException("En ansvarlig medarbejder skal vælges.");
+
         var maskine = await _context.Maskiner.FindAsync(maskineId.Value);
         if (maskine == null) throw new Exception("Maskinen findes ikke i databasen.");
 
@@ -84,18 +140,18 @@ public class ServiceOpgaveService
         ServiceOpgave nyOpgave;
 
         // 2. Validering af kategori-specifikke felter
-        if (kategori == "Sikkerhedseftersyn")
-        {
-            if (!eftersynsRegelId.HasValue) throw new ArgumentException("En eftersynsregel skal vælges for sikkerhedseftersyn.");
+        if (kategori == "Sikkerhedseftersyn") {
+            if (!eftersynsRegelId.HasValue)
+                throw new ArgumentException("En eftersynsregel skal vælges for sikkerhedseftersyn.");
 
             var regelListe = new List<EftersynsRegel>();
             var regel = await _context.EftersynsRegler.FindAsync(eftersynsRegelId.Value);
             if (regel != null) regelListe.Add(regel);
 
-            nyOpgave = new SikkerhedsEftersyn(maskine, regelListe, sidstUdfoert, deadlineDateOnly, note ?? "", interval.Value, medarbejder, tekniker);
+            nyOpgave = new SikkerhedsEftersyn(maskine, regelListe, sidstUdfoert, deadlineDateOnly, note ?? "",
+                interval.Value, medarbejder, tekniker);
         }
-        else if (kategori == "Service")
-        {
+        else if (kategori == "Service") {
             if (!serviceType.HasValue) throw new ArgumentException("En servicetype skal vælges.");
             if (!opgaveTypeId.HasValue) throw new ArgumentException("En opgavetype skal vælges.");
 
@@ -103,17 +159,16 @@ public class ServiceOpgaveService
             var opgaveTypeObj = await _context.OpgaveTyper.FindAsync(opgaveTypeId.Value);
             if (opgaveTypeObj != null) opgaveTypeListe.Add(opgaveTypeObj);
 
-            nyOpgave = new Service(maskine, serviceType.Value, opgaveTypeListe, sidstUdfoert, deadlineDateOnly, note ?? "", interval.Value, medarbejder, tekniker);
+            nyOpgave = new Service(maskine, serviceType.Value, opgaveTypeListe, sidstUdfoert, deadlineDateOnly,
+                note ?? "", interval.Value, medarbejder, tekniker);
         }
-        else
-        {
+        else {
             throw new ArgumentException("Der skal vælges en gyldig kategori (Sikkerhedseftersyn eller Service).");
         }
 
         // 3. Materialer må gerne være tomme
-        if (materialer != null && materialer.Any())
-        {
-            nyOpgave.MaterialeListe = new MaterialeListe(); 
+        if (materialer != null && materialer.Any()) {
+            nyOpgave.MaterialeListe = new MaterialeListe();
             // Udvid evt med MaterialeLinje afhængig af din model
         }
 

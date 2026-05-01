@@ -18,19 +18,16 @@
         </div>
     }
 
-    <EditForm Model="dummyModel" OnValidSubmit="GemServiceopgave" FormName="opretservice">
-        <DataAnnotationsValidator/>
-        <ValidationSummary class="text-danger"/>
-
+    <EditForm Model="ServiceOpgaveService" OnSubmit="GemServiceopgave" FormName="opretservice">
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Firma (Kunde)</label>
-                <InputSelect Value="ValgtKundeId"
-                             ValueExpression="() => ValgtKundeId"
+                <InputSelect Value="ServiceOpgaveService.ValgtKundeId"
+                             ValueExpression="() => ServiceOpgaveService.ValgtKundeId"
                              ValueChanged="(int? val) => OnKundeValgt(val)"
                              class="form-select">
                     <option value="">-- Vælg kunde --</option>
-                    @foreach (var kunde in KunderListe) {
+                    @foreach (var kunde in ServiceOpgaveService.KunderListe) {
                         <option value="@kunde.Id">@kunde.FirmaNavn</option>
                     }
                 </InputSelect>
@@ -38,9 +35,9 @@
 
             <div class="col-md-6">
                 <label class="form-label">Maskine</label>
-                <InputSelect @bind-Value="ValgtMaskineId" class="form-select">
+                <InputSelect @bind-Value="ServiceOpgaveService.ValgtMaskineId" class="form-select">
                     <option value="">-- Vælg maskine --</option>
-                    @foreach (var maskine in MaskineListe) {
+                    @foreach (var maskine in ServiceOpgaveService.MaskineListe) {
                         <option value="@maskine.Id">@maskine.Producent - @maskine.SerieNummer</option>
                     }
                 </InputSelect>
@@ -48,7 +45,7 @@
 
             <div class="col-md-6">
                 <label class="form-label">Kategori</label>
-                <InputSelect @bind-Value="ValgtKategori" class="form-select border-primary">
+                <InputSelect @bind-Value="ServiceOpgaveService.ValgtKategori" class="form-select border-primary">
                     <option value="">-- Vælg kategori --</option>
                     <option value="Sikkerhedseftersyn">Sikkerhedseftersyn</option>
                     <option value="Service">Service</option>
@@ -56,31 +53,31 @@
             </div>
 
             <div class="col-md-6">
-                @if (ValgtKategori == "Sikkerhedseftersyn") {
+                @if (ServiceOpgaveService.ValgtKategori == "Sikkerhedseftersyn") {
                     <label class="form-label border-start border-warning ps-2 text-warning">Eftersynsregel</label>
-                    <InputSelect @bind-Value="ValgtEftersynsRegelId" class="form-select border-warning">
+                    <InputSelect @bind-Value="ServiceOpgaveService.ValgtEftersynsRegelId" class="form-select border-warning">
                         <option value="">-- Vælg regel --</option>
-                        @foreach (var regel in EftersynsReglerListe) {
+                        @foreach (var regel in ServiceOpgaveService.EftersynsReglerListe) {
                             <option value="@regel.Id">@regel.Regel</option>
                         }
                     </InputSelect>
                 }
-                else if (ValgtKategori == "Service") {
+                else if (ServiceOpgaveService.ValgtKategori == "Service") {
                     <div class="d-flex flex-column gap-2">
                         <div>
                             <label class="form-label">Servicetype</label>
-                            <InputSelect @bind-Value="ValgtServiceType" class="form-select">
+                            <InputSelect @bind-Value="ServiceOpgaveService.ValgtServiceType" class="form-select">
                                 <option value="">-- Vælg servicetype --</option>
-                                @foreach (var type in ServiceTyper) {
+                                @foreach (var type in ServiceOpgaveService.ServiceTyper) {
                                     <option value="@type">@type.ToString()</option>
                                 }
                             </InputSelect>
                         </div>
                         <div>
                             <label class="form-label">Opgavetype</label>
-                            <InputSelect @bind-Value="ValgtOpgaveTypeId" class="form-select">
+                            <InputSelect @bind-Value="ServiceOpgaveService.ValgtOpgaveTypeId" class="form-select">
                                 <option value="">-- Vælg opgavetype --</option>
-                                @foreach (var type in OpgaveTyperListe) {
+                                @foreach (var type in ServiceOpgaveService.OpgaveTyperListe) {
                                     <option value="@type.Id">@type.OpgaveBeskrivelse</option>
                                 }
                             </InputSelect>
@@ -91,14 +88,14 @@
 
             <div class="col-md-6">
                 <label class="form-label">Deadline</label>
-                <InputDate @bind-Value="Deadline" class="form-control"/>
+                <InputDate @bind-Value="ServiceOpgaveService.Deadline" class="form-control"/>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Interval</label>
-                <InputSelect @bind-Value="ValgtInterval" class="form-select">
+                <InputSelect @bind-Value="ServiceOpgaveService.ValgtInterval" class="form-select">
                     <option value="">-- Vælg interval --</option>
-                    @foreach (var interval in ServiceIntervaller) {
+                    @foreach (var interval in ServiceOpgaveService.ServiceIntervaller) {
                         <option value="@interval">@interval.TilDansk()</option>
                     }
                 </InputSelect>
@@ -106,9 +103,9 @@
 
             <div class="col-md-6">
                 <label class="form-label">Servicetekniker (Valgfri)</label>
-                <InputSelect @bind-Value="ValgtTeknikerId" class="form-select">
+                <InputSelect @bind-Value="ServiceOpgaveService.ValgtTeknikerId" class="form-select">
                     <option value="">-- Vælg tekniker --</option>
-                    @foreach (var tekniker in TeknikerListe) {
+                    @foreach (var tekniker in ServiceOpgaveService.TeknikerListe) {
                         <option value="@tekniker.Id">@tekniker.TeknikkerNavn</option>
                     }
                 </InputSelect>
@@ -116,9 +113,9 @@
 
             <div class="col-md-6">
                 <label class="form-label">Ansvarlig medarbejder</label>
-                <InputSelect @bind-Value="ValgtMedarbejderId" class="form-select">
+                <InputSelect @bind-Value="ServiceOpgaveService.ValgtMedarbejderId" class="form-select">
                     <option value="">-- Vælg medarbejder --</option>
-                    @foreach (var medarbejder in MedarbejderListe) {
+                    @foreach (var medarbejder in ServiceOpgaveService.MedarbejderListe) {
                         <option value="@medarbejder.Id">@medarbejder.MedarbejderNavn</option>
                     }
                 </InputSelect>
@@ -130,16 +127,16 @@
                         <h6 class="mb-0">Materialeliste (Valgfri)</h6>
                     </div>
                     <div class="card-body">
-                        @if (!Materialer.Any()) {
+                        @if (!ServiceOpgaveService.Materialer.Any()) {
                             <p class="text-muted fst-italic">Ingen materialer tilføjet endnu.</p>
                         }
                         else {
                             <ul class="list-group mb-3">
-                                @foreach (var (materiale, index) in Materialer.Select((m, i) => (m, i))) {
+                                @foreach (var (materiale, index) in ServiceOpgaveService.Materialer.Select((m, i) => (m, i))) {
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>@materiale</span>
                                         <button type="button" class="btn btn-outline-danger btn-sm"
-                                                @onclick="() => FjernMateriale(index)">
+                                                @onclick="() => ServiceOpgaveService.FjernMateriale(index)">
                                             Fjern
                                         </button>
                                     </li>
@@ -148,10 +145,10 @@
                         }
 
                         <div class="d-flex mt-2 materiale-input-gruppe">
-                            <InputText @bind-Value="NytMateriale"
+                            <InputText @bind-Value="ServiceOpgaveService.NytMateriale"
                                        class="form-control me-2 materiale-input"
                                        placeholder="Skriv et materiale her..."/>
-                            <button type="button" class="btn btn-primary materiale-knap" @onclick="TilfojMateriale">
+                            <button type="button" class="btn btn-primary materiale-knap" @onclick="ServiceOpgaveService.TilfojMateriale">
                                 Tilføj til listen
                             </button>
                         </div>
@@ -161,12 +158,12 @@
 
             <div class="col-12 mt-4">
                 <label class="form-label">Note (Valgfri)</label>
-                <InputTextArea @bind-Value="Note" class="form-control" rows="6"
+                <InputTextArea @bind-Value="ServiceOpgaveService.Note" class="form-control" rows="6"
                                placeholder="Andet vigtigt til opgaven..."/>
             </div>
 
             <div class="col-12 mt-4 mb-5 d-flex gap-2 justify-content-between">
-                <button type="button" class="btn btn-secondary" @onclick="GaaTilbage">Tilbage</button>
+                <button type="button" class="btn btn-secondary" @onclick='() => NavManager.NavigateTo("/")'>Tilbage</button>
                 <button type="submit" class="btn btn-primary">Gem serviceopgave</button>
             </div>
         </div>
@@ -177,104 +174,39 @@
     [Parameter] public int? KundeId { get; set; }
     [Parameter] public int? MaskineId { get; set; }
 
-    private object dummyModel = new();
     private string? ErrorMessage;
 
-    // UI-variable
-    private int? ValgtKundeId;
-    private int? ValgtMaskineId;
-    private string ValgtKategori = "";
-    private int? ValgtEftersynsRegelId;
-    private ServiceType? ValgtServiceType;
-    private int? ValgtOpgaveTypeId;
-    private DateTime Deadline = DateTime.Now.AddMonths(1);
-    private ServiceInterval? ValgtInterval;
-    private int? ValgtTeknikerId;
-    private string? ValgtMedarbejderId;
-    private string Note = "";
-    private List<string> Materialer = new();
-    private string NytMateriale = "";
-
-    // Lister
-    private List<Kunde> KunderListe = new();
-    private List<Maskine> MaskineListe = new();
-    private List<EftersynsRegel> EftersynsReglerListe = new();
-    private List<OpgaveType> OpgaveTyperListe = new();
-    private List<ServiceType> ServiceTyper = new();
-    private List<ServiceInterval> ServiceIntervaller = new();
-    private List<ServiceTeknikker> TeknikerListe = new();
-    private List<Medarbejder> MedarbejderListe = new();
-    
-
-    protected override async Task OnInitializedAsync()
-    {
-        KunderListe = await ServiceOpgaveService.GetAlleKunderAsync();
-        EftersynsReglerListe = await ServiceOpgaveService.GetEftersynsReglerAsync();
-        OpgaveTyperListe = await ServiceOpgaveService.GetOpgaveTyperAsync();
-        ServiceTyper = ServiceOpgaveService.GetServiceTyper();
-        ServiceIntervaller = ServiceOpgaveService.GetServiceIntervaller();
-        TeknikerListe = await ServiceOpgaveService.GetAlleTeknikereAsync();
-        MedarbejderListe = await ServiceOpgaveService.GetAlleMedarbejdereAsync();
-        
-        if (KundeId.HasValue)
-        {
-            ValgtKundeId = KundeId.Value;
-            MaskineListe = await ServiceOpgaveService.GetMaskinerByKundeIdAsync(KundeId.Value);
-
-            if (MaskineId.HasValue)
-                ValgtMaskineId = MaskineId.Value;
-        }
+    protected override async Task OnInitializedAsync() {
+        await ServiceOpgaveService.InitializeStateAsync(KundeId, MaskineId);
     }
 
     private async Task OnKundeValgt(int? kundeId) {
-        ValgtKundeId = kundeId;
-        ValgtMaskineId = null;
-        MaskineListe = kundeId.HasValue ? await ServiceOpgaveService.GetMaskinerByKundeIdAsync(kundeId.Value) : new();
+        await ServiceOpgaveService.KundeValgtAsync(kundeId);
     }
 
     private async Task GemServiceopgave() {
         ErrorMessage = null;
-
-        // Manuel validering
-        if (!ValgtKundeId.HasValue) {
-            ErrorMessage = "Et Firma (Kunde) skal vælges.";
-            return;
+        
+        // Simpel validering for at fange brugeren hurtigt
+        if (!ServiceOpgaveService.ValgtKundeId.HasValue) {
+            ErrorMessage = "Et firma skal vælges."; return;
         }
-
-        if (string.IsNullOrWhiteSpace(ValgtKategori)) {
-            ErrorMessage = "Vælg kategori.";
-            return;
+        if (string.IsNullOrEmpty(ServiceOpgaveService.ValgtKategori)) {
+            ErrorMessage = "En kategori skal vælges."; return;
         }
 
         try {
             await ServiceOpgaveService.OpretOpgaveFraUIAsync(
-                ValgtKategori,
-                ValgtMaskineId,
-                Deadline,
-                ValgtInterval,
-                Note,
-                ValgtTeknikerId,
-                ValgtMedarbejderId,
-                ValgtEftersynsRegelId,
-                ValgtServiceType,
-                ValgtOpgaveTypeId,
-                Materialer
-            );
-
+                ServiceOpgaveService.ValgtKategori, ServiceOpgaveService.ValgtMaskineId, ServiceOpgaveService.Deadline, ServiceOpgaveService.ValgtInterval,
+                ServiceOpgaveService.Note, ServiceOpgaveService.ValgtTeknikerId, ServiceOpgaveService.ValgtMedarbejderId,
+                ServiceOpgaveService.ValgtEftersynsRegelId, ServiceOpgaveService.ValgtServiceType, ServiceOpgaveService.ValgtOpgaveTypeId, ServiceOpgaveService.Materialer);
+            
+            // Husk at rydde op i state, så formen er tom næste gang vi besøger den
+            ServiceOpgaveService.NulstilState();
             NavManager.NavigateTo("/");
         }
         catch (Exception ex) {
             ErrorMessage = ex.Message;
         }
     }
-
-    private void TilfojMateriale() {
-        if (!string.IsNullOrWhiteSpace(NytMateriale)) {
-            Materialer.Add(NytMateriale.Trim());
-            NytMateriale = "";
-        }
-    }
-
-    private void FjernMateriale(int index) => Materialer.RemoveAt(index);
-    private void GaaTilbage() => NavManager.NavigateTo("/");
 }
