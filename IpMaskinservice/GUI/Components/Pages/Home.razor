@@ -1,5 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using Business_Logic_Layer.Extensions
 @using Data_Access_Layer.Models
 @using Microsoft.EntityFrameworkCore
 @inject Data_Access_Layer.MaskinContext Db
@@ -47,9 +48,9 @@
                     </td>
                     
                     <td>
-                        <a href="/opgave/@opgave.Id" class="maskine-link">
+                        <a href="/serviceinfo/@opgave.Id" class="maskine-link">
                             @if (opgave is Service s) {
-                                @s.Servicetype
+                                @s.Servicetype?.TilDansk()
                             }
                             else if (opgave is SikkerhedsEftersyn) {
                                 <text>Sikkerhedseftersyn</text>
