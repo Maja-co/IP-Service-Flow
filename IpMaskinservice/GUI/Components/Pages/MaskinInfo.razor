@@ -64,7 +64,7 @@ else {
 						<div class="maskine-grid">
 							@foreach (var aftale in _valgtMaskine.ServiceOgEftersynAftalerListe) {
 								<div class="maskine-kort maskine-aftale-kort"
-								     @onclick='() => NavigationManager.NavigateTo($"/serviceaftale/{aftale.Id}")'>
+								     @onclick='() => NavigationManager.NavigateTo($"/serviceinfo/{aftale.Id}")'>
 									<span class="maskine-ikon">📅</span>
 									<div>
 										<div class="maskine-navn">Planlagt Service</div>
@@ -166,7 +166,7 @@ else {
 	private void LukSletModal() => visSletModal = false;
 
 	private async Task SletMaskineBekræftet() {
-		visSletModal = false; // Lukker boksen
+		visSletModal = false;
 		int kundeId = _valgtMaskine?.Kunde?.Id ?? 0;
 
 		await MaskineService.SletMaskineAsync(Id);
