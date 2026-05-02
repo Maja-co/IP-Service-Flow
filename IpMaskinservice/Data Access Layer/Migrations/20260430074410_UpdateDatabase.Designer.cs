@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(MaskinContext))]
-    [Migration("20260422105224_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260430074410_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,8 +296,10 @@ namespace Data_Access_Layer.Migrations
                         new
                         {
                             Id = "M1",
+                            KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e",
                             MailAdresse = "admin@ipmaskin.dk",
-                            MedarbejderNavn = "Admin Alice"
+                            MedarbejderNavn = "Admin Alice",
+                            Salt = "123"
                         });
                 });
 

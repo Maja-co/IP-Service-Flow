@@ -22,6 +22,7 @@ namespace Business_Logic_Layer
         }
 
         //US-2 & US-2.7: Forbinder en maskine til en kunde og gemmer ændringen i databasen.
+        //US-2 & US-2.7: Forbinder en maskine til en kunde og gemmer ændringen i databasen.
         public void OpretMaskineForKunde(Maskine valgtMaskine, Kunde valgtKunde)
         {
             // Validering: Sikrer at hverken maskine eller kunde er tomme (null)

@@ -293,8 +293,10 @@ namespace Data_Access_Layer.Migrations
                         new
                         {
                             Id = "M1",
+                            KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e",
                             MailAdresse = "admin@ipmaskin.dk",
-                            MedarbejderNavn = "Admin Alice"
+                            MedarbejderNavn = "Admin Alice",
+                            Salt = "123"
                         });
                 });
 
@@ -497,12 +499,12 @@ namespace Data_Access_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            Deadline = new DateOnly(2026, 10, 1),
+                            Deadline = new DateOnly(2026, 5, 30),
                             MaskineId = 1,
                             MedarbejderId = "M1",
                             ServiceInterval = 2,
                             ServiceTeknikkerId = 1,
-                            SidstUdførtDato = new DateOnly(2025, 10, 1),
+                            SidstUdførtDato = new DateOnly(2025, 5, 30),
                             SidstUdførtNote = "Olie skiftet, alt ok",
                             Servicetype = 0
                         });
