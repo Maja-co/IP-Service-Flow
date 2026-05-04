@@ -10,19 +10,23 @@ namespace Data_Access_Layer.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            /*
             migrationBuilder.AddColumn<string>(
-                name: "AktivSessionID",
+                //name: "AktivSessionID",
                 table: "Medarbejdere",
                 type: "nvarchar(max)",
                 nullable: true);
+            */
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            /*
             migrationBuilder.DropColumn(
                 name: "AktivSessionID",
                 table: "Medarbejdere");
+            */
         }
     }
 }

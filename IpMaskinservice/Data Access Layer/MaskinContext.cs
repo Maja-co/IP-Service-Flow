@@ -104,7 +104,7 @@ public class MaskinContext : DbContext {
         );
 
         modelBuilder.Entity<Medarbejder>().HasData(
-            new { Id = "M1", MedarbejderNavn = "Admin Alice", KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123", MailAdresse = "admin@ipmaskin.dk"}
+            new { Id = "M1", MedarbejderNavn = "Admin Alice", KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123", MailAdresse = "admin@ipmaskin.dk" }
         );
 
         modelBuilder.Entity<ServiceTeknikker>().HasData(
