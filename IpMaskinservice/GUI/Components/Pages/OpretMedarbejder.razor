@@ -36,7 +36,9 @@
     </div>
 
     <div class="button-group">
-        <button class="btn-opret" @onclick="GemMedarbejder">Opret</button>
+        <button class="btn-opret" @onclick="GemMedarbejder" disabled = "@isSaving">
+            @(isSaving ? "Gemmer..." : "Opret")
+        </button>
         <button class="btn-annuller" @onclick="Annuller">Annuller</button>
     </div>
 </div>
@@ -47,12 +49,16 @@
     private string mailAdresse = "";
     private string kodeOrd = "";
     private string fejlBesked = "";
+    private bool isSaving = false;
 
-    private void GemMedarbejder()
+
+
+    private async Task GemMedarbejder()
     {
+        isSaving = true;
         try
         {
-            if (string.IsNullOrWhiteSpace(medarbejderId) || string.IsNullOrWhiteSpace(medarbejderNavn) || 
+            if (string.IsNullOrWhiteSpace(medarbejderId) || string.IsNullOrWhiteSpace(medarbejderNavn) ||
                 string.IsNullOrWhiteSpace(mailAdresse) || string.IsNullOrWhiteSpace(kodeOrd))
             {
                 fejlBesked = "Alle felter skal udfyldes.";
@@ -65,12 +71,10 @@
                 return;
             }
 
-            // Generer salt og hash
             var (salt, kodeordHash) = MedarbejderService.GenererSaltOgHash(kodeOrd);
-
-            // Opret medarbejder med hashed kodeord
             var nyMedarbejder = new Medarbejder(medarbejderId, medarbejderNavn, kodeordHash, salt, mailAdresse);
-            _ = GemMedarbejderAsynk(nyMedarbejder);
+
+            await MedarbejderService.GemNyMedarbejderAsync(nyMedarbejder);
 
             NavigationManager.NavigateTo("/medarbejdere");
         }
@@ -82,18 +86,7 @@
         {
             fejlBesked = "Der opstod en uventet fejl ved oprettelse af medarbejder.";
         }
-    }
-
-    private async Task GemMedarbejderAsynk(Medarbejder medarbejder)
-    {
-        try
-        {
-            await MedarbejderService.GemNyMedarbejderAsync(medarbejder);
-        }
-        catch (Exception ex)
-        {
-            fejlBesked = ex.Message;
-        }
+        isSaving = false;
     }
 
     private void Annuller() => NavigationManager.NavigateTo("/medarbejdere");
