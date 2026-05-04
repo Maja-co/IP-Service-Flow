@@ -2,34 +2,24 @@
 using Data_Access_Layer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Business_Logic_Layer
-{
-    public class MedarbejderRepository : IMedarbejderRepository
-    {
+namespace Business_Logic_Layer {
+    public class MedarbejderRepository : IMedarbejderRepository {
         private readonly MaskinContext _context;
 
-        public MedarbejderRepository(MaskinContext context)
-        {
+        public MedarbejderRepository(MaskinContext context) {
             _context = context;
         }
 
         public async Task<Medarbejder?> GetByEmailAsync(string mail) =>
-        
-            // Vi bruger LINQ til at finde den første medarbejder, hvor mailen matcher.
-            // Hvis ingen findes, returneres 'null'.
-             await _context.Medarbejdere
+            await _context.Medarbejdere
                 .FirstOrDefaultAsync(m => m.MailAdresse == mail);
 
-        // Find medarbejder på ID
-        public async Task<Medarbejder?> GetByIdAsync(int id)
-        {
+        public async Task<Medarbejder?> GetByIdAsync(int id) {
             throw new NotImplementedException();
         }
 
-        // Opdater medarbejder
-        public async Task UpdateAsync(Medarbejder medarbejder)
-        {
-            await Task.CompletedTask; // En hurtig måde at sige "gør ingenting" i en async metode
+        public async Task UpdateAsync(Medarbejder medarbejder) {
+            await Task.CompletedTask;
         }
     }
-    }
+}

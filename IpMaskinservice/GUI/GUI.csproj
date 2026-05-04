@@ -23,10 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Styles\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="Components\Pages\MaskinInfo.razor.css">
         <DependentUpon>MaskinInfo.razor</DependentUpon>
       </None>

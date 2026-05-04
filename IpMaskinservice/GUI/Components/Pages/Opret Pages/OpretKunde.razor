@@ -9,8 +9,7 @@
 
 <h1>Opret ny kunde</h1>
 
-@if (!string.IsNullOrEmpty(fejlBesked))
-{
+@if (!string.IsNullOrEmpty(fejlBesked)) {
     <div class="alert alert-danger">@fejlBesked</div>
 }
 
@@ -18,29 +17,29 @@
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label">Firmanavn:</label>
-            <input class="form-control" @bind="firmaNavn" />
+            <input class="form-control" @bind="firmaNavn"/>
         </div>
         <div class="mb-3">
             <label class="form-label">CVR-nummer (8 cifre):</label>
-            <input type="number" class="form-control" @bind="cvrNummer" />
+            <input type="number" class="form-control" @bind="cvrNummer"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Adresse:</label>
-            <input class="form-control" @bind="adresse" />
+            <input class="form-control" @bind="adresse"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Kontaktperson:</label>
-            <input class="form-control" @bind="kontaktPersonNavn" />
+            <input class="form-control" @bind="kontaktPersonNavn"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Telefonnummer:</label>
-            <input class="form-control" @bind="kontaktPersonTelefonnummer" />
+            <input class="form-control" @bind="kontaktPersonTelefonnummer"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Email:</label>
-            <input class="form-control" @bind="mailAdresse" />
+            <input class="form-control" @bind="mailAdresse"/>
         </div>
-        
+
         <button class="btn btn-success" @onclick="GemKunde">Opret</button>
         <button class="btn btn-secondary" @onclick="Annuller">Annuller</button>
     </div>
@@ -53,24 +52,19 @@
     private string kontaktPersonTelefonnummer = "";
     private string mailAdresse = "";
     private int cvrNummer;
-    
+
     private string fejlBesked = "";
 
-    private void GemKunde()
-    {
-        try
-        {
-            // Validering klares af Kunde-konstruktøren
+    private void GemKunde() {
+        try {
             var nyKunde = new Kunde(firmaNavn, adresse, kontaktPersonNavn, kontaktPersonTelefonnummer, mailAdresse, true, cvrNummer);
             KundeService.GemNyKunde(nyKunde);
             NavigationManager.NavigateTo("/kunder");
         }
-        catch (ArgumentException ex)
-        {
+        catch (ArgumentException ex) {
             fejlBesked = ex.Message;
         }
-        catch (Exception)
-        {
+        catch (Exception) {
             fejlBesked = "Der opstod en uventet fejl ved oprettelse af kunden.";
         }
     }

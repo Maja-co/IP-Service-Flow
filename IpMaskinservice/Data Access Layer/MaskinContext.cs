@@ -8,9 +8,9 @@ namespace Data_Access_Layer;
 
 public class MaskinContext : DbContext {
     private readonly IConfiguration _configuration;
+
     public MaskinContext(DbContextOptions<MaskinContext> options, IConfiguration configuration)
-         : base(options)
-    {
+        : base(options) {
         _configuration = configuration;
     }
 
@@ -28,43 +28,19 @@ public class MaskinContext : DbContext {
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
-    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options)
-    {
+    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options) {
     }
 
-    public MaskinContext()
-    {
+    public MaskinContext() {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        if (!optionsBuilder.IsConfigured) {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
         }
     }
-    //protected override void onconfiguring(dbcontextoptionsbuilder optionsbuilder)
-    //{
-    //    if (!optionsbuilder.isconfigured)
-    //    {
-    //        // fanger både mac (nativt) og linux (docker)
-    //        if (!runtimeinformation.isosplatform(osplatform.windows))
-    //        {
-    //            var dbpass = _configuration["dbpassword"] ?? "kodeord123!";
-    //            var dbuser = _configuration["dbuser"] ?? "sa";
 
-    //            optionsbuilder.usesqlserver($@"server=localhost;database=ipmaskindb;user id={dbuser};password={dbpass};trustservercertificate=true;");
-    //        }
-    //        else
-    //        {
-    //            // windows logik (localdb bruger windows auth, så intet password kræves)
-    //            optionsbuilder.usesqlserver(@"server=(localdb)\mssqllocaldb;database=ipmaskindb;trusted_connection=true;");
-    //        }
-    //    }
-    //}
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         // 1. TPT & Tabeller
         modelBuilder.Entity<ServiceOpgave>().UseTptMappingStrategy();
 
@@ -85,25 +61,36 @@ public class MaskinContext : DbContext {
                     new { ServiceId = 1, OpgaveTypeListeId = 2 }
                 ));
 
-      
+
         modelBuilder.Entity<SikkerhedsEftersyn>()
-        .HasMany(s => s.EftersynsRegelListe) 
-        .WithMany()
-        .UsingEntity(j => j.ToTable("EftersynsRegelLinks")
-            .HasData(
-                new { SikkerhedsEftersynId = 2, EftersynsRegelListeId = 1 }
-            ));
+            .HasMany(s => s.EftersynsRegelListe)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("EftersynsRegelLinks")
+                .HasData(
+                    new { SikkerhedsEftersynId = 2, EftersynsRegelListeId = 1 }
+                ));
 
         // 3. SEEDING AF DATA
 
         // Basis Data
         modelBuilder.Entity<Kunde>().HasData(
-            new { Id = 1, FirmaNavn = "Byg & Maskin A/S", Adresse = "Testvej 1", CvrNummer = 11223344, ErAktiv = true, KontaktPersonNavn = "Jens Jensen", KontaktPersonTelefonnummer = "12341234", MailAdresse = "B&M@test.com" },
-            new { Id = 2, FirmaNavn = "Skovens Entreprenør", Adresse = "Testvej 2", CvrNummer = 99887766, ErAktiv = true, KontaktPersonNavn = "Mia Skov", KontaktPersonTelefonnummer = "43214321", MailAdresse = "Skovens@test.com" }
+            new {
+                Id = 1, FirmaNavn = "Byg & Maskin A/S", Adresse = "Testvej 1", CvrNummer = 11223344, ErAktiv = true,
+                KontaktPersonNavn = "Jens Jensen", KontaktPersonTelefonnummer = "12341234", MailAdresse = "B&M@test.com"
+            },
+            new {
+                Id = 2, FirmaNavn = "Skovens Entreprenør", Adresse = "Testvej 2", CvrNummer = 99887766, ErAktiv = true,
+                KontaktPersonNavn = "Mia Skov", KontaktPersonTelefonnummer = "43214321",
+                MailAdresse = "Skovens@test.com"
+            }
         );
 
         modelBuilder.Entity<Medarbejder>().HasData(
-            new { Id = "M1", MedarbejderNavn = "Admin Alice", KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123", MailAdresse = "admin@ipmaskin.dk"}
+            new {
+                Id = "M1", MedarbejderNavn = "Admin Alice",
+                KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123",
+                MailAdresse = "admin@ipmaskin.dk"
+            }
         );
 
         modelBuilder.Entity<ServiceTeknikker>().HasData(
@@ -128,14 +115,17 @@ public class MaskinContext : DbContext {
 
         // Maskiner
         modelBuilder.Entity<Maskine>().HasData(
-            new { Id = 1, KundeId = 1, SerieNummer = "SN-1001", Producent = "Volvo", MaskineType = MaskineType.Valsning },
-            new { Id = 2, KundeId = 2, SerieNummer = "SN-2002", Producent = "CAT", MaskineType = MaskineType.Pladelaser }
+            new {
+                Id = 1, KundeId = 1, SerieNummer = "SN-1001", Producent = "Volvo", MaskineType = MaskineType.Valsning
+            },
+            new {
+                Id = 2, KundeId = 2, SerieNummer = "SN-2002", Producent = "CAT", MaskineType = MaskineType.Pladelaser
+            }
         );
 
         // Opgaver (TPT: Både base-properties og sub-properties udfyldes her)
         modelBuilder.Entity<Service>().HasData(
-            new
-            {
+            new {
                 Id = 1,
                 MaskineId = 1,
                 SidstUdførtDato = new DateOnly(2025, 6, 4),
@@ -150,8 +140,7 @@ public class MaskinContext : DbContext {
 
 
         modelBuilder.Entity<SikkerhedsEftersyn>().HasData(
-            new
-            {
+            new {
                 Id = 2,
                 MaskineId = 2,
                 SidstUdførtDato = new DateOnly(2025, 11, 1),
@@ -170,7 +159,10 @@ public class MaskinContext : DbContext {
         );
 
         modelBuilder.Entity<AfsluttetService>().HasData(
-            new { Id = 1, MaskineId = 1, ServiceOpgaveId = 1, UdførtDato = new DateOnly(2025, 10, 1), Note = "Service afsluttet uden anmærkninger" }
+            new {
+                Id = 1, MaskineId = 1, ServiceOpgaveId = 1, UdførtDato = new DateOnly(2025, 10, 1),
+                Note = "Service afsluttet uden anmærkninger"
+            }
         );
     }
 }
