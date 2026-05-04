@@ -33,6 +33,7 @@ namespace Business_Logic_Layer.Services
 
             var aktuelleServiceOpgaver = await _context.ServiceOpgaver
             .Include(so => so.Maskine)
+                .ThenInclude(m => m.Kunde)
             .Include(so => so.Medarbejder)
             .Include(so => so.PåmindelseListe)
             .Where(so => so.Deadline == datoEnMånedFrem)
@@ -45,10 +46,10 @@ namespace Business_Logic_Layer.Services
 
             bool ændringerGemt = false;
 
-            using (var smtpClient = new SmtpClient("smtp.office365.com"))
+            using (var smtpClient = new SmtpClient("sandbox.smtp.mailtrap.io"))
             {
-                smtpClient.Port = 587;
-                smtpClient.Credentials = new NetworkCredential("servicepaamindelse@outlook.com", "Fungert2026!");
+                smtpClient.Port = 2525;
+                smtpClient.Credentials = new NetworkCredential("eb0985bc856369", "1d16dd5f09b288");
                 smtpClient.EnableSsl = true;
 
                 foreach (var opgave in aktuelleServiceOpgaver)
@@ -70,7 +71,7 @@ namespace Business_Logic_Layer.Services
                             Dette er en automatisk påmindelse.
                             Du har en serviceopgave med deadline om en måned.
 
-                            Kunde: {opgave.Maskine.Kunde.FirmaNavn}
+                            Kunde: {opgave.Maskine?.Kunde?.FirmaNavn}
                             
                             Maskine Info:
                             Producent: {opgave.Maskine?.Producent}
