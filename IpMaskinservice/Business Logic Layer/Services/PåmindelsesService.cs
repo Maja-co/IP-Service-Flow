@@ -33,6 +33,7 @@ namespace Business_Logic_Layer.Services
 
             var aktuelleServiceOpgaver = await _context.ServiceOpgaver
             .Include(so => so.Maskine)
+                .ThenInclude(m => m.Kunde)
             .Include(so => so.Medarbejder)
             .Include(so => so.PåmindelseListe)
             .Where(so => so.Deadline == datoEnMånedFrem)
@@ -70,7 +71,7 @@ namespace Business_Logic_Layer.Services
                             Dette er en automatisk påmindelse.
                             Du har en serviceopgave med deadline om en måned.
 
-                            Kunde: {opgave.Maskine.Kunde.FirmaNavn}
+                            Kunde: {opgave.Maskine?.Kunde?.FirmaNavn}
                             
                             Maskine Info:
                             Producent: {opgave.Maskine?.Producent}
