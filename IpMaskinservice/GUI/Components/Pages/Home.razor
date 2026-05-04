@@ -1,12 +1,16 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
 @using Microsoft.EntityFrameworkCore
+@inject AuthService AuthService
+@inject NavigationManager NavManager
 @inject Data_Access_Layer.MaskinContext Db
 
 <PageTitle>Home</PageTitle>
 
 <h1>Service Homepage</h1>
+<p>Velkommen, @AuthService.CurrentUser?.MedarbejderNavn!</p>
 
 <div class="table-container">
     <table class="table custom-table">
@@ -89,5 +93,11 @@
         } else {
             _opgaver = _opgaver.OrderByDescending(o => o.Deadline).ToList();
         }
+    }
+
+    private void HandleLogout()
+    {
+        AuthService.Logout();
+        NavManager.NavigateTo("/login");
     }
 }

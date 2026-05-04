@@ -6,9 +6,9 @@ namespace Business_Logic_Layer
 {
     public class MedarbejderRepository : IMedarbejderRepository
     {
-        private readonly ServiceDbContext _context;
+        private readonly MaskinContext _context;
 
-        public MedarbejderRepository(ServiceDbContext context)
+        public MedarbejderRepository(MaskinContext context)
         {
             _context = context;
         }
@@ -17,7 +17,7 @@ namespace Business_Logic_Layer
         
             // Vi bruger LINQ til at finde den første medarbejder, hvor mailen matcher.
             // Hvis ingen findes, returneres 'null'.
-             await _context.Medarbejder
+             await _context.Medarbejdere
                 .FirstOrDefaultAsync(m => m.MailAdresse == mail);
 
         // Find medarbejder på ID
