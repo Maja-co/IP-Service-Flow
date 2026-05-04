@@ -1,12 +1,22 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using Business_Logic_Layer.Extensions
 @using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
 @using Microsoft.EntityFrameworkCore
+@inject AuthService AuthService
+@inject NavigationManager NavManager
 @inject Data_Access_Layer.MaskinContext Db
 
 <PageTitle>Home</PageTitle>
 
-<h1>Service Homepage</h1>
+
+
+<div class="header-container">
+    <h1>Service Homepage</h1>
+    <p>Velkommen, @AuthService.CurrentUser?.MedarbejderNavn!</p>
+    <a href="/opretservice" class="btn btn-primary"> Opret serviceopgave </a>
+</div>
 
 <div class="table-container">
     <table class="table custom-table">
@@ -42,9 +52,9 @@
                     </td>
                     
                     <td>
-                        <a href="/opgave/@opgave.Id" class="maskine-link">
+                        <a href="/serviceinfo/@opgave.Id" class="maskine-link">
                             @if (opgave is Service s) {
-                                @s.Servicetype
+                                @s.Servicetype?.TilDansk()
                             }
                             else if (opgave is SikkerhedsEftersyn) {
                                 <text>Sikkerhedseftersyn</text>
@@ -89,5 +99,11 @@
         } else {
             _opgaver = _opgaver.OrderByDescending(o => o.Deadline).ToList();
         }
+    }
+
+    private void HandleLogout()
+    {
+        AuthService.Logout();
+        NavManager.NavigateTo("/login");
     }
 }

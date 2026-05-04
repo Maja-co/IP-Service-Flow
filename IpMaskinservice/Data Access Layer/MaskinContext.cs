@@ -28,6 +28,21 @@ public class MaskinContext : DbContext {
     public DbSet<MaterialeListe> MaterialeLister { get; set; }
     public DbSet<MaterialeLinje> MaterialeLinjer { get; set; }
 
+    public MaskinContext(DbContextOptions<MaskinContext> options) : base(options)
+    {
+    }
+
+    public MaskinContext()
+    {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=IpMaskinDb;Trusted_Connection=True;");
+        }
+    }
     //protected override void onconfiguring(dbcontextoptionsbuilder optionsbuilder)
     //{
     //    if (!optionsbuilder.isconfigured)
@@ -52,6 +67,13 @@ public class MaskinContext : DbContext {
     {
         // 1. TPT & Tabeller
         modelBuilder.Entity<ServiceOpgave>().UseTptMappingStrategy();
+
+        // 1b. En-til-mange relationer
+        modelBuilder.Entity<Medarbejder>()
+            .HasMany(m => m.ServiceOpgaveListe)
+            .WithOne(s => s.Medarbejder)
+            .HasForeignKey(s => s.MedarbejderId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         // 2. Mange-til-mange relationer inkl. seed af bro-tabeller
         modelBuilder.Entity<Service>()
@@ -81,7 +103,7 @@ public class MaskinContext : DbContext {
         );
 
         modelBuilder.Entity<Medarbejder>().HasData(
-            new { Id = "M1", MedarbejderNavn = "Admin Alice", MailAdresse = "admin@ipmaskin.dk" }
+            new { Id = "M1", MedarbejderNavn = "Admin Alice", KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e", Salt = "123", MailAdresse = "admin@ipmaskin.dk"}
         );
 
         modelBuilder.Entity<ServiceTeknikker>().HasData(
@@ -116,15 +138,16 @@ public class MaskinContext : DbContext {
             {
                 Id = 1,
                 MaskineId = 1,
-                SidstUdførtDato = new DateOnly(2025, 10, 1),
-                Deadline = new DateOnly(2026, 10, 1),
+                SidstUdførtDato = new DateOnly(2025, 6, 4),
+                Deadline = new DateOnly(2026, 6, 4),
                 SidstUdførtNote = "Olie skiftet, alt ok",
                 ServiceInterval = ServiceInterval.TOLVMÅNEDER,
                 MedarbejderId = "M1",
                 ServiceTeknikkerId = 1,
-                Servicetype = ServiceType.Fuldservice
+                Servicetype = ServiceType.FULDSERVICE
             }
         );
+
 
         modelBuilder.Entity<SikkerhedsEftersyn>().HasData(
             new

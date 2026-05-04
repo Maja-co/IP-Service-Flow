@@ -7,6 +7,7 @@ public class Medarbejder {
     public string? Salt{get;set;}
     public string? MailAdresse { get; set; }
     public string? AktivSessionID { get; set; }
+    public List<ServiceOpgave>? ServiceOpgaveListe { get; set; }
     public Medarbejder() { }
     public Medarbejder(string medarbejderId, string medarbejderNavn, string kodeOrdHash, string salt, string mailAdresse) {
         Id = medarbejderId;
@@ -14,5 +15,6 @@ public class Medarbejder {
         KodeOrdHash = kodeOrdHash;
         Salt = salt;
         MailAdresse = mailAdresse;
+        ServiceOpgaveListe = new List<ServiceOpgave>();
     }
 }

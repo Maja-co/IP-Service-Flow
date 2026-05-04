@@ -1,4 +1,8 @@
+using Business_Logic_Layer;
 using Data_Access_Layer;
+using Data_Access_Layer.Models;
+using GUI.Components;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddDbContext<MaskinContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IMedarbejderRepository, MedarbejderRepository>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddHostedService<ServicePåmindelsesWorker>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -22,6 +31,8 @@ builder.Services.AddDbContext<MaskinContext>(options =>
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<PåmindelsesService>();
 builder.Services.AddScoped<MaskineService>();
+builder.Services.AddScoped<MedarbejderService>();
+builder.Services.AddScoped<ServiceOpgaveService>();
 
 var app = builder.Build();
 

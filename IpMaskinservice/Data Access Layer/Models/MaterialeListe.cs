@@ -4,7 +4,8 @@ public class MaterialeListe
 {
     public int Id { get; set; }
     public List<MaterialeLinje> MaterialeLinjeListe { get; set; }
-    internal MaterialeListe()
+
+    public MaterialeListe()
     {
         MaterialeLinjeListe = new List<MaterialeLinje>();
     }

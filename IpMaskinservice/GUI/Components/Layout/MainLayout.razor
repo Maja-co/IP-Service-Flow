@@ -1,10 +1,16 @@
 ﻿@inherits LayoutComponentBase
+@using Business_Logic_Layer.Services
+@inject AuthService AuthService
+@inject NavigationManager NavManager
+
 <div class="page">
     <header class="top-row px-4">
-        <div class="d-flex gap-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Service</NavLink>
-            <NavLink class="nav-link" href="kunder">Kunder</NavLink>
-            <NavLink class="nav-link" href="påmindelser">Påmindelser</NavLink>
+        <div class="d-flex gap-3 w-100 justify-content-between align-items-center">
+            <div class="d-flex gap-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Service</NavLink>
+                <NavLink class="nav-link" href="kunder">Kunder</NavLink>
+            </div>
+            <NavLink class="nav-link" href="medarbejdere">Medarbejdere</NavLink>
         </div>
     </header>
 
@@ -20,3 +26,28 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        CheckAccess();
+    }
+
+    // Denne kører hver gang man skifter side via menuen
+    protected override void OnParametersSet()
+    {
+        CheckAccess();
+    }
+
+    private void CheckAccess()
+    {
+        // Find ud af om vi er på login-siden lige nu
+        bool isLoginPage = NavManager.Uri.ToLower().EndsWith("/login");
+
+        // Hvis ikke logget ind og ikke på login-siden -> smid dem til login
+        if (!AuthService.IsLoggedIn && !isLoginPage)
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+}

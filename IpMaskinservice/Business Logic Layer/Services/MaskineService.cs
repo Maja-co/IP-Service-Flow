@@ -26,5 +26,14 @@ namespace Business_Logic_Layer.Services
                 .Include(m => m.ServiceOgEftersynAftalerListe)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
+        public async Task SletMaskineAsync(int id)
+        {
+            var maskine = await _context.Maskiner.FindAsync(id);
+            if (maskine != null)
+            {
+                _context.Maskiner.Remove(maskine);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

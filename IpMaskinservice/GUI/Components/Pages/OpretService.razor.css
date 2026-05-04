@@ -1,0 +1,19 @@
+
+
+
+
+.materiale-input {
+    height: 50px; 
+    font-size: 1.1rem;
+    border-radius: 8px;
+}
+
+
+.materiale-knap {
+    height: 45px; 
+    padding: 0 20px;
+    white-space: nowrap;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}

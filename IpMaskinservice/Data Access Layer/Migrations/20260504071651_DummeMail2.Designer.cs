@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(MaskinContext))]
-    [Migration("20260427074836_SeedSandboxData")]
-    partial class SeedSandboxData
+    [Migration("20260504071651_DummeMail2")]
+    partial class DummeMail2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,8 +296,10 @@ namespace Data_Access_Layer.Migrations
                         new
                         {
                             Id = "M1",
-                            MailAdresse = "admin@ipmaskin.dk",
-                            MedarbejderNavn = "Admin Alice"
+                            KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e",
+                            MailAdresse = "runehjensen@hotmail.dk",
+                            MedarbejderNavn = "Admin Alice",
+                            Salt = "123"
                         });
                 });
 
@@ -500,12 +502,12 @@ namespace Data_Access_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            Deadline = new DateOnly(2026, 10, 1),
+                            Deadline = new DateOnly(2026, 6, 4),
                             MaskineId = 1,
                             MedarbejderId = "M1",
                             ServiceInterval = 2,
                             ServiceTeknikkerId = 1,
-                            SidstUdførtDato = new DateOnly(2025, 10, 1),
+                            SidstUdførtDato = new DateOnly(2025, 6, 4),
                             SidstUdførtNote = "Olie skiftet, alt ok",
                             Servicetype = 0
                         });
@@ -586,8 +588,9 @@ namespace Data_Access_Layer.Migrations
                         .HasForeignKey("MaterialeListeId");
 
                     b.HasOne("Data_Access_Layer.Models.Medarbejder", "Medarbejder")
-                        .WithMany()
-                        .HasForeignKey("MedarbejderId");
+                        .WithMany("ServiceOpgaveListe")
+                        .HasForeignKey("MedarbejderId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Data_Access_Layer.Models.ServiceTeknikker", "ServiceTeknikker")
                         .WithMany()
@@ -665,6 +668,11 @@ namespace Data_Access_Layer.Migrations
             modelBuilder.Entity("Data_Access_Layer.Models.MaterialeListe", b =>
                 {
                     b.Navigation("MaterialeLinjeListe");
+                });
+
+            modelBuilder.Entity("Data_Access_Layer.Models.Medarbejder", b =>
+                {
+                    b.Navigation("ServiceOpgaveListe");
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.ServiceOpgave", b =>
