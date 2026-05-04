@@ -13,7 +13,6 @@
 else {
 	<div class="maskineinfo-container">
 
-		@* ── Topbar med navn og tilbage-knap ── *@
 		<div class="maskineinfo-topbar">
 			<div class="topbar-venstre">
 				<a href="/Kunder" class="tilbage-knap">← Tilbage</a>
@@ -24,7 +23,6 @@ else {
 
 		<div class="maskineinfo-grid">
 
-			@* ── VENSTRE KOLONNE: Stamdata-kort ── *@
 			<div class="info-kort">
 				<h2 class="kort-titel">Stamdata</h2>
 				<div class="info-linje">
@@ -51,7 +49,6 @@ else {
 				</div>
 			</div>
 
-			@* ── HØJRE KOLONNE: Wrapper til de to lister ── *@
 			<div class="hoejre-kolonne">
 
 				@* Kommende Aftaler *@
@@ -81,7 +78,6 @@ else {
 					}
 				</div>
 
-				@* Service Historik, træ struktur *@
 				<div class="maskiner-sektion">
 					<h2 class="kort-titel">Service Historik</h2>
 					@if (_valgtMaskine.ServiceHistorikListe?.Any() == true) {
