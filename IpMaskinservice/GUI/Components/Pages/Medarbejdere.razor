@@ -16,19 +16,17 @@
         </div>
     </div>
 
-    @if (medarbejdere == null)
-    {
+    @if (medarbejdere == null) {
         <div class="alert alert-info">Henter brugere...</div>
     }
-    else
-    {
+    else {
         <div class="list-group">
-            @foreach (var medarbejder in medarbejdere)
-            {
+            @foreach (var medarbejder in medarbejdere) {
                 bool harAftaler = medarbejder.ServiceOpgaveListe?.Any() == true;
 
                 <div class="list-group-item list-group-item-action mb-2 shadow-sm border rounded">
-                    <div class="d-flex justify-content-between align-items-center bruger-header" @onclick="() => ToggleBruger(medarbejder.Id)">
+                    <div class="d-flex justify-content-between align-items-center bruger-header"
+                         @onclick="() => ToggleBruger(medarbejder.Id)">
                         <div>
                             <strong>@medarbejder.MedarbejderNavn</strong> - @medarbejder.Id
                             <span class="text-muted ms-2">(@(medarbejder.ServiceOpgaveListe?.Count ?? 0) aftaler)</span>
@@ -39,28 +37,26 @@
                                     @onclick="() => ForsøgSletBruger(medarbejder)">
                                 Slet
                             </button>
-                            <span class="badge bg-secondary rounded-pill">@(udfoldedeBrugere.Contains(medarbejder.Id) ? "▲" : "▼")</span>
+                            <span
+                                class="badge bg-secondary rounded-pill">@(udfoldedeBrugere.Contains(medarbejder.Id) ? "▲" : "▼")</span>
                         </div>
                     </div>
 
-                    @if (udfoldedeBrugere.Contains(medarbejder.Id))
-                    {
+                    @if (udfoldedeBrugere.Contains(medarbejder.Id)) {
                         <div class="mt-3 p-3 bg-light border-top">
-                            @if (harAftaler)
-                            {
+                            @if (harAftaler) {
                                 <ul class="list-unstyled mb-0">
-                                    @foreach (var aftale in medarbejder.ServiceOpgaveListe!)
-                                    {
+                                    @foreach (var aftale in medarbejder.ServiceOpgaveListe!) {
                                         <li class="mb-1">
                                             <a href="/serviceinfo/@aftale.Id" class="aftale-link">
-                                                📄 @aftale.Maskine.Kunde.FirmaNavn, @aftale.Maskine.SerieNummer - Klik for detaljer
+                                                📄 @aftale.Maskine.Kunde.FirmaNavn, @aftale.Maskine.SerieNummer - Klik
+                                                for detaljer
                                             </a>
                                         </li>
                                     }
                                 </ul>
                             }
-                            else
-                            {
+                            else {
                                 <span class="text-muted">Ingen tilknyttede serviceaftaler.</span>
                             }
                         </div>
@@ -71,8 +67,7 @@
     }
 
     @* ── ADVARSEL MODAL (Kan ikke slette) ── *@
-    @if (advarselModalSynlig && valgtTilSletning != null)
-    {
+    @if (advarselModalSynlig && valgtTilSletning != null) {
         <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-danger">
@@ -81,11 +76,14 @@
                         <button type="button" class="btn-close btn-close-white" @onclick="LukAdvarselModal"></button>
                     </div>
                     <div class="modal-body">
-                        Du kan ikke slette <strong>@valgtTilSletning.MedarbejderNavn</strong>, da brugeren stadig står som ansvarlig for en eller flere serviceaftaler.
-                        <br /><br />Brug "Flyt ansvar" funktionen øverst på siden til at overdrage aftalerne til en anden medarbejder, før du kan slette.
+                        Du kan ikke slette <strong>@valgtTilSletning.MedarbejderNavn</strong>, da brugeren stadig står
+                        som ansvarlig for en eller flere serviceaftaler.
+                        <br/><br/>Brug "Flyt ansvar" funktionen øverst på siden til at overdrage aftalerne til en anden
+                        medarbejder, før du kan slette.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" autofocus @onclick="LukAdvarselModal">Forstået</button>
+                        <button type="button" class="btn btn-primary" autofocus @onclick="LukAdvarselModal">Forstået
+                        </button>
                     </div>
                 </div>
             </div>
@@ -93,8 +91,7 @@
     }
 
     @* ── SLET MODAL (Bekræft sletning) ── *@
-    @if (sletModalSynlig && valgtTilSletning != null)
-    {
+    @if (sletModalSynlig && valgtTilSletning != null) {
         <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-danger">
@@ -104,11 +101,13 @@
                     </div>
                     <div class="modal-body">
                         Er du sikker på, at du vil slette brugeren <strong>@valgtTilSletning.MedarbejderNavn</strong>?
-                        <br /><br />Dette kan ikke fortrydes.
+                        <br/><br/>Dette kan ikke fortrydes.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" autofocus @onclick="LukSletModal">Annuller</button>
-                        <button type="button" class="btn btn-danger" @onclick="SletBrugerBekræftet">Bekræft sletning</button>
+                        <button type="button" class="btn btn-secondary" autofocus @onclick="LukSletModal">Annuller
+                        </button>
+                        <button type="button" class="btn btn-danger" @onclick="SletBrugerBekræftet">Bekræft sletning
+                        </button>
                     </div>
                 </div>
             </div>
@@ -116,8 +115,7 @@
     }
 
     @* ── FLYT ANSVAR MODAL ── *@
-    @if (flytAnsvarModalSynlig)
-    {
+    @if (flytAnsvarModalSynlig) {
         <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content border-primary">
@@ -131,8 +129,7 @@
                                 <label class="fw-bold">Flyt fra:</label>
                                 <select class="form-select" @bind="ValgtFraId">
                                     <option value="">-- Vælg medarbejder --</option>
-                                    @foreach (var m in medarbejdere!.Where(x => x.ServiceOpgaveListe?.Any() == true))
-                                    {
+                                    @foreach (var m in medarbejdere!.Where(x => x.ServiceOpgaveListe?.Any() == true)) {
                                         <option value="@m.Id">@m.MedarbejderNavn</option>
                                     }
                                 </select>
@@ -141,25 +138,22 @@
                                 <label class="fw-bold">Flyt til:</label>
                                 <select class="form-select" @bind="ValgtTilId">
                                     <option value="">-- Vælg medarbejder --</option>
-                                    @foreach (var m in medarbejdere!.Where(x => x.Id != valgtFraId))
-                                    {
+                                    @foreach (var m in medarbejdere!.Where(x => x.Id != valgtFraId)) {
                                         <option value="@m.Id">@m.MedarbejderNavn</option>
                                     }
                                 </select>
                             </div>
                         </div>
 
-                        @if (valgtFraId != "")
-                        {
+                        @if (valgtFraId != "") {
                             <div class="mt-3">
                                 <label class="fw-bold mb-2">Vælg aftaler der skal flyttes:</label>
                                 <div class="border p-2 rounded flyt-ansvar-liste">
-                                    @foreach (var aftale in HentValgtFraAftaler())
-                                    {
+                                    @foreach (var aftale in HentValgtFraAftaler()) {
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="aftale-@aftale.Id"
                                                    checked="@valgteAftalerTilFlyt.Contains(aftale.Id)"
-                                                   @onchange="(e) => ToggleAftaleTilFlyt(aftale.Id, e.Value)" />
+                                                   @onchange="(e) => ToggleAftaleTilFlyt(aftale.Id, e.Value)"/>
                                             <label class="form-check-label" for="aftale-@aftale.Id">
                                                 Opgave ID: #@aftale.Id
                                             </label>
@@ -196,34 +190,28 @@
     private string valgtTilId = "";
     private HashSet<int> valgteAftalerTilFlyt = new();
 
-    private string ValgtFraId
-    {
+    private string ValgtFraId {
         get => valgtFraId;
-        set
-        {
+        set {
             valgtFraId = value;
             valgteAftalerTilFlyt.Clear();
         }
     }
 
-    private string ValgtTilId
-    {
+    private string ValgtTilId {
         get => valgtTilId;
         set => valgtTilId = value;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await IndlæsData();
     }
 
-    private async Task IndlæsData()
-    {
+    private async Task IndlæsData() {
         medarbejdere = await MedarbejderService.HentAlleMedarbejdereMedAftalerAsync();
     }
 
-    private void ToggleBruger(string id)
-    {
+    private void ToggleBruger(string id) {
         if (udfoldedeBrugere.Contains(id)) udfoldedeBrugere.Remove(id);
         else udfoldedeBrugere.Add(id);
     }
@@ -231,15 +219,12 @@
     private void OpretBruger() => NavigationManager.NavigateTo("/opretmedarbejder");
 
     // Tjekker om medarbejderen kan slettes, eller om vi skal vise advarslen
-    private void ForsøgSletBruger(Medarbejder m)
-    {
+    private void ForsøgSletBruger(Medarbejder m) {
         valgtTilSletning = m;
-        if (m.ServiceOpgaveListe?.Any() == true)
-        {
+        if (m.ServiceOpgaveListe?.Any() == true) {
             advarselModalSynlig = true;
         }
-        else
-        {
+        else {
             sletModalSynlig = true;
         }
     }
@@ -247,18 +232,16 @@
     private void LukAdvarselModal() => advarselModalSynlig = false;
     private void LukSletModal() => sletModalSynlig = false;
 
-    private async Task SletBrugerBekræftet()
-    {
-        if (valgtTilSletning != null)
-        {
-            await MedarbejderService.SletMedarbejderAsync(valgtTilSletning.Id); 
+    private async Task SletBrugerBekræftet() {
+        if (valgtTilSletning != null) {
+            await MedarbejderService.SletMedarbejderAsync(valgtTilSletning.Id);
             await IndlæsData();
         }
+
         LukSletModal();
     }
 
-    private void VisFlytAnsvarModal()
-    {
+    private void VisFlytAnsvarModal() {
         valgtFraId = "";
         valgtTilId = "";
         valgteAftalerTilFlyt.Clear();
@@ -267,31 +250,26 @@
 
     private void LukFlytAnsvarModal() => flytAnsvarModalSynlig = false;
 
-    private IEnumerable<ServiceOpgave> HentValgtFraAftaler()
-    {
+    private IEnumerable<ServiceOpgave> HentValgtFraAftaler() {
         var fraMedarbejder = medarbejdere?.FirstOrDefault(m => m.Id == valgtFraId);
         return fraMedarbejder?.ServiceOpgaveListe ?? new List<ServiceOpgave>();
     }
 
-    private void ToggleAftaleTilFlyt(int aftaleId, object? isChecked)
-    {
-        if (isChecked is bool check && check)
-        {
+    private void ToggleAftaleTilFlyt(int aftaleId, object? isChecked) {
+        if (isChecked is bool check && check) {
             valgteAftalerTilFlyt.Add(aftaleId);
         }
-        else
-        {
+        else {
             valgteAftalerTilFlyt.Remove(aftaleId);
         }
     }
 
-    private async Task GennemførFlytAnsvar()
-    {
-        if (!string.IsNullOrEmpty(valgtFraId) && !string.IsNullOrEmpty(valgtTilId) && valgteAftalerTilFlyt.Any())
-        {
+    private async Task GennemførFlytAnsvar() {
+        if (!string.IsNullOrEmpty(valgtFraId) && !string.IsNullOrEmpty(valgtTilId) && valgteAftalerTilFlyt.Any()) {
             await MedarbejderService.FlytAnsvarAsync(valgtFraId, valgtTilId, valgteAftalerTilFlyt.ToList());
             await IndlæsData();
             LukFlytAnsvarModal();
         }
     }
+
 }

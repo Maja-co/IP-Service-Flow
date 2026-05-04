@@ -1,27 +1,20 @@
 ﻿using Data_Access_Layer.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Data_Access_Layer.Repositories
-{
-    public class KundeRepository
-    {
+namespace Data_Access_Layer.Repositories {
+    // Staged
+    public class KundeRepository {
         private readonly MaskinContext _db;
 
-        public KundeRepository(MaskinContext db)
-        {
+        public KundeRepository(MaskinContext db) {
             _db = db;
         }
 
-        public void Add(Kunde kunde)
-        {
-            _db.Kunder.Add(kunde); // Tilføj kunden til DbSet
-            _db.SaveChanges();      // Gem denne kunde i databasen
+        public void Add(Kunde kunde) {
+            _db.Kunder.Add(kunde);
+            _db.SaveChanges();
         }
 
-        public List<Kunde> GetAll() 
-        { 
+        public List<Kunde> GetAll() {
             return _db.Kunder.ToList();
         }
     }

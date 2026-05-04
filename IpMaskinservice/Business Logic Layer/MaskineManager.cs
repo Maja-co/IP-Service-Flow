@@ -1,17 +1,10 @@
-﻿using Data_Access_Layer.Models;
-using Data_Access_Layer.Repositories;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
-using System.Text;
-
+﻿using Data_Access_Layer.Repositories;
 
 namespace Business_Logic_Layer
 {
+    // Staged
     public class MaskineManager
     {
-        // Repositories injiceres gennem constructor
         private readonly MaskineRepository _maskineRepo;
         private readonly KundeRepository _kundeRepo;
 

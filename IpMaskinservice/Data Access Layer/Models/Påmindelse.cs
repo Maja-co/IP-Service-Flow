@@ -11,5 +11,4 @@ public class Påmindelse {
         ServiceOpgave = serviceOpgave;
         ServiceOpgaveId = serviceOpgave?.Id;
     }
-    //TODO implementer mail på den her
 }
