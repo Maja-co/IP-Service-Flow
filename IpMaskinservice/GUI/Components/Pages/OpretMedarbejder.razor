@@ -1,0 +1,101 @@
+﻿@page "/opretmedarbejder"
+@rendermode InteractiveServer
+@using Data_Access_Layer.Models
+@using Business_Logic_Layer.Services
+@inject MedarbejderService MedarbejderService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Opret Medarbejder</PageTitle>
+
+<div class="opret-medarbejder-container">
+    <h1>Opret ny medarbejder</h1>
+
+    @if (!string.IsNullOrEmpty(fejlBesked))
+    {
+        <div class="alert alert-danger">@fejlBesked</div>
+    }
+
+    <div class="form-group">
+        <label class="form-label">Medarbejder ID:</label>
+        <input class="form-control" @bind="medarbejderId" placeholder="f.eks. M001" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Navn:</label>
+        <input class="form-control" @bind="medarbejderNavn" placeholder="f.eks. John Doe" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Email:</label>
+        <input type="email" class="form-control" @bind="mailAdresse" placeholder="f.eks. john@example.com" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Kodeord:</label>
+        <input type="password" class="form-control" @bind="kodeOrd" placeholder="Mindst 8 tegn" />
+    </div>
+
+    <div class="button-group">
+        <button class="btn-opret" @onclick="GemMedarbejder">Opret</button>
+        <button class="btn-annuller" @onclick="Annuller">Annuller</button>
+    </div>
+</div>
+
+@code {
+    private string medarbejderId = "";
+    private string medarbejderNavn = "";
+    private string mailAdresse = "";
+    private string kodeOrd = "";
+    private string fejlBesked = "";
+
+    private void GemMedarbejder()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(medarbejderId) || string.IsNullOrWhiteSpace(medarbejderNavn) || 
+                string.IsNullOrWhiteSpace(mailAdresse) || string.IsNullOrWhiteSpace(kodeOrd))
+            {
+                fejlBesked = "Alle felter skal udfyldes.";
+                return;
+            }
+
+            if (kodeOrd.Length < 8)
+            {
+                fejlBesked = "Kodeord skal være mindst 8 tegn.";
+                return;
+            }
+
+            // Generer salt og hash
+            var (salt, kodeordHash) = MedarbejderService.GenererSaltOgHash(kodeOrd);
+
+            // Opret medarbejder med hashed kodeord
+            var nyMedarbejder = new Medarbejder(medarbejderId, medarbejderNavn, kodeordHash, salt, mailAdresse);
+            _ = GemMedarbejderAsynk(nyMedarbejder);
+
+            NavigationManager.NavigateTo("/medarbejdere");
+        }
+        catch (ArgumentException ex)
+        {
+            fejlBesked = ex.Message;
+        }
+        catch (Exception)
+        {
+            fejlBesked = "Der opstod en uventet fejl ved oprettelse af medarbejder.";
+        }
+    }
+
+    private async Task GemMedarbejderAsynk(Medarbejder medarbejder)
+    {
+        try
+        {
+            await MedarbejderService.GemNyMedarbejderAsync(medarbejder);
+        }
+        catch (Exception ex)
+        {
+            fejlBesked = ex.Message;
+        }
+    }
+
+    private void Annuller() => NavigationManager.NavigateTo("/medarbejdere");
+}
+
