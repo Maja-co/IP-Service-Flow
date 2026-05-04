@@ -4,6 +4,7 @@ using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(MaskinContext))]
-    partial class MaskinContextModelSnapshot : ModelSnapshot
+    [Migration("20260504071651_DummeMail2")]
+    partial class DummeMail2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,7 +297,7 @@ namespace Data_Access_Layer.Migrations
                         {
                             Id = "M1",
                             KodeOrdHash = "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e",
-                            MailAdresse = "admin@ipmaskin.dk",
+                            MailAdresse = "runehjensen@hotmail.dk",
                             MedarbejderNavn = "Admin Alice",
                             Salt = "123"
                         });

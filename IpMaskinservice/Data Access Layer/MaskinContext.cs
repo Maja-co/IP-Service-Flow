@@ -138,8 +138,8 @@ public class MaskinContext : DbContext {
             {
                 Id = 1,
                 MaskineId = 1,
-                SidstUdførtDato = new DateOnly(2025, 5, 30),
-                Deadline = new DateOnly(2026, 5, 30),
+                SidstUdførtDato = new DateOnly(2025, 6, 4),
+                Deadline = new DateOnly(2026, 6, 4),
                 SidstUdførtNote = "Olie skiftet, alt ok",
                 ServiceInterval = ServiceInterval.TOLVMÅNEDER,
                 MedarbejderId = "M1",

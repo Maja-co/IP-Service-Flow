@@ -46,10 +46,10 @@ namespace Business_Logic_Layer.Services
 
             bool ændringerGemt = false;
 
-            using (var smtpClient = new SmtpClient("smtp.office365.com"))
+            using (var smtpClient = new SmtpClient("sandbox.smtp.mailtrap.io"))
             {
-                smtpClient.Port = 587;
-                smtpClient.Credentials = new NetworkCredential("servicepaamindelse@outlook.com", "Fungert2026!");
+                smtpClient.Port = 2525;
+                smtpClient.Credentials = new NetworkCredential("eb0985bc856369", "1d16dd5f09b288");
                 smtpClient.EnableSsl = true;
 
                 foreach (var opgave in aktuelleServiceOpgaver)
